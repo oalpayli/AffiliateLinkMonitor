@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Monitor {
+  id        String   @id @default(cuid())
+  url       String   @unique
+  frequency String   @default("daily") // hourly, daily, weekly
+  lastRun   DateTime?
+  nextRun   DateTime @default(now())
+  isActive  Boolean  @default(true)
+  alertEmail String?
+  createdAt DateTime @default(now())
+
+  scans     Scan[]
+}
+
+model Scan {
+  id        String   @id @default(cuid())
+  url       String
+  createdAt DateTime @default(now())
+  params    String? // Store optional filter params as JSON string if needed in future
+  
+  monitorId String?
+  monitor   Monitor? @relation(fields: [monitorId], references: [id])
+
+  links     Link[]
+}
+
+model Link {
+  id        String   @id @default(cuid())
+  href      String
+  status    String   // 'healthy', 'broken', 'error'
+  statusCode Int?
+  
+  scanId    String
+  scan      Scan     @relation(fields: [scanId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
