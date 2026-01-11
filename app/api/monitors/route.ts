@@ -21,6 +21,21 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'URL is required' }, { status: 400 });
         }
 
+        // Check if monitor already exists
+        const existingMonitor = await prisma.monitor.findFirst({
+            where: {
+                userId,
+                url
+            }
+        });
+
+        if (existingMonitor) {
+            return NextResponse.json(
+                { error: 'You are already monitoring this URL.' },
+                { status: 409 }
+            );
+        }
+
         // Check subscription/limits
         const isPro = await checkSubscription();
         const count = await prisma.monitor.count({
