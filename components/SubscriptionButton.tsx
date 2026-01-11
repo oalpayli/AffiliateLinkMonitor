@@ -1,32 +1,41 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { Loader2, Zap } from "lucide-react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface SubscriptionButtonProps {
     isPro: boolean;
+    className?: string;
 }
 
-export default function SubscriptionButton({ isPro }: SubscriptionButtonProps) {
+export const SubscriptionButton = ({ isPro = false, className }: SubscriptionButtonProps) => {
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const onClick = async () => {
         try {
             setLoading(true);
-            const response = await fetch('/api/stripe/checkout', {
-                method: 'POST',
+            const response = await fetch("/api/stripe", {
+                method: "POST"
             });
 
-            const data = await response.json();
-
-            if (data.url) {
-                window.location.href = data.url;
-            } else {
-                toast.error('Something went wrong. Please try again.');
+            if (response.status === 401) {
+                toast.error("Please sign in to upgrade");
+                router.push("/sign-in?redirect_url=/pricing");
+                return;
             }
-        } catch (error) {
-            toast.error('Something went wrong. Please try again.');
-            console.error(error);
+
+            if (!response.ok) {
+                const text = await response.text();
+                toast.error("Something went wrong. Please check your configuration.");
+                console.error("Stripe API Error:", text);
+                return;
+            }
+
+            const data = await response.json();
+            window.location.href = data.url;
         } finally {
             setLoading(false);
         }
@@ -36,22 +45,17 @@ export default function SubscriptionButton({ isPro }: SubscriptionButtonProps) {
         <button
             onClick={onClick}
             disabled={loading}
-            className={`w-full py-3 rounded-xl font-medium transition-all hover:scale-[1.02] flex items-center justify-center gap-2 
-                ${isPro
-                    ? 'bg-slate-800 text-white hover:bg-slate-700'
-                    : 'bg-violet-600 text-white hover:bg-violet-500 shadow-lg shadow-violet-900/20'
-                }`}
+            className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${isPro
+                ? "bg-slate-800 text-white hover:bg-slate-700"
+                : "bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-500/20"
+                } ${className || ""}`}
         >
             {loading ? (
-                <>
-                    <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Processing...
-                </>
-            ) : isPro ? (
-                'Manage Subscription'
+                <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
-                'Upgrade to Pro'
+                <Zap className={`h-4 w-4 ${isPro ? "text-yellow-400" : "fill-current"}`} />
             )}
+            {isPro ? "Manage Subscription" : "Upgrade to Pro"}
         </button>
     );
-}
+};

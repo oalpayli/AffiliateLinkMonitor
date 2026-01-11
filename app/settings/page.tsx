@@ -1,6 +1,6 @@
 import { checkSubscription } from '@/lib/subscription';
 import SettingsForm from '@/components/SettingsForm';
-import SubscriptionButton from '@/components/SubscriptionButton';
+import { SubscriptionButton } from '@/components/SubscriptionButton';
 import { Settings, CreditCard } from 'lucide-react';
 
 export default async function SettingsPage() {

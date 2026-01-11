@@ -14,57 +14,146 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
-        const { url, frequency = 'daily', alertEmail } = body;
-        console.log('[API] Body:', { url, frequency, alertEmail });
+        const { url, urls, frequency = 'daily', alertEmail } = body;
 
-        if (!url) {
-            return NextResponse.json({ error: 'URL is required' }, { status: 400 });
+        let urlsToProcess: string[] = [];
+
+        if (urls && Array.isArray(urls)) {
+            urlsToProcess = urls.filter((u: any) => typeof u === 'string' && u.trim().length > 0);
+        } else if (url && typeof url === 'string') {
+            urlsToProcess = [url];
         }
 
-        // Check if monitor already exists
-        const existingMonitor = await prisma.monitor.findFirst({
-            where: {
-                userId,
-                url
-            }
-        });
-
-        if (existingMonitor) {
-            return NextResponse.json(
-                { error: 'You are already monitoring this URL.' },
-                { status: 409 }
-            );
+        if (urlsToProcess.length === 0) {
+            return NextResponse.json({ error: 'At least one URL is required' }, { status: 400 });
         }
 
         // Check subscription/limits
-        const isPro = await checkSubscription();
-        const count = await prisma.monitor.count({
+        const methodIsPro = await checkSubscription();
+        const currentCount = await prisma.monitor.count({
             where: { userId }
         });
-        console.log('[API] Check:', { isPro, count });
 
-        const limit = isPro ? MAX_PRO_MONITORS : MAX_FREE_MONITORS;
+        let limit = methodIsPro ? MAX_PRO_MONITORS : MAX_FREE_MONITORS;
 
-        if (count >= limit) {
+        // Check subscription/limits
+        const isPro = await checkSubscription();
+        // const count = await prisma.monitor.count({ // This line is redundant as currentCount already exists
+        //     where: { userId }
+        // });
+        console.log('[API] Check:', { isPro, currentCount });
+
+        if (!limit) {
+            const isProCheck = await checkSubscription();
+            limit = isProCheck ? MAX_PRO_MONITORS : MAX_FREE_MONITORS;
+        }
+
+        if (currentCount + urlsToProcess.length > limit) {
             return NextResponse.json(
-                { error: `Limit reached. You can only have ${limit} monitors on your current plan.` },
+                { error: `Limit reached. You can only have ${limit} monitors. You are trying to add ${urlsToProcess.length} but have space for ${limit - currentCount}.` },
                 { status: 403 }
             );
         }
 
-        const monitor = await prisma.monitor.create({
-            data: {
-                url,
+        // Filter out duplicates that already exist to avoid errors
+        const existingMonitors = await prisma.monitor.findMany({
+            where: {
+                userId,
+                url: { in: urlsToProcess }
+            },
+            select: { url: true }
+        });
+
+        const existingUrls = new Set(existingMonitors.map(m => m.url));
+        const newUrls = urlsToProcess.filter(u => !existingUrls.has(u));
+
+        if (newUrls.length === 0) {
+            // All requested URLs already exist
+            return NextResponse.json({ message: "All monitors already exist", monitors: [] }, { status: 200 });
+        }
+
+        // Create monitors
+        await prisma.monitor.createMany({
+            data: newUrls.map(u => ({
+                url: u,
                 frequency,
                 alertEmail,
                 userId,
-                nextRun: new Date() // Run immediately/soon
+                nextRun: new Date()
+            }))
+        });
+
+        const createdMonitors = await prisma.monitor.findMany({
+            where: {
+                userId,
+                url: { in: newUrls }
             }
         });
 
-        return NextResponse.json(monitor, { status: 201 });
+        return NextResponse.json(createdMonitors, { status: 201 });
     } catch (error: any) {
         console.error('[API] Error creating monitor:', error);
+        return NextResponse.json(
+            { error: `Server Error: ${error.message || 'Unknown'}` },
+            { status: 500 }
+        );
+    }
+}
+
+export async function DELETE(request: Request) {
+    try {
+        const { userId } = await auth();
+        if (!userId) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const body = await request.json();
+        const { ids } = body;
+
+        if (!ids || !Array.isArray(ids) || ids.length === 0) {
+            return NextResponse.json({ error: 'No IDs provided' }, { status: 400 });
+        }
+
+        // To safely bulk delete, we must clean up related records first because
+        // cascading deletes might not be fully configured on the Monitor relation in Prisma Schema.
+        await prisma.$transaction(async (tx) => {
+            // 1. Delete all Links associated with Scans that belong to these Monitors
+            // (Links cascade on Scan delete usually, but let's be safe if they don't)
+            // Actually, schema says Scan->Link is Cascade. But Monitor->Scan is optional/set null?
+            // Schema: monitor Monitor? @relation...
+            // Wait, if Monitor is deleted, Scan.monitorId might just become null if not Cascade?
+            // But we want to delete the Scans too.
+
+            // Find scans to delete
+            const scans = await tx.scan.findMany({
+                where: { monitorId: { in: ids } },
+                select: { id: true }
+            });
+            const scanIds = scans.map(s => s.id);
+
+            if (scanIds.length > 0) {
+                await tx.link.deleteMany({
+                    where: { scanId: { in: scanIds } }
+                });
+
+                await tx.scan.deleteMany({
+                    where: { id: { in: scanIds } }
+                });
+            }
+
+            // 2. Delete the Monitors
+            await tx.monitor.deleteMany({
+                where: {
+                    userId,
+                    id: { in: ids }
+                }
+            });
+        });
+
+        return NextResponse.json({ success: true, count: ids.length });
+
+    } catch (error: any) {
+        console.error('[API] Bulk Delete Error:', error);
         return NextResponse.json(
             { error: `Server Error: ${error.message || 'Unknown'}` },
             { status: 500 }
@@ -89,7 +178,16 @@ export async function GET() {
             }
         });
 
-        return NextResponse.json(monitors);
+        // Create metadata response
+        const isPro = await checkSubscription();
+        const limit = isPro ? MAX_PRO_MONITORS : MAX_FREE_MONITORS;
+
+        return NextResponse.json({
+            monitors,
+            isPro,
+            limit,
+            count: monitors.length
+        });
     } catch (error) {
         return NextResponse.json(
             { error: 'Failed to fetch monitors' },

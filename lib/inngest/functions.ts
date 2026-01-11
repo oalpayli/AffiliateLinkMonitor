@@ -12,9 +12,12 @@ export const cronTrigger = inngest.createFunction(
         // Step A: Find monitors due for a check
         const monitorsToCheck = await step.run("fetch-monitors", async () => {
             const now = new Date();
-            // Simple logic: If 'nextRun' is in the past, it's due
+            // Only fetch active monitors due for a check
             return await prisma.monitor.findMany({
-                where: { nextRun: { lte: now } },
+                where: {
+                    nextRun: { lte: now },
+                    isActive: true
+                },
                 select: { id: true, url: true, alertEmail: true, frequency: true }
             });
         });
