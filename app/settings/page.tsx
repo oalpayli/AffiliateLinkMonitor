@@ -1,35 +1,14 @@
-'use client';
+import { checkSubscription } from '@/lib/subscription';
+import SettingsForm from '@/components/SettingsForm';
+import SubscriptionButton from '@/components/SubscriptionButton';
+import { Settings, CreditCard } from 'lucide-react';
 
-import { useState, useEffect } from 'react';
-import { Save, Mail, Settings, Check } from 'lucide-react';
-
-export default function SettingsPage() {
-    const [email, setEmail] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [isSaved, setIsSaved] = useState(false);
-
-    useEffect(() => {
-        // Load saved settings
-        const savedEmail = localStorage.getItem('default_alert_email');
-        if (savedEmail) setEmail(savedEmail);
-    }, []);
-
-    const handleSave = (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
-
-        // Simulate "saving" to backend (actually just local storage for this demo)
-        setTimeout(() => {
-            localStorage.setItem('default_alert_email', email);
-            setIsLoading(false);
-            setIsSaved(true);
-            setTimeout(() => setIsSaved(false), 2000);
-        }, 600);
-    };
+export default async function SettingsPage() {
+    const isPro = await checkSubscription();
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-2xl">
-            <h1 className="text-3xl font-bold mb-2 flex items-center gap-3">
+            <h1 className="text-3xl font-bold mb-2 flex items-center gap-3 text-white">
                 <Settings className="h-8 w-8 text-violet-400" />
                 Settings
             </h1>
@@ -37,50 +16,43 @@ export default function SettingsPage() {
                 Manage your global preferences and configurations.
             </p>
 
-            <div className="glass-card p-6 rounded-2xl">
-                <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                    <Mail className="h-5 w-5 text-slate-400" />
-                    Notifications
-                </h2>
+            <div className="space-y-8">
+                {/* Subscription Management */}
+                <div className="glass-card p-6 rounded-2xl border border-slate-800">
+                    <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-slate-200">
+                        <CreditCard className="h-5 w-5 text-slate-400" />
+                        Subscription
+                    </h2>
 
-                <form onSubmit={handleSave} className="space-y-6">
-                    <div>
-                        <label className="block text-sm font-medium text-slate-300 mb-2">
-                            Default Alert Email
-                        </label>
-                        <p className="text-xs text-slate-500 mb-3">
-                            This email will be automatically filled when creating new monitors.
-                            Ideally, use the same email configured in your .env SMTP settings.
-                        </p>
-                        <input
-                            type="email"
-                            className="glass-input w-full px-4 py-3 rounded-xl"
-                            placeholder="alert@example.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
+                    <div className="flex items-center justify-between p-4 bg-slate-900/50 rounded-xl mb-6 border border-slate-800">
+                        <div>
+                            <p className="text-sm text-slate-400 mb-1">Current Plan</p>
+                            <p className="text-lg font-bold text-white flex items-center gap-2">
+                                {isPro ? (
+                                    <>
+                                        <span className="text-violet-400">Pro Plan</span>
+                                        <span className="text-xs bg-violet-500/20 text-violet-300 px-2 py-0.5 rounded-full border border-violet-500/30">Active</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="text-slate-300">Free Tier</span>
+                                    </>
+                                )}
+                            </p>
+                        </div>
+                        {isPro && (
+                            <div className="text-right">
+                                <p className="text-sm text-slate-400 mb-1">Status</p>
+                                <p className="text-sm font-medium text-emerald-400">Active</p>
+                            </div>
+                        )}
                     </div>
 
-                    <div className="pt-4 border-t border-slate-800">
-                        <button
-                            type="submit"
-                            disabled={isLoading}
-                            className={`btn-primary px-6 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all ${isSaved ? 'bg-emerald-600 hover:bg-emerald-600 ring-2 ring-emerald-500/50' : ''}`}
-                        >
-                            {isSaved ? (
-                                <>
-                                    <Check className="h-4 w-4" />
-                                    <span>Saved Changes</span>
-                                </>
-                            ) : (
-                                <>
-                                    <Save className="h-4 w-4" />
-                                    <span>{isLoading ? 'Saving...' : 'Save Preferences'}</span>
-                                </>
-                            )}
-                        </button>
-                    </div>
-                </form>
+                    <SubscriptionButton isPro={isPro} />
+                </div>
+
+                {/* General Settings Form */}
+                <SettingsForm />
             </div>
         </div>
     );

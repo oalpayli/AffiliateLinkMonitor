@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Play, Clock, Plus, Activity, CheckCircle, RefreshCw, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import ConfirmDialog from './ConfirmDialog';
@@ -23,6 +24,7 @@ export default function MonitorList() {
     const [isRunningCron, setIsRunningCron] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [monitorToDelete, setMonitorToDelete] = useState<Monitor | null>(null);
+    const router = useRouter();
 
     useEffect(() => {
         fetchMonitors();
@@ -74,7 +76,13 @@ export default function MonitorList() {
                 toast.success('Monitor added!');
                 fetchMonitors();
             } else {
-                toast.error(data.error || 'Failed to add monitor');
+                // Specific handling for Plan Limit Reached (403)
+                if (res.status === 403) {
+                    toast.error('Limit reached! Redirecting to upgrade...', { duration: 2000 });
+                    setTimeout(() => router.push('/pricing'), 1000);
+                } else {
+                    toast.error(data.error || 'Failed to add monitor');
+                }
             }
         } catch (e) {
             toast.error('Something went wrong. Please refresh and try again.');

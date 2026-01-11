@@ -35,6 +35,15 @@ export default function Navbar() {
                         Dashboard
                     </Link>
                     <Link
+                        href="/pricing"
+                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/pricing')
+                            ? 'bg-slate-800 text-white shadow-sm'
+                            : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                            }`}
+                    >
+                        Pricing
+                    </Link>
+                    <Link
                         href="/settings"
                         className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/settings')
                             ? 'bg-slate-800 text-white shadow-sm'
