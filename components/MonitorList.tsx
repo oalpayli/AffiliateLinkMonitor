@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Play, Clock, Plus, Activity, CheckCircle, RefreshCw } from 'lucide-react';
+import { Play, Clock, Plus, Activity, CheckCircle, RefreshCw, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import ConfirmDialog from './ConfirmDialog';
 
 interface Monitor {
     id: string;
@@ -20,6 +21,8 @@ export default function MonitorList() {
     const [frequency, setFrequency] = useState('daily');
     const [isLoading, setIsLoading] = useState(true);
     const [isRunningCron, setIsRunningCron] = useState(false);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [monitorToDelete, setMonitorToDelete] = useState<Monitor | null>(null);
 
     useEffect(() => {
         fetchMonitors();
@@ -93,6 +96,41 @@ export default function MonitorList() {
         }
     };
 
+    const handleDeleteClick = (monitor: Monitor) => {
+        setMonitorToDelete(monitor);
+    };
+
+    const handleDeleteConfirm = async () => {
+        if (!monitorToDelete) return;
+
+        setDeletingId(monitorToDelete.id);
+        try {
+            const res = await fetch(`/api/monitors/${monitorToDelete.id}`, {
+                method: 'DELETE'
+            });
+
+            if (res.ok) {
+                toast.success('Monitor deleted!');
+                setMonitors(prev => prev.filter(m => m.id !== monitorToDelete.id));
+                setMonitorToDelete(null);
+            } else {
+                const data = await res.json();
+                toast.error(data.error || 'Failed to delete monitor');
+            }
+        } catch (e) {
+            toast.error('Something went wrong. Please try again.');
+            console.error(e);
+        } finally {
+            setDeletingId(null);
+        }
+    };
+
+    const handleDeleteCancel = () => {
+        if (!deletingId) {
+            setMonitorToDelete(null);
+        }
+    };
+
     return (
         <div className="w-full max-w-4xl mx-auto px-4 mb-12">
             <div className="flex items-center justify-between mb-6">
@@ -161,13 +199,33 @@ export default function MonitorList() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="text-sm font-mono text-slate-600">
-                                {monitor._count?.scans || 0} scans
+                            <div className="flex items-center gap-3">
+                                <div className="text-sm font-mono text-slate-600">
+                                    {monitor._count?.scans || 0} scans
+                                </div>
+                                <button
+                                    onClick={() => handleDeleteClick(monitor)}
+                                    disabled={deletingId === monitor.id}
+                                    className="opacity-0 group-hover:opacity-100 p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 transition-all disabled:opacity-50"
+                                    title="Delete monitor"
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                </button>
                             </div>
                         </div>
                     ))
                 )}
             </div>
+
+            {/* Delete Confirmation Dialog */}
+            <ConfirmDialog
+                isOpen={!!monitorToDelete}
+                onClose={handleDeleteCancel}
+                onConfirm={handleDeleteConfirm}
+                title="Delete Monitor"
+                message={`Are you sure you want to delete the monitor for "${monitorToDelete?.url}"? This will also delete all associated scans and cannot be undone.`}
+                isLoading={!!deletingId}
+            />
         </div>
     );
 }
