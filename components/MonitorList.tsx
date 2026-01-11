@@ -206,7 +206,7 @@ export default function MonitorList() {
                                 <button
                                     onClick={() => handleDeleteClick(monitor)}
                                     disabled={deletingId === monitor.id}
-                                    className="opacity-0 group-hover:opacity-100 p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 transition-all disabled:opacity-50"
+                                    className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 transition-all disabled:opacity-50"
                                     title="Delete monitor"
                                 >
                                     <Trash2 className="h-4 w-4" />
