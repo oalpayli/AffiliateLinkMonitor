@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Activity, LayoutDashboard, BookOpen, Menu } from 'lucide-react';
+import { LayoutDashboard, BookOpen, Menu } from 'lucide-react';
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 export default function Navbar() {
@@ -15,8 +15,8 @@ export default function Navbar() {
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2 group">
-                    <div className="p-2 bg-violet-600/20 rounded-lg group-hover:bg-violet-600/30 transition-colors">
-                        <Activity className="h-5 w-5 text-violet-500" />
+                    <div className="relative h-10 w-10 overflow-hidden rounded-lg transition-transform group-hover:scale-105">
+                        <img src="/logo.png" alt="LinkMonitor Logo" className="h-full w-full object-cover mix-blend-screen" />
                     </div>
                     <span className="font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
                         LinkMonitor

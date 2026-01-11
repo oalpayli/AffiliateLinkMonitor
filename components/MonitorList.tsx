@@ -314,16 +314,19 @@ export default function MonitorList() {
                     </div>
                 ) : (
                     monitors.map(monitor => (
-                        <div key={monitor.id} className={`glass-card p-4 rounded-xl flex items-center justify-between group transition-all ${selectedIds.has(monitor.id) ? 'ring-1 ring-violet-500/50 bg-violet-500/5' : ''
-                            }`}>
+                        <div
+                            key={monitor.id}
+                            onClick={() => isSelectionMode && toggleSelection(monitor.id)}
+                            className={`glass-card p-4 rounded-xl flex items-center justify-between group transition-all relative overflow-hidden ${isSelectionMode ? 'cursor-pointer hover:bg-slate-800/50' : ''} ${selectedIds.has(monitor.id)
+                                ? 'ring-2 ring-violet-500 bg-violet-500/10'
+                                : 'hover:border-slate-700'
+                                }`}
+                        >
                             <div className="flex items-center gap-3">
                                 {isSelectionMode && (
-                                    <input
-                                        type="checkbox"
-                                        className="rounded border-slate-700 bg-slate-800 text-violet-500 focus:ring-violet-500/50 checkbox-custom"
-                                        checked={selectedIds.has(monitor.id)}
-                                        onChange={() => toggleSelection(monitor.id)}
-                                    />
+                                    <div className={`flex-shrink-0 transition-all duration-200 ${selectedIds.has(monitor.id) ? 'w-6 opacity-100 scale-100' : 'w-0 opacity-0 scale-0'}`}>
+                                        <CheckCircle className="h-5 w-5 text-violet-500 fill-violet-500/20" />
+                                    </div>
                                 )}
                                 <div className={`h-2 w-2 rounded-full ${monitor.isActive ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-slate-600'}`} />
                                 <div>
@@ -344,14 +347,21 @@ export default function MonitorList() {
                                     {monitor._count?.scans || 0} scans
                                 </div>
                                 <button
-                                    onClick={() => handleDeleteClick(monitor)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDeleteClick(monitor);
+                                    }}
                                     disabled={deletingId === monitor.id}
-                                    className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 transition-all disabled:opacity-50"
+                                    className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 transition-all disabled:opacity-50 relative z-10"
                                     title="Delete monitor"
                                 >
                                     <Trash2 className="h-4 w-4" />
                                 </button>
                             </div>
+                            {/* Selection Overlay for visual feedback */}
+                            {isSelectionMode && !selectedIds.has(monitor.id) && (
+                                <div className="absolute inset-0 bg-slate-800/0 hover:bg-slate-800/10 transition-colors pointer-events-none" />
+                            )}
                         </div>
                     ))
                 )}
@@ -375,6 +385,6 @@ export default function MonitorList() {
                 message={`Are you sure you want to delete ${selectedIds.size} monitors? This will remove all associated data and cannot be undone.`}
                 isLoading={isBulkDeleting}
             />
-        </div>
+        </div >
     );
 }
