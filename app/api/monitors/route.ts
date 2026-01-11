@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { prisma } from '@/lib/db';
 import { checkSubscription } from '@/lib/subscription';
+import { MAX_FREE_MONITORS, MAX_PRO_MONITORS } from '@/lib/constants';
 
 export async function POST(request: Request) {
     try {
@@ -27,9 +28,11 @@ export async function POST(request: Request) {
         });
         console.log('[API] Check:', { isPro, count });
 
-        if (!isPro && count >= 3) {
+        const limit = isPro ? MAX_PRO_MONITORS : MAX_FREE_MONITORS;
+
+        if (count >= limit) {
             return NextResponse.json(
-                { error: 'Free tier limit reached. Upgrade to Pro for more monitors.' },
+                { error: `Limit reached. You can only have ${limit} monitors on your current plan.` },
                 { status: 403 }
             );
         }

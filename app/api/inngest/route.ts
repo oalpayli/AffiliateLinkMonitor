@@ -1,11 +1,11 @@
 import { serve } from "inngest/next";
-import { inngest } from "@/inngest/client";
-import { scheduler, scanMonitor } from "@/inngest/functions";
+import { inngest } from "@/lib/inngest/client";
+import { cronTrigger, checkMonitor } from "@/lib/inngest/functions";
 
 export const { GET, POST, PUT } = serve({
     client: inngest,
     functions: [
-        scheduler,
-        scanMonitor
+        cronTrigger,
+        checkMonitor
     ],
 });

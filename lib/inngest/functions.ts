@@ -57,7 +57,14 @@ export const checkMonitor = inngest.createFunction(
         if (result.links.some(l => l.status === 'broken')) {
             await step.run("send-alert", async () => {
                 if (alertEmail) {
-                    await sendAlertEmail(alertEmail, url, result.links.filter(l => l.status === 'broken'));
+                    await sendAlertEmail(alertEmail, {
+                        monitorUrl: url,
+                        scanId: result.id,
+                        brokenLinks: result.links.filter(l => l.status === 'broken').map(l => ({
+                            href: l.href,
+                            statusCode: l.statusCode || 0
+                        }))
+                    });
                 }
             });
         }

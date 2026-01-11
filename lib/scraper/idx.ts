@@ -76,47 +76,66 @@ function isAffiliateLink(href: string): boolean {
   }
 }
 
+import { scrapeDynamicContent } from './browser';
+
 export async function scrapeAffiliateLinks(url: string): Promise<ScraperResult> {
+  // Strategy: Try Fast Scraper (Axios) -> Fallback to Slow Scraper (Puppeteer)
+  let links: Array<{ href: string; text: string }> = [];
+
   try {
+    // 1. Fast Path
+    console.log(`[Scraper] Attempting fast scrape for: ${url}`);
     const response = await axios.get(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; AffiliateLinkMonitor/1.0; +http://localhost)'
-      }
+      },
+      timeout: 5000 // Short timeout for fast path
     });
 
     const $ = cheerio.load(response.data);
-    const links: Array<{ href: string; text: string }> = [];
-
     $('a').each((_, element) => {
       const href = $(element).attr('href');
       const text = $(element).text().trim();
-
       if (href && (href.startsWith('http') || href.startsWith('https'))) {
         links.push({ href, text });
       }
     });
 
-    // Filter for affiliate links
-    const affiliateLinks = links.filter(link => {
-      try {
-        return isAffiliateLink(link.href);
-      } catch (e) {
-        return false;
-      }
-    }).map(link => ({
-      ...link,
-      status: 'unchecked' as const
-    }));
-
-    return {
-      url,
-      totalLinks: links.length,
-      affiliateLinks
-    };
   } catch (error) {
-    console.error(`Error scraping ${url}:`, error);
-    throw error;
+    console.warn(`[Scraper] Fast scrape failed for ${url}, switching to browser...`);
   }
+
+  // 2. Check Quality of Fast Scraper Results
+  const affiliateLinksFoundFast = links.filter(l => isAffiliateLink(l.href));
+
+  // If we found nothing useful, or if it failed completely, use the Browser
+  if (affiliateLinksFoundFast.length === 0) {
+    console.log(`[Scraper] Fast scraper found no affiliate links. Launching Browser for: ${url}`);
+    try {
+      links = await scrapeDynamicContent(url);
+    } catch (browserError) {
+      console.error(`[Scraper] Browser scrape also failed:`, browserError);
+      // If both fail, we just return empty list (or whatever partial links we had)
+    }
+  }
+
+  // Filter for affiliate links
+  const affiliateLinks = links.filter(link => {
+    try {
+      return isAffiliateLink(link.href);
+    } catch (e) {
+      return false;
+    }
+  }).map(link => ({
+    ...link,
+    status: 'unchecked' as const
+  }));
+
+  return {
+    url,
+    totalLinks: links.length,
+    affiliateLinks
+  };
 }
 
 // Browser-like User Agent to avoid bot detection (especially Amazon)
