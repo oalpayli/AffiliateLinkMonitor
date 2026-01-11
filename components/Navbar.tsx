@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Activity, LayoutDashboard, BookOpen, Menu } from 'lucide-react';
-import AuthButton from './AuthButton';
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 
 export default function Navbar() {
     const pathname = usePathname();
@@ -59,7 +59,22 @@ export default function Navbar() {
 
                     <div className="h-6 w-px bg-slate-800 hidden md:block" />
 
-                    <AuthButton />
+                    <SignedOut>
+                        <SignInButton mode="modal">
+                            <button className="text-sm font-medium text-slate-300 hover:text-white transition-colors bg-slate-800/50 hover:bg-slate-800 px-4 py-2 rounded-lg border border-slate-700/50">
+                                Sign In
+                            </button>
+                        </SignInButton>
+                    </SignedOut>
+                    <SignedIn>
+                        <UserButton
+                            appearance={{
+                                elements: {
+                                    avatarBox: "h-8 w-8"
+                                }
+                            }}
+                        />
+                    </SignedIn>
                 </div>
             </div>
         </nav>

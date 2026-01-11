@@ -6,13 +6,14 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Monitor {
   id        String   @id @default(cuid())
-  url       String   @unique
+  userId    String   // Clerk User ID for multi-tenancy
+  url       String
   frequency String   @default("daily") // hourly, daily, weekly
   lastRun   DateTime?
   nextRun   DateTime @default(now())
@@ -21,6 +22,18 @@ model Monitor {
   createdAt DateTime @default(now())
 
   scans     Scan[]
+
+  @@unique([userId, url]) // Prevent duplicate URLs for the SAME user, but allow across users
+  @@index([userId]) // Index for faster lookups by user
+}
+
+model UserSubscription {
+  id                     String    @id @default(cuid())
+  userId                 String    @unique
+  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?   @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
 }
 
 model Scan {

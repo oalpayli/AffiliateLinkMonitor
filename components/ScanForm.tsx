@@ -21,12 +21,24 @@ export default function ScanForm() {
                 body: JSON.stringify({ url }),
             });
 
+            // Check if response is JSON before parsing
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                if (response.status === 401 || response.status === 403 || response.redirected) {
+                    console.error('Authentication required');
+                    // Could show toast here if available
+                } else {
+                    console.error('Unexpected server response');
+                }
+                return;
+            }
+
             if (response.ok) {
                 const scan = await response.json();
                 router.push(`/scans/${scan.id}`);
             } else {
-                console.error('Scan failed');
-                // Ideally show toast error here
+                const error = await response.json();
+                console.error('Scan failed:', error.error);
             }
         } catch (error) {
             console.error('Error:', error);

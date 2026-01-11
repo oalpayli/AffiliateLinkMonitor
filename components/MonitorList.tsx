@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Play, Clock, Plus, Activity, CheckCircle, RefreshCw } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface Monitor {
     id: string;
@@ -29,7 +30,8 @@ export default function MonitorList() {
     const fetchMonitors = async () => {
         try {
             const res = await fetch('/api/monitors');
-            if (res.ok) {
+            const contentType = res.headers.get('content-type');
+            if (res.ok && contentType?.includes('application/json')) {
                 const data = await res.json();
                 setMonitors(data);
             }
@@ -48,12 +50,31 @@ export default function MonitorList() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ url: newUrl, frequency, alertEmail })
             });
+
+            // Check if response is JSON before parsing
+            const contentType = res.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                // Likely an auth redirect - response is HTML
+                if (res.status === 401 || res.status === 403 || res.redirected) {
+                    toast.error('Please sign in to add monitors');
+                    return;
+                }
+                toast.error('Unexpected server response. Please try again.');
+                return;
+            }
+
+            const data = await res.json();
+
             if (res.ok) {
                 setNewUrl('');
                 setAlertEmail('');
+                toast.success('Monitor added!');
                 fetchMonitors();
+            } else {
+                toast.error(data.error || 'Failed to add monitor');
             }
         } catch (e) {
+            toast.error('Something went wrong. Please refresh and try again.');
             console.error(e);
         }
     };
