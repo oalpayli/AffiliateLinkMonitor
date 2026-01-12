@@ -53,7 +53,7 @@ export const SubscriptionButton = ({ isPro = false, className }: SubscriptionBut
             {loading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
-                <Zap className={`h-4 w-4 ${isPro ? "text-yellow-400" : "fill-current"}`} />
+                <Zap className={`h-4 w-4 ${isPro ? "text-yellow-500 fill-yellow-500" : "fill-current"}`} />
             )}
             {isPro ? "Manage Subscription" : "Upgrade to Pro"}
         </button>

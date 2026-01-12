@@ -101,7 +101,7 @@ export default async function PricingPage() {
                             </li>
                         </ul>
 
-                        <SubscriptionButton isPro={isPro} className="w-full bg-white text-slate-950 hover:bg-slate-200" />
+                        <SubscriptionButton isPro={isPro} className="w-full !bg-white !text-slate-900 font-bold hover:!bg-slate-200" />
                     </div>
                 </div>
             </div>

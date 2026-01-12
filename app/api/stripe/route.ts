@@ -21,6 +21,11 @@ export async function POST() {
 
         // 1. If user already has a Stripe Customer ID, create a Portal Session (Manage Subscription)
         if (userSubscription && userSubscription.stripeCustomerId) {
+            // Handle forced/fake subscriptions (Dev only)
+            if (userSubscription.stripeCustomerId.startsWith('cus_force_pro_test_')) {
+                return NextResponse.json({ url: absoluteUrl('/settings') });
+            }
+
             const stripeSession = await stripe.billingPortal.sessions.create({
                 customer: userSubscription.stripeCustomerId,
                 return_url: RETURN_URL,
