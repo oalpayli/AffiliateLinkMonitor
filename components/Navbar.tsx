@@ -26,8 +26,8 @@ export default function Navbar() {
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-1 bg-slate-900/50 p-1 rounded-full border border-white/5">
                     <Link
-                        href="/"
-                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/')
+                        href="/dashboard"
+                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/dashboard')
                             ? 'bg-slate-800 text-white shadow-sm'
                             : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
                             }`}
