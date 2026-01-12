@@ -1,17 +1,14 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { requireAuth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { checkSubscription } from '@/lib/subscription';
 import { MAX_FREE_MONITORS, MAX_PRO_MONITORS } from '@/lib/constants';
 
 export async function POST(request: Request) {
     try {
-        const { userId } = await auth();
+        const user = await requireAuth();
+        const userId = user.id;
         console.log('[API] POST /api/monitors - User:', userId);
-
-        if (!userId) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
 
         const body = await request.json();
         const { url, urls, frequency = 'daily', alertEmail } = body;
@@ -93,6 +90,9 @@ export async function POST(request: Request) {
         return NextResponse.json(createdMonitors, { status: 201 });
     } catch (error: any) {
         console.error('[API] Error creating monitor:', error);
+        if (error.message === 'Unauthorized') {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
         return NextResponse.json(
             { error: `Server Error: ${error.message || 'Unknown'}` },
             { status: 500 }
@@ -102,10 +102,8 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
     try {
-        const { userId } = await auth();
-        if (!userId) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+        const user = await requireAuth();
+        const userId = user.id;
 
         const body = await request.json();
         const { ids } = body;
@@ -154,6 +152,9 @@ export async function DELETE(request: Request) {
 
     } catch (error: any) {
         console.error('[API] Bulk Delete Error:', error);
+        if (error.message === 'Unauthorized') {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
         return NextResponse.json(
             { error: `Server Error: ${error.message || 'Unknown'}` },
             { status: 500 }
@@ -163,10 +164,8 @@ export async function DELETE(request: Request) {
 
 export async function GET() {
     try {
-        const { userId } = await auth();
-        if (!userId) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+        const user = await requireAuth();
+        const userId = user.id;
 
         const monitors = await prisma.monitor.findMany({
             where: { userId },
@@ -188,7 +187,10 @@ export async function GET() {
             limit,
             count: monitors.length
         });
-    } catch (error) {
+    } catch (error: any) {
+        if (error.message === 'Unauthorized') {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
         return NextResponse.json(
             { error: 'Failed to fetch monitors' },
             { status: 500 }

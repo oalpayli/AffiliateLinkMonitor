@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth, currentUser } from '@clerk/nextjs/server';
+import { requireAuth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { stripe } from '@/lib/stripe';
 
@@ -12,11 +12,11 @@ const settingsUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
 export async function POST() {
     try {
-        const { userId } = await auth();
-        const user = await currentUser();
+        const user = await requireAuth();
+        const userId = user.id;
 
-        if (!userId || !user) {
-            return new NextResponse('Unauthorized', { status: 401 });
+        if (!user.email) {
+            return new NextResponse('Email required', { status: 400 });
         }
 
         const userSubscription = await prisma.userSubscription.findUnique({
@@ -38,7 +38,7 @@ export async function POST() {
             payment_method_types: ['card'],
             mode: 'subscription',
             billing_address_collection: 'auto',
-            customer_email: user.emailAddresses[0].emailAddress,
+            customer_email: user.email,
             line_items: [
                 {
                     price: STRIPE_PRICE_ID, // Use your correct price ID here

@@ -23,7 +23,7 @@ export const SubscriptionButton = ({ isPro = false, className }: SubscriptionBut
 
             if (response.status === 401) {
                 toast.error("Please sign in to upgrade");
-                router.push("/sign-in?redirect_url=/pricing");
+                router.push("/login?redirect_url=/pricing");
                 return;
             }
 

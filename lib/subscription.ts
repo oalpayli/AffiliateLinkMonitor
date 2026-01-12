@@ -1,15 +1,15 @@
-import { auth } from '@clerk/nextjs/server';
+import { getCurrentUser } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 
 const DAY_IN_MS = 86_400_000;
 
 export const checkSubscription = async () => {
-    const { userId } = await auth();
+    const user = await getCurrentUser();
 
-    if (!userId) return false;
+    if (!user) return false;
 
     const userSubscription = await prisma.userSubscription.findUnique({
-        where: { userId },
+        where: { userId: user.id },
         select: {
             stripeSubscriptionId: true,
             stripeCurrentPeriodEnd: true,
@@ -22,7 +22,8 @@ export const checkSubscription = async () => {
 
     const isValid =
         userSubscription.stripePriceId &&
-        userSubscription.stripeCurrentPeriodEnd?.getTime()! + DAY_IN_MS > Date.now();
+        userSubscription.stripeCurrentPeriodEnd &&
+        userSubscription.stripeCurrentPeriodEnd.getTime() + DAY_IN_MS > Date.now();
 
     return !!isValid;
 };

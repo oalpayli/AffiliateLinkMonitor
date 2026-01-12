@@ -12,7 +12,7 @@ datasource db {
 
 model Monitor {
   id        String   @id @default(cuid())
-  userId    String   // Clerk User ID for multi-tenancy
+  userId    String   // Supabase Auth User UUID for multi-tenancy
   url       String
   frequency String   @default("daily") // hourly, daily, weekly
   lastRun   DateTime?
@@ -29,7 +29,7 @@ model Monitor {
 
 model UserSubscription {
   id                     String    @id @default(cuid())
-  userId                 String    @unique
+  userId                 String    @unique // Supabase Auth User UUID
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
   stripePriceId          String?   @map(name: "stripe_price_id")

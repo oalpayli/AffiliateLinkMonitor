@@ -1,11 +1,14 @@
-import { prisma } from './lib/db';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 async function main() {
-    // 1. Use the specific User ID observed in the browser
-    const userId = "user_386EzfjLpNITqG3FrZVe5GqRtIX";
-    console.log(`Using User ID: ${userId}`);
+    // Use a Supabase UUID format
+    // Example: You'd get this from your Supabase dashboard after creating a test user
+    const userId = "550e8400-e29b-41d4-a716-446655440000"; // Replace with your actual Supabase test user ID
+    console.log(`Using Supabase User ID: ${userId}`);
 
-    // 2. Upsert a Pro Subscription
+    // Upsert a Pro Subscription
     const sub = await prisma.userSubscription.upsert({
         where: { userId },
         update: {
@@ -24,6 +27,8 @@ async function main() {
     });
 
     console.log("Forced Pro Subscription:", sub);
+    console.log("\n✅ Test subscription created!");
+    console.log("⚠️  Remember: Replace the userId with your actual Supabase test user UUID");
 }
 
 main()

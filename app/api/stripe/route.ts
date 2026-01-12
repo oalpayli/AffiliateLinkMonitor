@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth, currentUser } from '@clerk/nextjs/server';
+import { requireAuth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { stripe, absoluteUrl } from '@/lib/stripe';
 import { PRO_PRICE_ID } from '@/lib/constants';
@@ -8,11 +8,11 @@ const RETURN_URL = absoluteUrl('/');
 
 export async function POST() {
     try {
-        const { userId } = await auth();
-        const user = await currentUser();
+        const user = await requireAuth();
+        const userId = user.id;
 
-        if (!userId || !user) {
-            return new NextResponse("Unauthorized", { status: 401 });
+        if (!user.email) {
+            return new NextResponse("Email required", { status: 400 });
         }
 
         const userSubscription = await prisma.userSubscription.findUnique({
@@ -41,7 +41,7 @@ export async function POST() {
             payment_method_types: ['card'],
             mode: 'subscription',
             billing_address_collection: 'auto',
-            customer_email: user.emailAddresses[0].emailAddress,
+            customer_email: user.email,
             line_items: [
                 {
                     price: PRO_PRICE_ID,
@@ -57,6 +57,9 @@ export async function POST() {
 
     } catch (error: any) {
         console.error("[STRIPE_POST]", error);
+        if (error.message === 'Unauthorized') {
+            return new NextResponse("Unauthorized", { status: 401 });
+        }
         return new NextResponse(`Internal Error: ${error.message}`, { status: 500 });
     }
 }

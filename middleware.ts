@@ -1,26 +1,63 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { updateSession } from '@/lib/supabase/middleware'
+import { createServerClient } from '@supabase/ssr'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Define public routes
-const isPublicRoute = createRouteMatcher([
+const publicRoutes = [
   '/',
-  '/sign-in(.*)',
-  '/sign-up(.*)',
+  '/login',
+  '/signup',
+  '/reset-password',
+  '/pricing',
+  '/api/webhook',
+  '/api/inngest',
   '/api/cron',
+  '/api/scan',
+  '/api/debug',
   '/test-page',
   '/debug',
   '/test',
-  '/api/inngest',
-  '/api/debug(.*)',
-  '/api/scan',
-  '/api/webhook',
-  '/pricing'
-]);
+]
 
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect();
+export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname
+
+  // Allow public routes
+  if (publicRoutes.some((route) => pathname.startsWith(route))) {
+    return await updateSession(request)
   }
-});
+
+  // Protected routes: check auth
+  const response = await updateSession(request)
+
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return request.cookies.get(name)?.value
+        },
+        set(name: string, value: string, options: any) {
+          // Cookies are already set by updateSession
+        },
+        remove(name: string, options: any) {
+          // Cookies are already removed by updateSession
+        },
+      },
+    }
+  )
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
+
+  return response
+}
 
 export const config = {
   matcher: [
@@ -29,4 +66,4 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
-};
+}

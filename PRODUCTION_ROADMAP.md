@@ -5,12 +5,12 @@ To turn this MVP into a profitable SaaS (`Affiliate Link Monitor`), we need to m
 ## 1. Core Infrastructure (The Foundation)
 **Goal**: Ensure data persistence, security, and scalability.
 
-- [ ] **Database Migration**: Move from SQLite to **PostgreSQL**.
+- [x] **Database Migration**: ✅ Using **PostgreSQL** via Supabase.
     - *Why?* SQLite files are lost on Vercel deployments. Postgres allows concurrent connections and is production-standard.
     - *Tools*: Supabase, Neon, or Vercel Postgres.
-- [ ] **Real Authentication**: Replace "Demo Login" with **Clerk** or **NextAuth**.
+- [x] **Real Authentication**: ✅ Migrated to **Supabase Auth** with custom login/signup pages.
     - *Why?* You need secure password handling, social logins (Google/GitHub), and session management.
-- [ ] **Multi-Tenancy**: ISOLATE USER DATA.
+- [x] **Multi-Tenancy**: ✅ ISOLATE USER DATA.
     - *Action*: Add `userId` to `Monitor` and `Scan` models. Ensure users can ONLY access their own monitors.
 
 ## 2. Monetization (The Revenue Engine)
@@ -48,7 +48,7 @@ To turn this MVP into a profitable SaaS (`Affiliate Link Monitor`), we need to m
 - [ ] **Legal**: Terms of Service & Privacy Policy (Required for Stripe).
 
 ## Proposed Tech Stack for Phase 2
-- **Auth**: Clerk (Easiest setup)
+- **Auth**: ✅ Supabase Auth (Fully integrated)
 - **DB**: Neon (Serverless Postgres)
 - **Payments**: Stripe
 - **Queues**: Inngest (Great Vercel support)

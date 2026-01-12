@@ -1,15 +1,12 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@clerk/nextjs/server';
+import { requireAuth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { stripe } from '@/lib/stripe';
 
 export async function POST() {
     try {
-        const { userId } = await auth();
-
-        if (!userId) {
-            return new NextResponse('Unauthorized', { status: 401 });
-        }
+        const user = await requireAuth();
+        const userId = user.id;
 
         // Get user's subscription
         const userSubscription = await prisma.userSubscription.findUnique({

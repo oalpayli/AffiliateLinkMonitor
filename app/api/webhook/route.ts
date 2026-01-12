@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     if (event.type === 'checkout.session.completed') {
         const subscription = await stripe.subscriptions.retrieve(
             session.subscription as string
-        );
+        ) as any;
 
         if (!session?.metadata?.userId) {
             return new NextResponse("User id is required", { status: 400 });
@@ -38,9 +38,18 @@ export async function POST(req: Request) {
             ? new Date(subscription.current_period_end * 1000)
             : new Date();
 
-        await prisma.userSubscription.create({
-            data: {
+        await prisma.userSubscription.upsert({
+            where: {
                 userId: session.metadata.userId,
+            },
+            create: {
+                userId: session.metadata.userId,
+                stripeSubscriptionId: subscription.id,
+                stripeCustomerId: subscription.customer as string,
+                stripePriceId: subscription.items.data[0].price.id,
+                stripeCurrentPeriodEnd: currentPeriodEnd,
+            },
+            update: {
                 stripeSubscriptionId: subscription.id,
                 stripeCustomerId: subscription.customer as string,
                 stripePriceId: subscription.items.data[0].price.id,
@@ -51,19 +60,25 @@ export async function POST(req: Request) {
 
     // Handle Subscription Renewal/Update
     if (event.type === 'invoice.payment_succeeded') {
+        const invoice = event.data.object as Stripe.Invoice;
+
         const subscription = await stripe.subscriptions.retrieve(
-            session.subscription as string
-        );
+            (invoice as any).subscription as string
+        ) as any;
 
         const currentPeriodEnd = subscription.current_period_end
             ? new Date(subscription.current_period_end * 1000)
             : new Date();
 
+        // We must update based on customer_id, because if they resubscribed via Portal,
+        // the old subscription ID might be different or null.
+        // We assume one subscription per customer for this app.
         await prisma.userSubscription.update({
             where: {
-                stripeSubscriptionId: subscription.id,
+                stripeCustomerId: subscription.customer as string,
             },
             data: {
+                stripeSubscriptionId: subscription.id,
                 stripePriceId: subscription.items.data[0].price.id,
                 stripeCurrentPeriodEnd: currentPeriodEnd,
             },
