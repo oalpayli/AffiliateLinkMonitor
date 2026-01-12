@@ -280,20 +280,31 @@ export default function MonitorList() {
             <form onSubmit={handleAddMonitor} className="glass-card p-4 rounded-xl flex flex-col gap-3 mb-6">
                 <div className="flex flex-col md:flex-row gap-3">
                     <div className="flex-grow">
-                        <textarea
-                            placeholder="https://site-to-monitor.com (One per line or comma separated)"
-                            className="glass-input w-full px-4 py-2 rounded-lg min-h-[42px] h-[42px] focus:h-24 transition-all resize-none pt-2.5"
-                            value={newUrl}
-                            onChange={e => setNewUrl(e.target.value)}
-                            required
-                        />
+                        {usage.isPro ? (
+                            <textarea
+                                placeholder="https://site-to-monitor.com (One per line or comma separated)"
+                                className="glass-input w-full px-4 py-2 rounded-lg min-h-[42px] h-[42px] focus:h-24 transition-all resize-none pt-2.5"
+                                value={newUrl}
+                                onChange={e => setNewUrl(e.target.value)}
+                                required
+                            />
+                        ) : (
+                            <input
+                                type="url"
+                                placeholder="https://site-to-monitor.com"
+                                className="glass-input w-full px-4 py-2 rounded-lg"
+                                value={newUrl}
+                                onChange={e => setNewUrl(e.target.value)}
+                                required
+                            />
+                        )}
                     </div>
                     <select
                         value={frequency}
                         onChange={e => setFrequency(e.target.value)}
                         className="glass-input px-4 py-2 rounded-lg bg-slate-900 border-none"
                     >
-                        <option value="hourly">Hourly</option>
+                        {usage.isPro && <option value="hourly">Hourly</option>}
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
                     </select>

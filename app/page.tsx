@@ -115,7 +115,7 @@ export default function LandingPage() {
                                         <button
                                             onClick={handleScan}
                                             disabled={isScanning || !scanUrl.trim()}
-                                            className="px-8 py-4 bg-white text-slate-950 rounded-xl font-semibold hover:bg-slate-200 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                                            className="btn-primary px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
                                         >
                                             {isScanning ? (
                                                 <>
@@ -250,10 +250,10 @@ export default function LandingPage() {
                                 price="$0"
                                 period="forever"
                                 features={[
-                                    "3 monitors",
-                                    "Daily scans",
+                                    "10 monitors",
+                                    "Daily or Weekly scans",
                                     "Email alerts",
-                                    "Basic dashboard"
+                                    "Single link addition"
                                 ]}
                                 cta="Start Free"
                                 href="/dashboard"
@@ -263,9 +263,10 @@ export default function LandingPage() {
                                 price="$9"
                                 period="per month"
                                 features={[
-                                    "50 monitors",
-                                    "Hourly scans",
-                                    "Email + Slack alerts",
+                                    "60 monitors",
+                                    "Hourly, Daily, or Weekly scans",
+                                    "Email alerts",
+                                    "Bulk import",
                                     "Priority support"
                                 ]}
                                 cta="Upgrade"
@@ -295,11 +296,20 @@ export default function LandingPage() {
                                     />
                                     <button
                                         onClick={handleScan}
-                                        disabled={!scanUrl.trim()}
-                                        className="px-8 py-4 bg-white text-slate-950 rounded-xl font-semibold hover:bg-slate-200 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 whitespace-nowrap"
+                                        disabled={isScanning || !scanUrl.trim()}
+                                        className="btn-primary px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 whitespace-nowrap"
                                     >
-                                        Scan Now
-                                        <ArrowRight className="h-5 w-5" />
+                                        {isScanning ? (
+                                            <>
+                                                <Loader2 className="h-5 w-5 animate-spin" />
+                                                Scanning...
+                                            </>
+                                        ) : (
+                                            <>
+                                                Scan Now
+                                                <ArrowRight className="h-5 w-5" />
+                                            </>
+                                        )}
                                     </button>
                                 </div>
                             </div>
@@ -373,7 +383,7 @@ export default function LandingPage() {
                         <div className="flex flex-col sm:flex-row gap-3">
                             <Link
                                 href="/dashboard"
-                                className="flex-1 px-6 py-3 bg-white text-slate-950 rounded-xl font-semibold hover:bg-slate-200 transition-all text-center flex items-center justify-center gap-2"
+                                className="flex-1 px-6 py-3 btn-primary rounded-xl font-semibold transition-all text-center flex items-center justify-center gap-2"
                             >
                                 Start Monitoring Free
                                 <ArrowRight className="h-5 w-5" />
