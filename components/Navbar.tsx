@@ -3,10 +3,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LayoutDashboard, BookOpen, Menu } from 'lucide-react';
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { useAuth } from '@/components/auth/AuthProvider';
+import UserMenu from '@/components/auth/UserMenu';
 
 export default function Navbar() {
     const pathname = usePathname();
+    const { user, loading } = useAuth();
 
     const isActive = (path: string) => pathname === path;
 
@@ -16,7 +18,7 @@ export default function Navbar() {
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2 group">
                     <div className="relative h-10 w-10 overflow-hidden rounded-lg transition-transform group-hover:scale-105">
-                        <img src="/logo.png" alt="LinkMonitor Logo" className="h-full w-full object-cover mix-blend-screen" />
+                        <img src="/logo.png" alt="LinkMonitor Logo" className="h-full w-full object-cover" />
                     </div>
                     <span className="font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
                         LinkMonitor
@@ -25,15 +27,17 @@ export default function Navbar() {
 
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-1 bg-slate-900/50 p-1 rounded-full border border-white/5">
-                    <Link
-                        href="/dashboard"
-                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/dashboard')
-                            ? 'bg-slate-800 text-white shadow-sm'
-                            : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
-                            }`}
-                    >
-                        Dashboard
-                    </Link>
+                    {user && (
+                        <Link
+                            href="/dashboard"
+                            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/dashboard')
+                                ? 'bg-slate-800 text-white shadow-sm'
+                                : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                                }`}
+                        >
+                            Dashboard
+                        </Link>
+                    )}
                     <Link
                         href="/pricing"
                         className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/pricing')
@@ -43,15 +47,17 @@ export default function Navbar() {
                     >
                         Pricing
                     </Link>
-                    <Link
-                        href="/settings"
-                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/settings')
-                            ? 'bg-slate-800 text-white shadow-sm'
-                            : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
-                            }`}
-                    >
-                        Settings
-                    </Link>
+                    {user && (
+                        <Link
+                            href="/settings"
+                            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/settings')
+                                ? 'bg-slate-800 text-white shadow-sm'
+                                : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                                }`}
+                        >
+                            Settings
+                        </Link>
+                    )}
                 </div>
 
                 {/* Right Actions */}
@@ -68,22 +74,20 @@ export default function Navbar() {
 
                     <div className="h-6 w-px bg-slate-800 hidden md:block" />
 
-                    <SignedOut>
-                        <SignInButton mode="modal">
-                            <button className="text-sm font-medium text-slate-300 hover:text-white transition-colors bg-slate-800/50 hover:bg-slate-800 px-4 py-2 rounded-lg border border-slate-700/50">
-                                Sign In
-                            </button>
-                        </SignInButton>
-                    </SignedOut>
-                    <SignedIn>
-                        <UserButton
-                            appearance={{
-                                elements: {
-                                    avatarBox: "h-8 w-8"
-                                }
-                            }}
-                        />
-                    </SignedIn>
+                    {!loading && (
+                        <>
+                            {!user ? (
+                                <Link
+                                    href="/login"
+                                    className="text-sm font-medium text-slate-300 hover:text-white transition-colors bg-slate-800/50 hover:bg-slate-800 px-4 py-2 rounded-lg border border-slate-700/50"
+                                >
+                                    Sign In
+                                </Link>
+                            ) : (
+                                <UserMenu />
+                            )}
+                        </>
+                    )}
                 </div>
             </div>
         </nav>

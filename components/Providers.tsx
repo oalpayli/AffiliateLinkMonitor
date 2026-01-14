@@ -1,11 +1,11 @@
 'use client';
 
-import { ClerkProvider } from '@clerk/nextjs';
+import { AuthProvider } from '@/components/auth/AuthProvider';
 import { Toaster } from 'sonner';
 
 export function Providers({ children }: { children: React.ReactNode }) {
     return (
-        <ClerkProvider>
+        <AuthProvider>
             {children}
             <Toaster
                 position="bottom-right"
@@ -17,7 +17,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
                     },
                 }}
             />
-        </ClerkProvider>
+        </AuthProvider>
     );
 }
-

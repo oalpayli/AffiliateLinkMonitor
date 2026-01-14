@@ -20,7 +20,7 @@ export default function CancelSubscriptionDialog({ isOpen, onClose, periodEnd }:
     const handleCancel = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch('/api/stripe/cancel', {
+            const response = await fetch('/api/dodo/cancel', {
                 method: 'POST',
             });
 

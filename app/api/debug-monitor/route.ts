@@ -28,10 +28,10 @@ export async function POST(request: Request) {
         const userSubscription = await prisma.userSubscription.findUnique({
             where: { userId },
         });
-        const DAY_IN_MS = 86_400_000;
         const isPro = userSubscription &&
-            userSubscription.stripePriceId &&
-            userSubscription.stripeCurrentPeriodEnd?.getTime()! + DAY_IN_MS > Date.now();
+            userSubscription.dodoStatus === 'active' &&
+            userSubscription.dodoCurrentPeriodEnd &&
+            userSubscription.dodoCurrentPeriodEnd.getTime() > Date.now();
 
         const count = await prisma.monitor.count({
             where: { userId }

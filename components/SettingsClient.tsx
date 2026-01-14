@@ -5,6 +5,8 @@ import { Settings, CreditCard, Calendar, AlertCircle } from 'lucide-react';
 import SettingsForm from '@/components/SettingsForm';
 import { SubscriptionButton } from '@/components/SubscriptionButton';
 import CancelSubscriptionDialog from '@/components/CancelSubscriptionDialog';
+import { InvoicesTable } from '@/components/InvoicesTable';
+import { UpdatePaymentMethodButton } from '@/components/UpdatePaymentMethodButton';
 
 interface SettingsClientProps {
     isPro: boolean;
@@ -82,18 +84,37 @@ export default function SettingsClient({ isPro, subscriptionData }: SettingsClie
                         </div>
                     )}
 
-                    <div className="flex flex-col sm:flex-row gap-3">
-                        <SubscriptionButton isPro={isPro} className="flex-1" />
-                        {isPro && !subscriptionData?.isCancelled && (
-                            <button
-                                onClick={() => setShowCancelDialog(true)}
-                                className="flex-1 px-4 py-2 rounded-lg font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700"
-                            >
-                                Cancel Subscription
-                            </button>
+                    <div className="flex flex-col sm:flex-row gap-3 items-center mt-6">
+                        {!isPro ? (
+                            <SubscriptionButton isPro={isPro} className="flex-1 w-full" />
+                        ) : (
+                            <div className="flex gap-3 w-full">
+                                {!subscriptionData?.isCancelled && (
+                                    <>
+                                        <UpdatePaymentMethodButton />
+                                        <button
+                                            onClick={() => setShowCancelDialog(true)}
+                                            className="px-4 py-2 rounded-lg font-medium bg-red-900/20 text-red-400 hover:bg-red-900/30 transition-all border border-red-900/30 ml-auto"
+                                        >
+                                            Cancel Subscription
+                                        </button>
+                                    </>
+                                )}
+                            </div>
                         )}
                     </div>
                 </div>
+
+                {/* Billing History (Only for Pro or past subscribers) */}
+                {isPro && (
+                    <div className="glass-card p-6 rounded-2xl border border-slate-800">
+                        <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-slate-200">
+                            <span className="text-2xl">📄</span>
+                            Billing History
+                        </h2>
+                        <InvoicesTable />
+                    </div>
+                )}
 
                 {/* General Settings Form */}
                 <SettingsForm />

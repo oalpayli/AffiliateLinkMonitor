@@ -8,7 +8,7 @@ export default async function TestPage() {
             <p>Time: {new Date().toISOString()}</p>
             <p>Node Version: {process.version}</p>
             <p>DATABASE_URL exists: {process.env.DATABASE_URL ? 'YES' : 'NO'}</p>
-            <p>CLERK_SECRET_KEY exists: {process.env.CLERK_SECRET_KEY ? 'YES' : 'NO'}</p>
+            <p>CLERK_SECRET_KEY exists: {process.env.NEXT_PUBLIC_SUPABASE_URL ? 'YES' : 'NO'}</p>
         </div>
     );
 }

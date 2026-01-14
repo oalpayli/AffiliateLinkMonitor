@@ -12,7 +12,7 @@ datasource db {
 
 model Monitor {
   id        String   @id @default(cuid())
-  userId    String   // Clerk User ID for multi-tenancy
+  userId    String   // Supabase Auth User UUID for multi-tenancy
   url       String
   frequency String   @default("daily") // hourly, daily, weekly
   lastRun   DateTime?
@@ -29,12 +29,19 @@ model Monitor {
 
 model UserSubscription {
   id                     String    @id @default(cuid())
-  userId                 String    @unique
-  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
-  stripePriceId          String?   @map(name: "stripe_price_id")
-  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
-  stripeCancelAtPeriodEnd Boolean  @default(false) @map(name: "stripe_cancel_at_period_end")
+  userId                 String    @unique // Supabase Auth User UUID
+  
+  // Dodo Payments fields
+  dodoCustomerId         String?   @unique @map(name: "dodo_customer_id")
+  dodoSubscriptionId     String?   @unique @map(name: "dodo_subscription_id")
+  dodoProductId          String?   @map(name: "dodo_product_id")
+  dodoVariantId          String?   @map(name: "dodo_variant_id")
+  dodoCurrentPeriodEnd   DateTime? @map(name: "dodo_current_period_end")
+  dodoStatus             String?   @map(name: "dodo_status") // active, cancelled, expired, on_hold
+  dodoCancelAtPeriodEnd  Boolean   @default(false) @map(name: "dodo_cancel_at_period_end")
+  
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
 }
 
 model Scan {
