@@ -18,7 +18,7 @@ export default function Navbar() {
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-2 group">
                     <div className="relative h-10 w-10 overflow-hidden rounded-lg transition-transform group-hover:scale-105">
-                        <img src="/logo.png" alt="LinkMonitor Logo" className="h-full w-full object-cover mix-blend-screen" />
+                        <img src="/logo.png" alt="LinkMonitor Logo" className="h-full w-full object-cover" />
                     </div>
                     <span className="font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
                         LinkMonitor

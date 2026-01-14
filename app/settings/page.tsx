@@ -24,10 +24,10 @@ export default async function SettingsPage() {
                 where: { userId }
             });
 
-            if (subscription && subscription.stripeSubscriptionId) {
+            if (subscription && subscription.dodoSubscriptionId) {
                 subscriptionData = {
-                    periodEnd: subscription.stripeCurrentPeriodEnd,
-                    isCancelled: subscription.stripeCancelAtPeriodEnd || false
+                    periodEnd: subscription.dodoCurrentPeriodEnd,
+                    isCancelled: subscription.dodoCancelAtPeriodEnd || false
                 };
             }
         } catch (error) {

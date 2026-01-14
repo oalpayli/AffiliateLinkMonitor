@@ -1,8 +1,6 @@
 import { getCurrentUser } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 
-const DAY_IN_MS = 86_400_000;
-
 export const checkSubscription = async () => {
     const user = await getCurrentUser();
 
@@ -11,19 +9,20 @@ export const checkSubscription = async () => {
     const userSubscription = await prisma.userSubscription.findUnique({
         where: { userId: user.id },
         select: {
-            stripeSubscriptionId: true,
-            stripeCurrentPeriodEnd: true,
-            stripeCustomerId: true,
-            stripePriceId: true,
+            dodoSubscriptionId: true,
+            dodoCurrentPeriodEnd: true,
+            dodoStatus: true,
         },
     });
 
     if (!userSubscription) return false;
 
+    // Check if subscription is active and not expired
     const isValid =
-        userSubscription.stripePriceId &&
-        userSubscription.stripeCurrentPeriodEnd &&
-        userSubscription.stripeCurrentPeriodEnd.getTime() + DAY_IN_MS > Date.now();
+        userSubscription.dodoStatus === 'active' &&
+        userSubscription.dodoSubscriptionId &&
+        userSubscription.dodoCurrentPeriodEnd &&
+        userSubscription.dodoCurrentPeriodEnd.getTime() > Date.now();
 
     return !!isValid;
 };
