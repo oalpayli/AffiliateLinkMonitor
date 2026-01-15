@@ -47,6 +47,15 @@ export default function Navbar() {
                     >
                         Pricing
                     </Link>
+                    <Link
+                        href="/support"
+                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/support')
+                            ? 'bg-slate-800 text-white shadow-sm'
+                            : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                            }`}
+                    >
+                        Support
+                    </Link>
                     {user && (
                         <Link
                             href="/settings"

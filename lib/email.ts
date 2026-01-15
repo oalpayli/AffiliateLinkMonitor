@@ -60,3 +60,54 @@ http://localhost:3000/scans/${scanId}
         console.log('========================================================\n');
     }
 }
+
+export async function sendSupportEmail(fromEmail: string, fromName: string, subject: string, message: string) {
+    const adminEmail = 'oguzhanalpayli@gmail.com'; // Temporary hardcode as requested
+    const finalSubject = `[SUPPORT] ${subject}`;
+
+    const text = `
+New Support Request
+-------------------
+From: ${fromName} (${fromEmail})
+Subject: ${subject}
+
+Message:
+${message}
+    `;
+
+    // 1. Check if SMTP is configured
+    if (process.env.SMTP_HOST && process.env.SMTP_USER) {
+        try {
+            const transporter = nodemailer.createTransport({
+                host: process.env.SMTP_HOST,
+                port: Number(process.env.SMTP_PORT) || 587,
+                secure: false,
+                auth: {
+                    user: process.env.SMTP_USER,
+                    pass: process.env.SMTP_PASS,
+                },
+            });
+
+            await transporter.sendMail({
+                from: `"Support System" <${process.env.SMTP_USER}>`,
+                to: adminEmail,
+                replyTo: fromEmail,
+                subject: finalSubject,
+                text,
+            });
+            console.log(`📧 Support email sent to admin from ${fromEmail}`);
+        } catch (error) {
+            console.error('Failed to send support email:', error);
+            throw new Error('Failed to send email');
+        }
+    } else {
+        // 2. Fallback: Log to console
+        console.log('\n================ SUPPORT EMAIL SIMULATION ================');
+        console.log(`To Admin: ${adminEmail}`);
+        console.log(`Reply-To: ${fromEmail}`);
+        console.log(`Subject: ${finalSubject}`);
+        console.log('Body:');
+        console.log(text);
+        console.log('==========================================================\n');
+    }
+}
