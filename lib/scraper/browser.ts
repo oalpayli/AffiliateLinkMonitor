@@ -1,5 +1,6 @@
 
 import puppeteer from 'puppeteer-core';
+import { Page } from 'puppeteer-core';
 import chromium from '@sparticuz/chromium';
 
 // Helper to wait for timeout
@@ -22,8 +23,10 @@ export async function scrapeDynamicContent(url: string) {
             headless: true
         } : {
             args: chromium.args,
+            // @ts-expect-error - external lib type mismatch
             defaultViewport: chromium.defaultViewport,
             executablePath: await chromium.executablePath(),
+            // @ts-expect-error - external lib type mismatch
             headless: chromium.headless,
         };
 
@@ -86,7 +89,7 @@ export async function scrapeDynamicContent(url: string) {
     }
 }
 
-async function autoScroll(page: any) {
+async function autoScroll(page: Page) {
     await page.evaluate(async () => {
         await new Promise<void>((resolve) => {
             let totalHeight = 0;

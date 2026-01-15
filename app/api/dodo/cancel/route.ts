@@ -40,6 +40,7 @@ export async function POST() {
             message: 'To fully cancel, please visit Dodo Payments dashboard'
         });
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error('[DODO_CANCEL]', error);
         if (error.message === 'Unauthorized') {

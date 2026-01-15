@@ -44,6 +44,7 @@ export async function DELETE(
         });
 
         return NextResponse.json({ success: true }, { status: 200 });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error('[API] Error deleting monitor:', error);
         return NextResponse.json(

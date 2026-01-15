@@ -11,6 +11,7 @@ export default function SettingsForm() {
     useEffect(() => {
         // Load saved settings
         const savedEmail = localStorage.getItem('default_alert_email');
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         if (savedEmail) setEmail(savedEmail);
     }, []);
 

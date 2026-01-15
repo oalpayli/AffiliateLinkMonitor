@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
-import { checkSubscription } from '@/lib/subscription';
+
+
 
 // MOCK AUTH for debugging
 const auth = () => ({ userId: 'debug_real_test_user' });
@@ -58,6 +59,7 @@ export async function POST(request: Request) {
 
         console.log('[DEBUG API] Success:', monitor);
         return NextResponse.json(monitor, { status: 201 });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error('[DEBUG API] Error:', error);
         return NextResponse.json(

@@ -27,9 +27,10 @@ export async function GET() {
         });
 
         // Map to simpler format for UI
-        // @ts-ignore - SDK types might be intricate, usually it's items or data
+        // @ts-expect-error - SDK types might be intricate, usually it's items or data
         const payments = response.items || response.data || [];
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const invoices = payments.map((payment: any) => ({
             id: payment.payment_id,
             amount: payment.total_amount / 100, // Convert cents to dollars
@@ -41,6 +42,7 @@ export async function GET() {
 
         return NextResponse.json({ invoices });
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error('[DODO_INVOICES]', error);
         if (error.message === 'Unauthorized') {

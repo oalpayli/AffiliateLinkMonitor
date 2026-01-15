@@ -24,6 +24,7 @@ export async function POST() {
 
         return NextResponse.json({ url: session.link });
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error('[DODO_PORTAL]', error);
         if (error.message === 'Unauthorized') {

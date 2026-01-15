@@ -28,6 +28,7 @@ export default function ResetPasswordPage() {
 
             setSent(true)
             toast.success('Password reset email sent!')
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error('An unexpected error occurred')
             console.error(error)
@@ -62,7 +63,7 @@ export default function ResetPasswordPage() {
                                 <h1 className="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
                                     Reset Password
                                 </h1>
-                                <p className="text-slate-400">We'll send you a reset link</p>
+                                <p className="text-slate-400">We&apos;ll send you a reset link</p>
                             </div>
 
                             <form onSubmit={handleReset} className="space-y-5">
@@ -109,7 +110,7 @@ export default function ResetPasswordPage() {
                             </div>
                             <h2 className="text-2xl font-bold text-white mb-3">Check Your Email</h2>
                             <p className="text-slate-400 mb-6">
-                                We've sent a password reset link to <strong className="text-white">{email}</strong>
+                                We&apos;ve sent a password reset link to <strong className="text-white">{email}</strong>
                             </p>
                             <Link
                                 href="/login"

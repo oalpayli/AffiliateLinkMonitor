@@ -78,7 +78,7 @@ export default function SettingsClient({ isPro, subscriptionData }: SettingsClie
                             <div className="text-sm">
                                 <p className="text-yellow-200 font-medium mb-1">Subscription Cancelled</p>
                                 <p className="text-yellow-200/80">
-                                    Your Pro features will remain active until <strong>{formattedPeriodEnd}</strong>. After this date, you'll be downgraded to the Free plan.
+                                    Your Pro features will remain active until <strong>{formattedPeriodEnd}</strong>. After this date, you&apos;ll be downgraded to the Free plan.
                                 </p>
                             </div>
                         </div>

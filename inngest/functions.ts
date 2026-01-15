@@ -62,7 +62,7 @@ export const scanMonitor = inngest.createFunction(
         // Update monitor schedules
         await step.run("update-schedule", async () => {
             const now = new Date();
-            let nextRun = new Date();
+            const nextRun = new Date();
 
             if (monitor.frequency === 'hourly') nextRun.setHours(nextRun.getHours() + 1);
             else if (monitor.frequency === 'weekly') nextRun.setDate(nextRun.getDate() + 7);
@@ -79,12 +79,14 @@ export const scanMonitor = inngest.createFunction(
 
         // Check for alerts
         await step.run("check-alerts", async () => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const brokenLinks = scan.links.filter((l: any) => l.status === 'broken');
 
             if (brokenLinks.length > 0 && monitor.alertEmail) {
                 await sendAlertEmail(monitor.alertEmail, {
                     monitorUrl: monitor.url,
                     scanId: scan.id,
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     brokenLinks: brokenLinks.map((l: any) => ({
                         href: l.href,
                         statusCode: l.statusCode || 0

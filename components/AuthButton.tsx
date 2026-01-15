@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { User, LogOut, Loader2 } from 'lucide-react';
+import { User, LogOut } from 'lucide-react';
 
 export default function AuthButton() {
     const [isLoading, setIsLoading] = useState(true);
@@ -12,6 +12,7 @@ export default function AuthButton() {
     useEffect(() => {
         // Check session on mount
         const session = localStorage.getItem('user_session');
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsLoggedIn(!!session);
         setIsLoading(false);
     }, []);

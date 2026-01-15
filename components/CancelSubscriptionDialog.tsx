@@ -39,6 +39,7 @@ export default function CancelSubscriptionDialog({ isOpen, onClose, periodEnd }:
             toast.success(`Subscription cancelled. Pro access until ${endDate}`);
             onClose();
             router.refresh();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(error.message || 'Failed to cancel subscription');
         } finally {
@@ -87,7 +88,7 @@ export default function CancelSubscriptionDialog({ isOpen, onClose, periodEnd }:
                         </div>
 
                         <p className="text-slate-400">
-                            After this date, you'll be downgraded to the <strong className="text-white">Free plan</strong> with:
+                            After this date, you&apos;ll be downgraded to the <strong className="text-white">Free plan</strong> with:
                         </p>
 
                         <ul className="text-slate-400 space-y-1 pl-4">

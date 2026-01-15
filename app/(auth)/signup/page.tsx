@@ -56,6 +56,7 @@ export default function SignupPage() {
                 toast.success('Account created! Please check your email to verify your account.')
                 router.push('/login')
             }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error('An unexpected error occurred')
             console.error(error)

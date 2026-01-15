@@ -6,6 +6,7 @@ import { getUserIdByEmail } from '@/lib/supabase-admin';
 export async function POST(req: Request) {
     const body = await req.text();
     const headerList = await headers();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const signature = headerList.get('dodo-signature') as string;
 
     let event;
@@ -15,6 +16,7 @@ export async function POST(req: Request) {
         // Note: Dodo Payments webhook signature verification will be added
         // when we have the webhook secret
         event = JSON.parse(body);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error('Webhook parsing failed:', error.message);
         return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 });
@@ -132,6 +134,7 @@ export async function POST(req: Request) {
 
         return new NextResponse(null, { status: 200 });
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error('[WEBHOOK ERROR]', error);
         return new NextResponse(`Webhook handler failed: ${error.message}`, { status: 500 });

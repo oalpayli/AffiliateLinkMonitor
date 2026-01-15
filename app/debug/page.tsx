@@ -10,6 +10,7 @@ export default async function DebugPage() {
     try {
         userCount = await prisma.userSubscription.count();
         dbStatus = 'Connected';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
         dbStatus = 'Failed';
         dbError = e.message + '\n' + e.stack;

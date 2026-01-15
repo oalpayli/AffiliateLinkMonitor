@@ -74,7 +74,7 @@ export const checkMonitor = inngest.createFunction(
 
         // Schedule next run
         await step.run("update-schedule", async () => {
-            let nextRun = new Date();
+            const nextRun = new Date();
             if (frequency === 'hourly') nextRun.setHours(nextRun.getHours() + 1);
             if (frequency === 'daily') nextRun.setDate(nextRun.getDate() + 1);
             if (frequency === 'weekly') nextRun.setDate(nextRun.getDate() + 7);

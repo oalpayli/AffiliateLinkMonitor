@@ -16,6 +16,7 @@ export async function POST(request: Request) {
         let urlsToProcess: string[] = [];
 
         if (urls && Array.isArray(urls)) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             urlsToProcess = urls.filter((u: any) => typeof u === 'string' && u.trim().length > 0);
         } else if (url && typeof url === 'string') {
             urlsToProcess = [url];
@@ -88,6 +89,7 @@ export async function POST(request: Request) {
         });
 
         return NextResponse.json(createdMonitors, { status: 201 });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error('[API] Error creating monitor:', error);
         if (error.message === 'Unauthorized') {
@@ -150,6 +152,7 @@ export async function DELETE(request: Request) {
 
         return NextResponse.json({ success: true, count: ids.length });
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error('[API] Bulk Delete Error:', error);
         if (error.message === 'Unauthorized') {
@@ -187,6 +190,7 @@ export async function GET() {
             limit,
             count: monitors.length
         });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         if (error.message === 'Unauthorized') {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

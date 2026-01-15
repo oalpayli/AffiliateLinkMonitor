@@ -31,7 +31,7 @@ export async function GET() {
                 const scan = await performFullScan(monitor.url, monitor.id);
 
                 // 3. Calculate next run
-                let nextRun = new Date();
+                const nextRun = new Date();
                 if (monitor.frequency === 'hourly') nextRun.setHours(nextRun.getHours() + 1);
                 else if (monitor.frequency === 'weekly') nextRun.setDate(nextRun.getDate() + 7);
                 else nextRun.setDate(nextRun.getDate() + 1); // default daily

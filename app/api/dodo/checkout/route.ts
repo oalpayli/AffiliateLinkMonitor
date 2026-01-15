@@ -4,8 +4,8 @@ import { prisma } from '@/lib/db';
 import { absoluteUrl } from '@/lib/dodo';
 
 // Get this URL from Dodo Dashboard → Products → Pro → Create Payment Link
+// Get this URL from Dodo Dashboard → Products → Pro → Create Payment Link
 const PAYMENT_LINK_URL = process.env.DODO_PAYMENT_LINK || process.env.DODO_PAYMENT_LINK_URL || 'https://dodopayments.com/checkout/YOUR_LINK_ID';
-const RETURN_URL = absoluteUrl('/');
 
 export async function POST() {
     try {
@@ -48,6 +48,7 @@ export async function POST() {
         console.log('[DODO_CHECKOUT] Redirecting to:', checkoutUrl.toString());
         return NextResponse.json({ url: checkoutUrl.toString() });
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
         console.error("[DODO_CHECKOUT]", error);
         if (error.message === 'Unauthorized') {

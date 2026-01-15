@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from "next/link";
-import { ArrowRight, Activity, Shield, Zap, TrendingUp, Globe, Mail, Target, BarChart3, Loader2, CheckCircle2, XCircle, AlertCircle, Check } from "lucide-react";
+import { ArrowRight, Activity, Zap, TrendingUp, Globe, Mail, Target, BarChart3, Loader2, CheckCircle2, XCircle, AlertCircle, Check } from "lucide-react";
 
 interface ScanResult {
     url: string;
@@ -43,7 +43,9 @@ export default function LandingPage() {
             const data = await res.json();
 
             const totalLinks = data.links?.length || 0;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const brokenLinks = data.links?.filter((l: any) => l.status === 'broken').length || 0;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const affiliateLinks = data.links?.filter((l: any) =>
                 l.href?.includes('amazon') ||
                 l.href?.includes('shareasale') ||
@@ -58,7 +60,7 @@ export default function LandingPage() {
                 brokenLinks,
                 links: data.links || []
             });
-        } catch (err) {
+        } catch {
             setError('Scan failed. Please enter a valid URL.');
         } finally {
             setIsScanning(false);
