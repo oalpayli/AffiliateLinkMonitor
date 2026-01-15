@@ -71,7 +71,7 @@ export default function LandingPage() {
         <div className="min-h-screen bg-[#020617] text-white overflow-hidden font-sans selection:bg-violet-500/30">
 
             {/* Dynamic Background */}
-            <div className="fixed inset-0 z-0">
+            <div className="fixed inset-0 z-0 pointer-events-none">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-violet-600/20 rounded-[100%] blur-[120px] opacity-50 animate-pulse-slow" />
                 <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-indigo-600/10 rounded-full blur-[100px] opacity-30" />
             </div>
@@ -327,16 +327,7 @@ export default function LandingPage() {
                     </div>
                 </section>
 
-                <footer className="py-8 border-t border-white/5 text-center text-slate-600 text-xs">
-                    <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <span>© 2026 LinkMonitor. All rights reserved.</span>
-                        <div className="flex gap-6">
-                            <Link href="#" className="hover:text-slate-400 transition-colors">Privacy</Link>
-                            <Link href="#" className="hover:text-slate-400 transition-colors">Terms</Link>
-                            <Link href="#" className="hover:text-slate-400 transition-colors">Contact</Link>
-                        </div>
-                    </div>
-                </footer>
+
             </div>
 
             {/* Scan Result Modal */}
