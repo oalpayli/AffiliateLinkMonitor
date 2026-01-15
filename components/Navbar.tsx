@@ -47,6 +47,15 @@ export default function Navbar() {
                     >
                         Pricing
                     </Link>
+                    <Link
+                        href="/support"
+                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/support')
+                            ? 'bg-slate-800 text-white shadow-sm'
+                            : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                            }`}
+                    >
+                        Support
+                    </Link>
                     {user && (
                         <Link
                             href="/settings"
@@ -62,15 +71,13 @@ export default function Navbar() {
 
                 {/* Right Actions */}
                 <div className="flex items-center gap-4">
-                    <a
-                        href="https://github.com"
-                        target="_blank"
-                        rel="noreferrer"
+                    <Link
+                        href="/manual"
                         className="hidden md:flex items-center gap-2 text-xs font-medium text-slate-500 hover:text-slate-300 transition-colors"
                     >
                         <BookOpen className="h-4 w-4" />
-                        Docs
-                    </a>
+                        Manual
+                    </Link>
 
                     <div className="h-6 w-px bg-slate-800 hidden md:block" />
 
