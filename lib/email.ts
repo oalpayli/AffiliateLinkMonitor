@@ -186,8 +186,11 @@ ${message}
                 },
             });
 
+            const fromEmail = process.env.SMTP_FROM_EMAIL || 'onboarding@resend.dev';
+            const fromName = process.env.SMTP_FROM_NAME || 'LinkMonitor Support';
+
             await transporter.sendMail({
-                from: `"Support System" <${process.env.SMTP_USER}>`,
+                from: `"${fromName}" <${fromEmail}>`,
                 to: adminEmail,
                 replyTo: fromEmail,
                 subject: finalSubject,
