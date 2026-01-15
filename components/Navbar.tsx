@@ -62,15 +62,13 @@ export default function Navbar() {
 
                 {/* Right Actions */}
                 <div className="flex items-center gap-4">
-                    <a
-                        href="https://github.com"
-                        target="_blank"
-                        rel="noreferrer"
+                    <Link
+                        href="/manual"
                         className="hidden md:flex items-center gap-2 text-xs font-medium text-slate-500 hover:text-slate-300 transition-colors"
                     >
                         <BookOpen className="h-4 w-4" />
-                        Docs
-                    </a>
+                        Manual
+                    </Link>
 
                     <div className="h-6 w-px bg-slate-800 hidden md:block" />
 
