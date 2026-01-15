@@ -186,13 +186,13 @@ ${message}
                 },
             });
 
-            const fromEmail = process.env.SMTP_FROM_EMAIL || 'onboarding@resend.dev';
-            const fromName = process.env.SMTP_FROM_NAME || 'LinkMonitor Support';
+            const senderEmail = process.env.SMTP_FROM_EMAIL || 'onboarding@resend.dev';
+            const senderName = process.env.SMTP_FROM_NAME || 'LinkMonitor Support';
 
             await transporter.sendMail({
-                from: `"${fromName}" <${fromEmail}>`,
+                from: `"${senderName}" <${senderEmail}>`,
                 to: adminEmail,
-                replyTo: fromEmail,
+                replyTo: fromEmail,  // User's email for easy reply
                 subject: finalSubject,
                 text,
             });
