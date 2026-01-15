@@ -88,6 +88,27 @@ export async function POST(request: Request) {
             }
         });
 
+        // Trigger immediate scan for new monitors
+        try {
+            const { inngest } = await import('@/lib/inngest/client');
+
+            const events = createdMonitors.map((monitor) => ({
+                name: "monitor/check",
+                data: {
+                    monitorId: monitor.id,
+                    url: monitor.url,
+                    alertEmail: monitor.alertEmail,
+                    frequency: monitor.frequency
+                },
+            }));
+
+            await inngest.send(events);
+            console.log(`[API] Triggered initial scan for ${events.length} monitors`);
+        } catch (error) {
+            console.error('[API] Failed to trigger initial scan:', error);
+            // Non-blocking error, user still sees monitors created
+        }
+
         return NextResponse.json(createdMonitors, { status: 201 });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
