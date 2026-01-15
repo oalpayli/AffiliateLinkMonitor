@@ -142,7 +142,7 @@ export default function LandingPage() {
                             </div>
 
                             <p className="text-sm text-slate-500">
-                                No credit card required • 3 monitors free • Setup in 30 seconds
+                                No credit card required • 10 monitors free • Setup in 30 seconds
                             </p>
                         </div>
                     </div>
