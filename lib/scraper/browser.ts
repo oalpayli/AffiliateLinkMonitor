@@ -6,37 +6,60 @@ import chromium from '@sparticuz/chromium';
 // Helper to wait for timeout
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+async function getBrowserOptions() {
+    const isLocal = process.env.NODE_ENV === 'development';
+    const localExecutablePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+
+    return isLocal ? {
+        args: [],
+        executablePath: localExecutablePath,
+        headless: true
+    } : {
+        args: chromium.args,
+        // @ts-expect-error - external lib type mismatch
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        // @ts-expect-error - external lib type mismatch
+        headless: chromium.headless,
+    };
+}
+
+export async function fetchPageContent(url: string): Promise<string> {
+    let browser = null;
+    try {
+        const options = await getBrowserOptions();
+        browser = await puppeteer.launch(options);
+        const page = await browser.newPage();
+
+        await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+
+        // Hepsiburada etc might need longer timeout or wait for selector
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+
+        // Sometimes content is loaded dynamically, simple wait helps
+        await wait(2000);
+
+        const content = await page.content();
+        return content;
+    } catch (error) {
+        console.error('Browser Page Content Fetch Failed:', error);
+        throw error;
+    } finally {
+        if (browser) await browser.close();
+    }
+}
+
 export async function scrapeDynamicContent(url: string) {
     let browser = null;
     try {
-        // Configure Chromium based on environment
-        // Local: Use local Chrome executable
-        // Production (Vercel): Use @sparticuz/chromium
-        const isLocal = process.env.NODE_ENV === 'development';
-
-        // Path to local Chrome/Chromium - THIS NEEDS TO BE ADJUSTED FOR MAC OS
-        const localExecutablePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-
-        const options = isLocal ? {
-            args: [],
-            executablePath: localExecutablePath,
-            headless: true
-        } : {
-            args: chromium.args,
-            // @ts-expect-error - external lib type mismatch
-            defaultViewport: chromium.defaultViewport,
-            executablePath: await chromium.executablePath(),
-            // @ts-expect-error - external lib type mismatch
-            headless: chromium.headless,
-        };
-
+        const options = await getBrowserOptions();
         browser = await puppeteer.launch(options);
         const page = await browser.newPage();
 
         // Set User Agent to avoid detection
         await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
 
-        await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 }); // Increased timeout + relaxed wait
 
         // Scroll to bottom to trigger lazy loading (essential for social feeds)
         await autoScroll(page);

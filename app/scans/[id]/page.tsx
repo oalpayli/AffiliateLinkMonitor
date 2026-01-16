@@ -21,6 +21,8 @@ export default async function ScanPage({ params }: { params: Promise<{ id: strin
     const healthyLinks = links.filter(l => l.status === 'healthy').length;
     const brokenLinks = links.filter(l => l.status === 'broken').length;
     const errorLinks = links.filter(l => l.status === 'error').length;
+    // @ts-expect-error - Prisma types
+    const oosLinks = links.filter(l => l.stockStatus === 'out_of_stock').length;
 
     return (
         <div className="min-h-screen bg-slate-950 pb-20">
@@ -47,7 +49,7 @@ export default async function ScanPage({ params }: { params: Promise<{ id: strin
                         Scanned on {new Date(scan.createdAt).toLocaleString()}
                     </p>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                         <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-800">
                             <div className="text-slate-400 text-sm mb-1">Total Affiliate Links</div>
                             <div className="text-2xl font-bold text-white">{affiliateLinks}</div>
@@ -59,6 +61,10 @@ export default async function ScanPage({ params }: { params: Promise<{ id: strin
                         <div className="bg-rose-950/30 rounded-xl p-4 border border-rose-900/50">
                             <div className="text-rose-400 text-sm mb-1">Broken</div>
                             <div className="text-2xl font-bold text-rose-400">{brokenLinks}</div>
+                        </div>
+                        <div className="bg-amber-950/30 rounded-xl p-4 border border-amber-900/50">
+                            <div className="text-amber-400 text-sm mb-1">Out of Stock</div>
+                            <div className="text-2xl font-bold text-amber-400">{oosLinks}</div>
                         </div>
                         <div className="bg-amber-950/30 rounded-xl p-4 border border-amber-900/50">
                             <div className="text-amber-400 text-sm mb-1">Errors</div>
@@ -98,6 +104,18 @@ export default async function ScanPage({ params }: { params: Promise<{ id: strin
                                         {link.statusCode && (
                                             <span className="bg-slate-800 px-1.5 py-0.5 rounded text-slate-400">
                                                 HTTP {link.statusCode}
+                                            </span>
+                                        )}
+                                        {/* @ts-expect-error - Prisma types */}
+                                        {link.stockStatus === 'out_of_stock' && (
+                                            <span className="bg-amber-900/40 text-amber-400 px-1.5 py-0.5 rounded border border-amber-900/50 font-medium">
+                                                OUT OF STOCK
+                                            </span>
+                                        )}
+                                        {/* @ts-expect-error - Prisma types */}
+                                        {link.stockStatus === 'in_stock' && (
+                                            <span className="bg-emerald-900/40 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-900/50 font-medium">
+                                                IN STOCK
                                             </span>
                                         )}
                                     </div>

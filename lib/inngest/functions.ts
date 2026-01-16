@@ -57,13 +57,22 @@ export const checkMonitor = inngest.createFunction(
         });
 
         // Handle Alerts
-        if (result.links.some(l => l.status === 'broken')) {
+        // @ts-expect-error - Prisma types might not be fully updated in dev env
+        const brokenLinks = result.links.filter((l: any) => l.status === 'broken');
+        // @ts-expect-error - Prisma types might not be fully updated in dev env
+        const oosLinks = result.links.filter((l: any) => l.stockStatus === 'out_of_stock');
+
+        if (brokenLinks.length > 0 || oosLinks.length > 0) {
             await step.run("send-alert", async () => {
                 if (alertEmail) {
                     await sendAlertEmail(alertEmail, {
                         monitorUrl: url,
                         scanId: result.id,
-                        brokenLinks: result.links.filter(l => l.status === 'broken').map(l => ({
+                        brokenLinks: brokenLinks.map(l => ({
+                            href: l.href,
+                            statusCode: l.statusCode || 0
+                        })),
+                        oosLinks: oosLinks.map(l => ({
                             href: l.href,
                             statusCode: l.statusCode || 0
                         }))

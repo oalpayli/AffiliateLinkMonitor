@@ -4,15 +4,17 @@ export interface AlertDetails {
     monitorUrl: string;
     scanId: string;
     brokenLinks: Array<{ href: string; statusCode: number }>;
+    oosLinks?: Array<{ href: string; statusCode: number }>;
 }
 
 export async function sendAlertEmail(to: string, details: AlertDetails) {
-    const { monitorUrl, scanId, brokenLinks } = details;
+    const { monitorUrl, scanId, brokenLinks, oosLinks = [] } = details;
     const hostname = new URL(monitorUrl).hostname;
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     const reportUrl = `${appUrl}/scans/${scanId}`;
 
-    const subject = `[ALERT] ${brokenLinks.length} Broken Affiliate Link${brokenLinks.length > 1 ? 's' : ''} Found on ${hostname}`;
+    const totalIssues = brokenLinks.length + oosLinks.length;
+    const subject = `[ALERT] ${totalIssues} Issue${totalIssues > 1 ? 's' : ''} Found on ${hostname}`;
 
     // Create HTML body with professional styling
     const html = `
@@ -38,7 +40,7 @@ export async function sendAlertEmail(to: string, details: AlertDetails) {
                     <tr>
                         <td style="padding: 40px 30px;">
                             <p style="margin: 0 0 20px; color: #374151; font-size: 16px; line-height: 1.6;">
-                                We detected <strong style="color: #dc2626;">${brokenLinks.length} broken link${brokenLinks.length > 1 ? 's' : ''}</strong> on your monitored page:
+                                We detected <strong style="color: #dc2626;">${totalIssues} issue${totalIssues > 1 ? 's' : ''}</strong> on your monitored page:
                             </p>
                             
                             <div style="background-color: #f9fafb; border-left: 4px solid #667eea; padding: 16px; margin: 20px 0; border-radius: 4px;">
@@ -46,7 +48,8 @@ export async function sendAlertEmail(to: string, details: AlertDetails) {
                                 <p style="margin: 8px 0 0; color: #111827; font-size: 14px; word-break: break-all;">${monitorUrl}</p>
                             </div>
 
-                            <h2 style="margin: 30px 0 16px; color: #111827; font-size: 18px; font-weight: 600;">Broken Links:</h2>
+                            ${brokenLinks.length > 0 ? `
+                            <h2 style="margin: 30px 0 16px; color: #dc2626; font-size: 18px; font-weight: 600;">Broken Links (${brokenLinks.length}):</h2>
                             
                             <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                                 ${brokenLinks.map((link, index) => `
@@ -64,6 +67,28 @@ export async function sendAlertEmail(to: string, details: AlertDetails) {
                                 </tr>
                                 `).join('')}
                             </table>
+                            ` : ''}
+
+                            ${oosLinks.length > 0 ? `
+                            <h2 style="margin: 30px 0 16px; color: #d97706; font-size: 18px; font-weight: 600;">Out of Stock Products (${oosLinks.length}):</h2>
+                            
+                            <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                                ${oosLinks.map((link, index) => `
+                                <tr>
+                                    <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; background-color: ${index % 2 === 0 ? '#ffffff' : '#f9fafb'};">
+                                        <div style="display: flex; align-items: flex-start;">
+                                            <span style="display: inline-block; background-color: #fef3c7; color: #d97706; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; margin-right: 12px;">
+                                                OOS
+                                            </span>
+                                            <span style="color: #6b7280; font-size: 14px; word-break: break-all; line-height: 1.5;">
+                                                ${link.href}
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                `).join('')}
+                            </table>
+                            ` : ''}
 
                             <div style="margin: 30px 0; text-align: center;">
                                 <a href="${reportUrl}" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 6px; font-weight: 600; font-size: 16px;">
@@ -100,21 +125,24 @@ export async function sendAlertEmail(to: string, details: AlertDetails) {
     `;
 
     // Create plain text fallback
-    const linksList = brokenLinks.map(l => `- ${l.href} (Status: ${l.statusCode || 'Error'})`).join('\n');
+    const brokenList = brokenLinks.length > 0 ? `BROKEN LINKS:\n${brokenLinks.map(l => `- ${l.href} (Status: ${l.statusCode || 'Error'})`).join('\n')}` : '';
+    const oosList = oosLinks.length > 0 ? `OUT OF STOCK PRODUCTS:\n${oosLinks.map(l => `- ${l.href}`).join('\n')}` : '';
+
     const text = `
 Affiliate Link Monitor Alert
 ============================
 
-We found ${brokenLinks.length} broken or suspicious link${brokenLinks.length > 1 ? 's' : ''} on your monitored page:
+We found ${totalIssues} issue${totalIssues > 1 ? 's' : ''} on your monitored page:
 
 MONITORED URL:
 ${monitorUrl}
 
-BROKEN LINKS:
-${linksList}
+${brokenList}
+
+${oosList}
 
 ACTION REQUIRED:
-These broken links may be causing revenue loss. Please review and fix them as soon as possible.
+These issues may be causing revenue loss. Please review and fix them as soon as possible.
 
 View full report:
 ${reportUrl}

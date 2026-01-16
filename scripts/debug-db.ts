@@ -1,4 +1,4 @@
-import { prisma } from '../lib/db';
+import { prisma } from '../lib/db.ts';
 
 async function main() {
     console.log('Connecting to DB...');

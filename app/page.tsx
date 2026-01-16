@@ -9,6 +9,7 @@ interface ScanResult {
     totalLinks: number;
     affiliateLinks: number;
     brokenLinks: number;
+    oosLinks: number;
     links: Array<{
         href: string;
         status: string;
@@ -46,6 +47,8 @@ export default function LandingPage() {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const brokenLinks = data.links?.filter((l: any) => l.status === 'broken').length || 0;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const oosLinks = data.links?.filter((l: any) => l.stockStatus === 'out_of_stock').length || 0;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const affiliateLinks = data.links?.filter((l: any) =>
                 l.href?.includes('amazon') ||
                 l.href?.includes('shareasale') ||
@@ -58,6 +61,7 @@ export default function LandingPage() {
                 totalLinks,
                 affiliateLinks,
                 brokenLinks,
+                oosLinks,
                 links: data.links || []
             });
         } catch {
@@ -94,7 +98,7 @@ export default function LandingPage() {
 
                             <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.1]">
                                 Stop losing commissions <br className="hidden md:block" />
-                                to <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">broken links</span>
+                                to <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">broken links & out-of-stock items</span>
                             </h1>
 
                             <p className="text-xl md:text-2xl text-slate-400 mb-12 max-w-3xl mx-auto">
@@ -162,8 +166,8 @@ export default function LandingPage() {
                                 description="Amazon changes product URLs without warning"
                             />
                             <StatCard
-                                stat="0"
-                                description="notification when ShareASale merchants go out of stock"
+                                stat="100%"
+                                description="support for Amazon, Hepsiburada, BestBuy & Schema.org"
                             />
                             <StatCard
                                 stat="$$$"
@@ -211,8 +215,8 @@ export default function LandingPage() {
                                 icon={<Activity className="h-6 w-6 text-violet-400" />}
                             />
                             <FeatureCard
-                                title="Finds 404s, timeouts, redirects"
-                                description="Advanced detection catches broken links before your audience does."
+                                title="Finds 404s & Out-of-Stock"
+                                description="Advanced detection catches broken links and sold-out products."
                                 icon={<AlertCircle className="h-6 w-6 text-red-400" />}
                             />
                             <FeatureCard
@@ -354,6 +358,10 @@ export default function LandingPage() {
                                 <div className="text-3xl font-bold text-white mb-1">{scanResult.totalLinks}</div>
                                 <div className="text-sm text-slate-400">Total Links</div>
                             </div>
+                            <div className="p-4 bg-yellow-500/10 rounded-xl border border-yellow-500/20">
+                                <div className="text-3xl font-bold text-yellow-400 mb-1">{scanResult.oosLinks}</div>
+                                <div className="text-sm text-yellow-200">Out of Stock</div>
+                            </div>
                             <div className="p-4 bg-slate-950/50 rounded-xl border border-slate-800">
                                 <div className="text-3xl font-bold text-violet-400 mb-1">{scanResult.affiliateLinks}</div>
                                 <div className="text-sm text-slate-400">Affiliate Links</div>
@@ -365,10 +373,19 @@ export default function LandingPage() {
                         </div>
 
                         {scanResult.brokenLinks > 0 && (
+                            <div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                                <p className="text-red-200 text-sm flex items-start gap-2">
+                                    <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                                    <span><strong>{scanResult.brokenLinks} broken links found!</strong> These links are dead ends.</span>
+                                </p>
+                            </div>
+                        )}
+
+                        {scanResult.oosLinks > 0 && (
                             <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
                                 <p className="text-yellow-200 text-sm flex items-start gap-2">
                                     <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
-                                    <span><strong>{scanResult.brokenLinks} broken links found!</strong> These links are causing potential revenue loss. Create a free account to see the full list and set up automatic monitoring.</span>
+                                    <span><strong>{scanResult.oosLinks} products out of stock!</strong> Your visitors can't buy these.</span>
                                 </p>
                             </div>
                         )}
