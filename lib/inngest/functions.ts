@@ -57,9 +57,7 @@ export const checkMonitor = inngest.createFunction(
         });
 
         // Handle Alerts
-        // @ts-expect-error - Prisma types might not be fully updated in dev env
         const brokenLinks = result.links.filter((l: any) => l.status === 'broken');
-        // @ts-expect-error - Prisma types might not be fully updated in dev env
         const oosLinks = result.links.filter((l: any) => l.stockStatus === 'out_of_stock');
 
         if (brokenLinks.length > 0 || oosLinks.length > 0) {
