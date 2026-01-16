@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ExternalLink, Calendar, Link as LinkIcon } from 'lucide-react';
 import CopyButton from './CopyButton';
 import DeleteButton from './DeleteButton';
+import RescanButton from './RescanButton';
 
 async function getRecentScans() {
     const scans = await prisma.scan.findMany({
@@ -59,6 +60,7 @@ export default async function ScanList() {
                                         {scan.url.replace(/^https?:\/\//, '')}
                                     </h3>
                                     <div className="flex items-center gap-1 pointer-events-auto">
+                                        <RescanButton url={scan.url} />
                                         <CopyButton text={scan.url} />
                                         <DeleteButton id={scan.id} />
                                         <ExternalLink className="h-4 w-4 text-slate-500 group-hover:text-violet-400 ml-1" />

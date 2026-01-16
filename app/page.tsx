@@ -87,14 +87,7 @@ export default function LandingPage() {
                     <div className="container mx-auto px-4 md:px-6 z-20">
                         <div className="max-w-4xl mx-auto text-center">
 
-                            {/* Signal Status Badge */}
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/80 border border-slate-800 backdrop-blur-md mb-8 shadow-2xl shadow-violet-500/10 hover:border-violet-500/30 transition-all duration-500 group cursor-default">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-violet-500 group-hover:bg-violet-400 transition-colors"></span>
-                                </span>
-                                <span className="text-sm font-medium text-slate-400 group-hover:text-slate-200 transition-colors">System Optimal</span>
-                            </div>
+
 
                             <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.1]">
                                 Stop losing commissions <br className="hidden md:block" />
@@ -152,6 +145,29 @@ export default function LandingPage() {
                     </div>
                 </section>
 
+                {/* Logo Marquee */}
+                <div className="w-full py-10 border-y border-slate-800/50 bg-slate-950/30 backdrop-blur-sm overflow-hidden relative">
+                    <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#020617] to-transparent z-10" />
+                    <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#020617] to-transparent z-10" />
+
+                    <div className="flex gap-16 animate-scroll whitespace-nowrap min-w-full items-center justify-center opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                        {/* Duplicated list for infinite scroll effect */}
+                        {[...Array(2)].map((_, i) => (
+                            <div key={i} className="flex gap-16 items-center">
+                                <span className="text-2xl font-bold tracking-tighter">amazon</span>
+                                <span className="text-xl font-bold tracking-wide">Hepsiburada</span>
+                                <span className="text-2xl font-bold italic">TRENDYOL</span>
+                                <span className="text-xl font-bold">BestBuy</span>
+                                <span className="text-2xl font-serif">WIRED</span>
+                                <span className="text-xl font-bold tracking-tight">Vogue</span>
+                                <span className="text-2xl font-bold">ShareASale</span>
+                                <span className="text-xl font-extrabold tracking-tighter">CommisionJunction</span>
+                                <span className="text-2xl font-bold">ClickBank</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 {/* Problem Section */}
                 <section className="py-24 relative">
                     <div className="container mx-auto px-4 max-w-5xl">
@@ -197,7 +213,7 @@ export default function LandingPage() {
                             <StepCard
                                 number="3"
                                 title="Get Instant Alerts"
-                                description="Email/Slack alert when something breaks"
+                                description="Email alert when something breaks"
                                 icon={<Zap className="h-8 w-8 text-yellow-400" />}
                             />
                         </div>
@@ -257,9 +273,9 @@ export default function LandingPage() {
                                 period="forever"
                                 features={[
                                     "10 monitors",
+                                    "5 one-time scans per day",
                                     "Daily or Weekly scans",
-                                    "Email alerts",
-                                    "Single link addition"
+                                    "Email alerts"
                                 ]}
                                 cta="Start Free"
                                 href="/dashboard"
@@ -270,10 +286,10 @@ export default function LandingPage() {
                                 period="per month"
                                 features={[
                                     "60 monitors",
+                                    "Unlimited scans",
                                     "Hourly, Daily, or Weekly scans",
                                     "Email alerts",
-                                    "Bulk import",
-                                    "Priority support"
+                                    "Bulk import"
                                 ]}
                                 cta="Upgrade"
                                 href="/dashboard"
@@ -283,53 +299,7 @@ export default function LandingPage() {
                     </div>
                 </section>
 
-                {/* Final CTA */}
-                <section className="py-32 relative">
-                    <div className="container mx-auto px-4 max-w-3xl text-center">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-8">
-                            Protect your affiliate income in 30 seconds
-                        </h2>
-                        <div className="max-w-xl mx-auto mb-8">
-                            <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-2 backdrop-blur-sm">
-                                <div className="flex flex-col sm:flex-row gap-2">
-                                    <input
-                                        type="url"
-                                        placeholder="https://yourblog.com"
-                                        value={scanUrl}
-                                        onChange={(e) => setScanUrl(e.target.value)}
-                                        onKeyDown={(e) => e.key === 'Enter' && handleScan()}
-                                        className="flex-1 px-6 py-4 bg-slate-950/50 border border-slate-800 rounded-xl text-white placeholder:text-slate-600 focus:outline-none focus:border-violet-500/50 transition-all"
-                                    />
-                                    <button
-                                        onClick={handleScan}
-                                        disabled={isScanning || !scanUrl.trim()}
-                                        className="btn-primary px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 whitespace-nowrap"
-                                    >
-                                        {isScanning ? (
-                                            <>
-                                                <Loader2 className="h-5 w-5 animate-spin" />
-                                                Scanning...
-                                            </>
-                                        ) : (
-                                            <>
-                                                Scan Now
-                                                <ArrowRight className="h-5 w-5" />
-                                            </>
-                                        )}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <p className="text-slate-500 text-sm">or</p>
-                        <Link
-                            href="/dashboard"
-                            className="inline-flex items-center gap-2 mt-6 px-8 py-3 bg-slate-800 text-slate-200 rounded-xl font-medium hover:bg-slate-700 transition-all"
-                        >
-                            Start monitoring free
-                            <ArrowRight className="h-5 w-5" />
-                        </Link>
-                    </div>
-                </section>
+
 
 
             </div>

@@ -69,3 +69,14 @@ model Link {
 
   createdAt DateTime @default(now())
 }
+
+model ScanUsage {
+  id         String   @id @default(cuid())
+  identifier String   // IP address or userId
+  date       DateTime @default(now()) @db.Date
+  count      Int      @default(1)
+  
+  @@unique([identifier, date])
+  @@index([identifier, date])
+}
+

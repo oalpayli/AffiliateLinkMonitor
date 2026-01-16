@@ -103,6 +103,12 @@ export default function MonitorList() {
                 if (res.status === 403) {
                     toast.error(data.error || 'Limit reached! Redirecting to pricing...', { duration: 3000 });
                     setTimeout(() => router.push('/pricing'), 2000);
+                } else if (res.status === 429) {
+                    // Rate limit for scans
+                    toast.error(data.error || 'Scan limit reached', { duration: 4000 });
+                    if (!data.isAuthenticated) {
+                        setTimeout(() => router.push('/login'), 2500);
+                    }
                 } else {
                     toast.error(data.error || 'Failed to add monitor');
                 }

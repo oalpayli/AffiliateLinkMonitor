@@ -29,7 +29,7 @@ export default async function ScanPage({ params }: { params: Promise<{ id: strin
             {/* Header */}
             <header className="border-b border-slate-800/60 bg-slate-900/50 backdrop-blur-md sticky top-0 z-10">
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
+                    <Link href="/dashboard" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors">
                         <ArrowLeft className="h-4 w-4" />
                         <span>Back to Dashboard</span>
                     </Link>
