@@ -35,7 +35,7 @@ export default function Footer() {
                         <h3 className="font-semibold text-white mb-4">Company</h3>
                         <ul className="space-y-3 text-sm text-slate-400">
                             <li><Link href="/support" className="hover:text-blue-400 transition-colors">Support</Link></li>
-                            <li><a href="mailto:oguzhanalpayli@gmail.com" className="hover:text-blue-400 transition-colors">Contact</a></li>
+                            <li><a href="mailto:info@affiliatelinkmonitor.com" className="hover:text-blue-400 transition-colors">Contact</a></li>
                         </ul>
                     </div>
 

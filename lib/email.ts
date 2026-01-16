@@ -137,8 +137,11 @@ Manage your alerts: ${appUrl}/settings
                 },
             });
 
+            const senderEmail = process.env.SMTP_FROM_EMAIL || 'info@affiliatelinkmonitoring.com';
+            const senderName = process.env.SMTP_FROM_NAME || 'LinkMonitor Alerts';
+
             await transporter.sendMail({
-                from: '"LinkMonitor Alerts" <alerts@linkmonitor.app>',
+                from: `"${senderName}" <${senderEmail}>`,
                 to,
                 subject,
                 text,
@@ -160,7 +163,7 @@ Manage your alerts: ${appUrl}/settings
 }
 
 export async function sendSupportEmail(fromEmail: string, fromName: string, subject: string, message: string) {
-    const adminEmail = 'oguzhanalpayli@gmail.com'; // Temporary hardcode as requested
+    const adminEmail = 'info@affiliatelinkmonitoring.com';
     const finalSubject = `[SUPPORT] ${subject}`;
 
     const text = `
@@ -186,7 +189,7 @@ ${message}
                 },
             });
 
-            const senderEmail = process.env.SMTP_FROM_EMAIL || 'onboarding@resend.dev';
+            const senderEmail = process.env.SMTP_FROM_EMAIL || 'info@affiliatelinkmonitoring.com';
             const senderName = process.env.SMTP_FROM_NAME || 'LinkMonitor Support';
 
             await transporter.sendMail({

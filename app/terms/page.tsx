@@ -1,5 +1,5 @@
 import React from 'react';
-import { Scale, FileText, AlertTriangle, HelpCircle } from 'lucide-react';
+import { Scale, FileText, AlertTriangle, HelpCircle, Mail } from 'lucide-react';
 
 export default function TermsOfService() {
     return (
@@ -58,6 +58,16 @@ export default function TermsOfService() {
                     </h2>
                     <p>
                         In no event shall Affiliate Link Monitor or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on our website, even if we have been notified orally or in writing of the possibility of such damage.
+                    </p>
+                </section>
+
+                <section className="space-y-4">
+                    <h2 className="text-2xl font-semibold text-white flex items-center gap-2">
+                        <Mail className="h-6 w-6 text-pink-500" />
+                        5. Contact Info
+                    </h2>
+                    <p>
+                        If you have any questions about these Terms, pleas contact us at <a href="mailto:info@affiliatelinkmonitor.com" className="text-indigo-400 hover:underline">info@affiliatelinkmonitor.com</a>.
                     </p>
                 </section>
             </div>
