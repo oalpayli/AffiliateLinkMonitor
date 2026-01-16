@@ -21,7 +21,6 @@ export default async function ScanPage({ params }: { params: Promise<{ id: strin
     const healthyLinks = links.filter(l => l.status === 'healthy').length;
     const brokenLinks = links.filter(l => l.status === 'broken').length;
     const errorLinks = links.filter(l => l.status === 'error').length;
-    // @ts-expect-error - Prisma types
     const oosLinks = links.filter(l => l.stockStatus === 'out_of_stock').length;
 
     return (
@@ -106,13 +105,11 @@ export default async function ScanPage({ params }: { params: Promise<{ id: strin
                                                 HTTP {link.statusCode}
                                             </span>
                                         )}
-                                        {/* @ts-expect-error - Prisma types */}
                                         {link.stockStatus === 'out_of_stock' && (
                                             <span className="bg-amber-900/40 text-amber-400 px-1.5 py-0.5 rounded border border-amber-900/50 font-medium">
                                                 OUT OF STOCK
                                             </span>
                                         )}
-                                        {/* @ts-expect-error - Prisma types */}
                                         {link.stockStatus === 'in_stock' && (
                                             <span className="bg-emerald-900/40 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-900/50 font-medium">
                                                 IN STOCK

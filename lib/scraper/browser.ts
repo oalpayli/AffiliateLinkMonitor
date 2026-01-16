@@ -34,7 +34,7 @@ export async function fetchPageContent(url: string): Promise<string> {
         await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
 
         // Hepsiburada etc might need longer timeout or wait for selector
-        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 10000 });
 
         // Sometimes content is loaded dynamically, simple wait helps
         await wait(2000);
@@ -59,7 +59,7 @@ export async function scrapeDynamicContent(url: string) {
         // Set User Agent to avoid detection
         await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
 
-        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 }); // Increased timeout + relaxed wait
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20000 }); // Faster timeout
 
         // Scroll to bottom to trigger lazy loading (essential for social feeds)
         await autoScroll(page);

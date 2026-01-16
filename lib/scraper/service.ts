@@ -47,17 +47,31 @@ export async function performFullScan(url: string, monitorId?: string) {
     }> = [];
 
     if (result.affiliateLinks.length > 0) {
-        for (const link of result.affiliateLinks) {
-            // Add a small random delay (500ms - 1500ms) to identify as human/avoid rate limits
-            await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000));
+        // Process links in parallel batches of 5 for speed
+        const BATCH_SIZE = 5;
 
-            const health = await checkLinkHealth(link.href);
-            processedLinks.push({
-                href: link.href,
-                status: health.status as 'healthy' | 'broken' | 'error',
-                statusCode: health.statusCode,
-                stockStatus: health.stockStatus
-            });
+        for (let i = 0; i < result.affiliateLinks.length; i += BATCH_SIZE) {
+            const batch = result.affiliateLinks.slice(i, i + BATCH_SIZE);
+
+            // Process batch in parallel
+            const batchResults = await Promise.all(
+                batch.map(async (link) => {
+                    const health = await checkLinkHealth(link.href);
+                    return {
+                        href: link.href,
+                        status: health.status as 'healthy' | 'broken' | 'error',
+                        statusCode: health.statusCode,
+                        stockStatus: health.stockStatus
+                    };
+                })
+            );
+
+            processedLinks.push(...batchResults);
+
+            // Small delay between batches to avoid overwhelming the target
+            if (i + BATCH_SIZE < result.affiliateLinks.length) {
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
         }
     }
 

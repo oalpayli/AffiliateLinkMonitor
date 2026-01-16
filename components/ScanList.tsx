@@ -79,12 +79,10 @@ export default async function ScanList() {
                                     <div className="text-rose-400">
                                         {brokenCount} <span className="text-slate-500 text-xs">Broken</span>
                                     </div>
-                                    {/* @ts-expect-error - Prisma types */}
                                     {scan.links.some((l: any) => l.stockStatus === 'out_of_stock') && (
                                         <>
                                             <div className="h-4 w-px bg-slate-700" />
                                             <div className="text-amber-400">
-                                                {/* @ts-expect-error - Prisma types */}
                                                 {scan.links.filter((l: any) => l.stockStatus === 'out_of_stock').length} <span className="text-slate-500 text-xs">OOS</span>
                                             </div>
                                         </>

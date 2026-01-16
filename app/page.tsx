@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from "next/link";
 import { ArrowRight, Activity, Zap, TrendingUp, Globe, Mail, Target, BarChart3, Loader2, CheckCircle2, XCircle, AlertCircle, Check } from "lucide-react";
+import UpgradeDialog from '@/components/UpgradeDialog';
 
 interface ScanResult {
     url: string;
@@ -22,6 +23,9 @@ export default function LandingPage() {
     const [isScanning, setIsScanning] = useState(false);
     const [scanResult, setScanResult] = useState<ScanResult | null>(null);
     const [error, setError] = useState('');
+    const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
+    const [upgradeMessage, setUpgradeMessage] = useState('');
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const handleScan = async () => {
         if (!scanUrl.trim()) return;
@@ -38,6 +42,14 @@ export default function LandingPage() {
             });
 
             if (!res.ok) {
+                if (res.status === 429) {
+                    const data = await res.json();
+                    setUpgradeMessage(data.error || 'Scan limit reached. Sign up for more scans!');
+                    setIsAuthenticated(data.isAuthenticated || false);
+                    setShowUpgradeDialog(true);
+                    setIsScanning(false);
+                    return;
+                }
                 throw new Error('Scan failed');
             }
 
@@ -64,8 +76,16 @@ export default function LandingPage() {
                 oosLinks,
                 links: data.links || []
             });
-        } catch {
-            setError('Scan failed. Please enter a valid URL.');
+        } catch (err) {
+            // Check if it's a rate limit error (429)
+            if (err instanceof Response && err.status === 429) {
+                const errorData = await err.json();
+                setUpgradeMessage(errorData.error || 'Scan limit reached. Sign up for more scans!');
+                setIsAuthenticated(errorData.isAuthenticated || false);
+                setShowUpgradeDialog(true);
+            } else {
+                setError('Scan failed. Please enter a valid URL.');
+            }
         } finally {
             setIsScanning(false);
         }
@@ -378,6 +398,13 @@ export default function LandingPage() {
                     </div>
                 </div>
             )}
+
+            <UpgradeDialog
+                isOpen={showUpgradeDialog}
+                onClose={() => setShowUpgradeDialog(false)}
+                isAuthenticated={isAuthenticated}
+                message={upgradeMessage}
+            />
         </div>
     );
 }

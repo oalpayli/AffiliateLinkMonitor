@@ -3,10 +3,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, Loader2, ArrowRight } from 'lucide-react';
+import UpgradeDialog from './UpgradeDialog';
 
 export default function ScanForm() {
     const [url, setUrl] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
+    const [upgradeMessage, setUpgradeMessage] = useState('');
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -26,7 +30,6 @@ export default function ScanForm() {
             if (!contentType || !contentType.includes('application/json')) {
                 if (response.status === 401 || response.status === 403 || response.redirected) {
                     console.error('Authentication required');
-                    // Could show toast here if available
                 } else {
                     console.error('Unexpected server response');
                 }
@@ -36,6 +39,11 @@ export default function ScanForm() {
             if (response.ok) {
                 const scan = await response.json();
                 router.push(`/scans/${scan.id}`);
+            } else if (response.status === 429) {
+                const data = await response.json();
+                setUpgradeMessage(data.error || 'You have reached your scan limit.');
+                setIsAuthenticated(data.isAuthenticated || false);
+                setShowUpgradeDialog(true);
             } else {
                 const error = await response.json();
                 console.error('Scan failed:', error.error);
@@ -89,6 +97,13 @@ export default function ScanForm() {
                     </button>
                 </div>
             </form>
+
+            <UpgradeDialog
+                isOpen={showUpgradeDialog}
+                onClose={() => setShowUpgradeDialog(false)}
+                isAuthenticated={isAuthenticated}
+                message={upgradeMessage}
+            />
         </div>
     );
 }
