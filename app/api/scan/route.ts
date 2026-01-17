@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/db';
 import { performFullScan } from '@/lib/scraper/service';
 import { getCurrentUser } from '@/lib/auth';
 import { checkSubscription } from '@/lib/subscription';
@@ -42,7 +43,22 @@ export async function POST(request: Request) {
         await incrementScanCount(identifier);
 
         // Perform the scan
-        const scan = await performFullScan(url);
+        // Try to find an existing monitor for this user and url to link the scan
+        let monitorId = undefined;
+        if (user) {
+            const monitor = await prisma.monitor.findFirst({
+                where: {
+                    userId: user.id,
+                    url: url
+                },
+                select: { id: true }
+            });
+            if (monitor) {
+                monitorId = monitor.id;
+            }
+        }
+
+        const scan = await performFullScan(url, monitorId);
 
         return NextResponse.json({ ...scan, remaining }, { status: 201 });
     } catch (error) {

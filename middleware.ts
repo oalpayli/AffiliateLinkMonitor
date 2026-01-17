@@ -1,5 +1,5 @@
 import { updateSession } from '@/lib/supabase/middleware'
-import { createServerClient } from '@supabase/ssr'
+
 import { NextRequest, NextResponse } from 'next/server'
 
 // Define public routes
@@ -26,38 +26,15 @@ const publicRoutes = [
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
 
+  // Unified auth check and session update
+  const { response, user } = await updateSession(request)
+
   // Allow public routes
   if (publicRoutes.some((route) => pathname.startsWith(route))) {
-    return await updateSession(request)
+    return response
   }
 
-  // Protected routes: check auth
-  const response = await updateSession(request)
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value
-        },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        set(name: string, value: string, options: any) {
-          // Cookies are already set by updateSession
-        },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        remove(name: string, options: any) {
-          // Cookies are already removed by updateSession
-        },
-      },
-    }
-  )
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
+  // Protected routes: redirect if no user
   if (!user) {
     return NextResponse.redirect(new URL('/login', request.url))
   }

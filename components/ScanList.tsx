@@ -4,22 +4,81 @@ import { ExternalLink, Calendar, Link as LinkIcon } from 'lucide-react';
 import CopyButton from './CopyButton';
 import DeleteButton from './DeleteButton';
 import RescanButton from './RescanButton';
+import { createClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
 
-async function getRecentScans() {
+async function getRecentScans(userId: string) {
     const scans = await prisma.scan.findMany({
+        where: {
+            monitor: {
+                userId: userId
+            }
+        },
         orderBy: { createdAt: 'desc' },
         take: 10,
-        include: {
-            links: {
-                select: { status: true, stockStatus: true }
-            }
-        }
     });
-    return scans;
+
+    if (scans.length === 0) return [];
+
+    const scanIds = scans.map(s => s.id);
+
+    // Optimize: Fetch counts instead of all link objects
+    const linkCounts = await prisma.link.groupBy({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        by: ['scanId', 'status', 'stockStatus'] as any,
+        where: {
+            scanId: { in: scanIds }
+        },
+        _count: true
+    });
+
+    // Map counts back to scans
+    return scans.map(scan => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const counts = linkCounts.filter((c: any) => c.scanId === scan.id);
+
+        const healthyCount = counts
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .filter((c: any) => c.status === 'healthy')
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .reduce((acc: number, curr: any) => acc + (curr._count._all || 0), 0);
+
+        const brokenCount = counts
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .filter((c: any) => c.status === 'broken')
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .reduce((acc: number, curr: any) => acc + (curr._count._all || 0), 0);
+
+        const oosCount = counts
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .filter((c: any) => c.stockStatus === 'out_of_stock')
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            .reduce((acc: number, curr: any) => acc + (curr._count._all || 0), 0);
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const totalCount = counts.reduce((acc: number, curr: any) => acc + (curr._count._all || 0), 0);
+
+        return {
+            ...scan,
+            stats: {
+                healthy: healthyCount,
+                broken: brokenCount,
+                oos: oosCount,
+                total: totalCount
+            }
+        };
+    });
 }
 
 export default async function ScanList() {
-    const scans = await getRecentScans();
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        redirect('/login');
+    }
+
+    const scans = await getRecentScans(user.id);
 
     if (scans.length === 0) {
         return (
@@ -38,9 +97,7 @@ export default async function ScanList() {
 
             <div className="grid gap-4 md:grid-cols-2">
                 {scans.map((scan) => {
-                    const healthyCount = scan.links.filter(l => l.status === 'healthy').length;
-                    const brokenCount = scan.links.filter(l => l.status === 'broken').length;
-                    const totalCount = scan.links.length;
+                    const { healthy, broken, oos, total } = scan.stats;
 
                     return (
                         <div
@@ -70,20 +127,20 @@ export default async function ScanList() {
                                 <div className="flex items-center gap-4 text-sm">
                                     <div className="flex items-center gap-1.5 text-slate-400">
                                         <LinkIcon className="h-3.5 w-3.5" />
-                                        <span>{totalCount}</span>
+                                        <span>{total}</span>
                                     </div>
                                     <div className="h-4 w-px bg-slate-700" />
                                     <div className="text-emerald-400">
-                                        {healthyCount} <span className="text-slate-500 text-xs">OK</span>
+                                        {healthy} <span className="text-slate-500 text-xs">OK</span>
                                     </div>
                                     <div className="text-rose-400">
-                                        {brokenCount} <span className="text-slate-500 text-xs">Broken</span>
+                                        {broken} <span className="text-slate-500 text-xs">Broken</span>
                                     </div>
-                                    {scan.links.some((l: any) => l.stockStatus === 'out_of_stock') && (
+                                    {oos > 0 && (
                                         <>
                                             <div className="h-4 w-px bg-slate-700" />
                                             <div className="text-amber-400">
-                                                {scan.links.filter((l: any) => l.stockStatus === 'out_of_stock').length} <span className="text-slate-500 text-xs">OOS</span>
+                                                {oos} <span className="text-slate-500 text-xs">OOS</span>
                                             </div>
                                         </>
                                     )}
