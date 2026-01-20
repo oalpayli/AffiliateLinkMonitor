@@ -339,15 +339,15 @@ export default function MonitorList() {
                                 : 'hover:border-slate-700'
                                 }`}
                         >
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-3 flex-1 min-w-0">
                                 {isSelectionMode && (
                                     <div className={`flex-shrink-0 transition-all duration-200 ${selectedIds.has(monitor.id) ? 'w-6 opacity-100 scale-100' : 'w-0 opacity-0 scale-0'}`}>
                                         <CheckCircle className="h-5 w-5 text-violet-500 fill-violet-500/20" />
                                     </div>
                                 )}
-                                <div className={`h-2 w-2 rounded-full ${monitor.isActive ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-slate-600'}`} />
-                                <div>
-                                    <div className="font-medium text-slate-200">{monitor.url}</div>
+                                <div className={`h-2 w-2 rounded-full flex-shrink-0 ${monitor.isActive ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-slate-600'}`} />
+                                <div className="flex-1 min-w-0">
+                                    <div className="font-medium text-slate-200 truncate overflow-hidden" title={monitor.url}>{monitor.url}</div>
                                     <div className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
                                         <span className="flex items-center gap-1">
                                             <RefreshCw className="h-3 w-3" /> {monitor.frequency}
