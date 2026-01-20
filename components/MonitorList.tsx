@@ -29,6 +29,7 @@ export default function MonitorList() {
     const [isSelectionMode, setIsSelectionMode] = useState(false);
     const [isBulkDeleting, setIsBulkDeleting] = useState(false);
     const [isBulkDeleteConfirmOpen, setIsBulkDeleteConfirmOpen] = useState(false);
+    const [isAdding, setIsAdding] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -70,6 +71,8 @@ export default function MonitorList() {
         const rawUrls = newUrl.split(/[\n,]+/).map(u => u.trim()).filter(u => u.length > 0);
 
         if (rawUrls.length === 0) return;
+
+        setIsAdding(true);
 
         try {
             const res = await fetch('/api/monitors', {
@@ -116,6 +119,8 @@ export default function MonitorList() {
         } catch (e) {
             toast.error('Something went wrong. Please refresh and try again.');
             console.error(e);
+        } finally {
+            setIsAdding(false);
         }
     };
 
@@ -314,9 +319,22 @@ export default function MonitorList() {
                         <option value="daily">Daily</option>
                         <option value="weekly">Weekly</option>
                     </select>
-                    <button type="submit" className="btn-primary px-6 py-2 rounded-lg flex items-center justify-center gap-2">
-                        <Plus className="h-4 w-4" />
-                        <span>Add</span>
+                    <button
+                        type="submit"
+                        className="btn-primary px-6 py-2 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={isAdding}
+                    >
+                        {isAdding ? (
+                            <>
+                                <RefreshCw className="h-4 w-4 animate-spin" />
+                                <span>Adding...</span>
+                            </>
+                        ) : (
+                            <>
+                                <Plus className="h-4 w-4" />
+                                <span>Add</span>
+                            </>
+                        )}
                     </button>
                 </div>
             </form>
