@@ -26,25 +26,14 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'At least one URL is required' }, { status: 400 });
         }
 
-        // Check subscription/limits
-        const methodIsPro = await checkSubscription();
+        // Check subscription/limits (consolidated - single check)
+        const isPro = await checkSubscription();
+        const limit = isPro ? MAX_PRO_MONITORS : MAX_FREE_MONITORS;
         const currentCount = await prisma.monitor.count({
             where: { userId }
         });
 
-        let limit = methodIsPro ? MAX_PRO_MONITORS : MAX_FREE_MONITORS;
-
-        // Check subscription/limits
-        const isPro = await checkSubscription();
-        // const count = await prisma.monitor.count({ // This line is redundant as currentCount already exists
-        //     where: { userId }
-        // });
-        console.log('[API] Check:', { isPro, currentCount });
-
-        if (!limit) {
-            const isProCheck = await checkSubscription();
-            limit = isProCheck ? MAX_PRO_MONITORS : MAX_FREE_MONITORS;
-        }
+        console.log('[API] Check:', { isPro, currentCount, limit });
 
         if (currentCount + urlsToProcess.length > limit) {
             return NextResponse.json(
@@ -88,26 +77,24 @@ export async function POST(request: Request) {
             }
         });
 
-        // Trigger immediate scan for new monitors
-        try {
-            const { inngest } = await import('@/lib/inngest/client');
+        // Trigger immediate scan for new monitors (non-blocking)
+        const { inngest } = await import('@/lib/inngest/client');
 
-            const events = createdMonitors.map((monitor) => ({
-                name: "monitor/check",
-                data: {
-                    monitorId: monitor.id,
-                    url: monitor.url,
-                    alertEmail: monitor.alertEmail,
-                    frequency: monitor.frequency
-                },
-            }));
+        const events = createdMonitors.map((monitor) => ({
+            name: "monitor/check",
+            data: {
+                monitorId: monitor.id,
+                url: monitor.url,
+                alertEmail: monitor.alertEmail,
+                frequency: monitor.frequency
+            },
+        }));
 
-            await inngest.send(events);
-            console.log(`[API] Triggered initial scan for ${events.length} monitors`);
-        } catch (error) {
+        // Fire and forget - don't block response
+        inngest.send(events).catch(error => {
             console.error('[API] Failed to trigger initial scan:', error);
-            // Non-blocking error, user still sees monitors created
-        }
+        });
+        console.log(`[API] Queued initial scan for ${events.length} monitors`);
 
         return NextResponse.json(createdMonitors, { status: 201 });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -191,18 +178,20 @@ export async function GET() {
         const user = await requireAuth();
         const userId = user.id;
 
-        const monitors = await prisma.monitor.findMany({
-            where: { userId },
-            orderBy: { createdAt: 'desc' },
-            include: {
-                _count: {
-                    select: { scans: true }
+        // Parallel execution for better performance
+        const [monitors, isPro] = await Promise.all([
+            prisma.monitor.findMany({
+                where: { userId },
+                orderBy: { createdAt: 'desc' },
+                include: {
+                    _count: {
+                        select: { scans: true }
+                    }
                 }
-            }
-        });
+            }),
+            checkSubscription()
+        ]);
 
-        // Create metadata response
-        const isPro = await checkSubscription();
         const limit = isPro ? MAX_PRO_MONITORS : MAX_FREE_MONITORS;
 
         return NextResponse.json({

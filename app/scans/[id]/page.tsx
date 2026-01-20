@@ -1,19 +1,32 @@
 import { prisma } from '@/lib/db';
+import { requireAuth } from '@/lib/auth';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { ArrowLeft, CheckCircle, XCircle, AlertCircle, ExternalLink, Shield } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
 export default async function ScanPage({ params }: { params: Promise<{ id: string }> }) {
+    // Require authentication
+    const user = await requireAuth();
+
     const { id } = await params;
     const scan = await prisma.scan.findUnique({
         where: { id },
-        include: { links: true }
+        include: {
+            links: true,
+            monitor: true // Need monitor for ownership check
+        }
     });
 
     if (!scan) {
         notFound();
+    }
+
+    // Validate ownership: scan must belong to user's monitor
+    if (scan.monitor && scan.monitor.userId !== user.id) {
+        // Unauthorized access attempt
+        redirect('/dashboard');
     }
 
     const links = scan.links;

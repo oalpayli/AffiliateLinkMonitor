@@ -2,8 +2,12 @@
 
 import { useState } from 'react';
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Activity, Zap, TrendingUp, Globe, Mail, Target, BarChart3, Loader2, CheckCircle2, XCircle, AlertCircle, Check } from "lucide-react";
 import UpgradeDialog from '@/components/UpgradeDialog';
+import Testimonials from '@/components/Testimonials';
+import TrustSignals from '@/components/TrustSignals';
+import FAQ from '@/components/FAQ';
 
 interface ScanResult {
     url: string;
@@ -110,12 +114,12 @@ export default function LandingPage() {
 
 
                             <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.1]">
-                                Stop losing commissions <br className="hidden md:block" />
-                                to <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">broken links & out-of-stock items</span>
+                                24/7 Affiliate Link Monitoring <br className="hidden md:block" />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">for Content Creators Worldwide</span>
                             </h1>
 
                             <p className="text-xl md:text-2xl text-slate-400 mb-12 max-w-3xl mx-auto">
-                                We scan your site 24/7 and alert you the second an affiliate link breaks.
+                                Never lose commissions to broken links & out-of-stock products again. We monitor 24/7 and alert you instantly.
                             </p>
 
                             {/* Magic Box */}
@@ -158,6 +162,24 @@ export default function LandingPage() {
                                 )}
                             </div>
 
+                            {/* Team Photos */}
+                            <div className="flex items-center justify-center gap-4 mb-4">
+                                <div className="flex -space-x-3">
+                                    <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-slate-900">
+                                        <Image src="/images/team/founder.png" alt="Team" fill className="object-cover" />
+                                    </div>
+                                    <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-slate-900">
+                                        <Image src="/images/team/member1.png" alt="Team" fill className="object-cover" />
+                                    </div>
+                                    <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-slate-900">
+                                        <Image src="/images/team/member2.png" alt="Team" fill className="object-cover" />
+                                    </div>
+                                </div>
+                                <p className="text-sm text-slate-400">
+                                    <span className="font-semibold text-white">Built by affiliate marketers,</span> for affiliate marketers
+                                </p>
+                            </div>
+
                             <p className="text-sm text-slate-500">
                                 No credit card required • 10 monitors free • Setup in 30 seconds
                             </p>
@@ -187,6 +209,9 @@ export default function LandingPage() {
                         ))}
                     </div>
                 </div>
+
+                {/* Trust Signals */}
+                <TrustSignals />
 
                 {/* Problem Section */}
                 <section className="py-24 relative">
@@ -278,6 +303,12 @@ export default function LandingPage() {
                         </div>
                     </div>
                 </section>
+
+                {/* Testimonials */}
+                <Testimonials />
+
+                {/* FAQ */}
+                <FAQ />
 
                 {/* Pricing */}
                 <section className="py-24 relative bg-slate-950/50">

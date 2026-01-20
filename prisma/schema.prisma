@@ -55,6 +55,8 @@ model Scan {
   monitor   Monitor? @relation(fields: [monitorId], references: [id])
 
   links     Link[]
+
+  @@index([createdAt])
 }
 
 model Link {
@@ -68,6 +70,8 @@ model Link {
   scan      Scan     @relation(fields: [scanId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+
+  @@index([scanId])
 }
 
 model ScanUsage {
