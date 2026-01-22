@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/db';
-import { requireAuth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { ArrowLeft, CheckCircle, XCircle, AlertCircle, ExternalLink, Shield } from 'lucide-react';
@@ -7,10 +7,13 @@ import { ArrowLeft, CheckCircle, XCircle, AlertCircle, ExternalLink, Shield } fr
 export const dynamic = 'force-dynamic';
 
 export default async function ScanPage({ params }: { params: Promise<{ id: string }> }) {
-    // Require authentication
-    const user = await requireAuth();
-
     const { id } = await params;
+    const user = await getCurrentUser();
+
+    if (!user) {
+        redirect(`/login?next=/scans/${id}`);
+    }
+
     const scan = await prisma.scan.findUnique({
         where: { id },
         include: {

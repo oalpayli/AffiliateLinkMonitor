@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
@@ -12,6 +12,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const router = useRouter()
+    const searchParams = useSearchParams()
     const supabase = createClient()
 
     const handleLogin = async (e: React.FormEvent) => {
@@ -31,7 +32,8 @@ export default function LoginPage() {
 
             if (data.user) {
                 toast.success('Welcome back!')
-                router.push('/dashboard')
+                const next = searchParams.get('next') || '/dashboard'
+                router.push(next)
                 router.refresh()
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
