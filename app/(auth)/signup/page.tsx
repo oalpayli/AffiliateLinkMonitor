@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
 import { Mail, Lock, Loader2, ArrowLeft, Check, X } from 'lucide-react'
+import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton'
 
 export default function SignupPage() {
     const [email, setEmail] = useState('')
@@ -180,6 +181,17 @@ export default function SignupPage() {
                                 'Create Account'
                             )}
                         </button>
+
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t border-slate-800" />
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-slate-900 px-2 text-slate-400">Or continue with</span>
+                            </div>
+                        </div>
+
+                        <GoogleSignInButton />
                     </form>
 
                     {/* Login Link */}
