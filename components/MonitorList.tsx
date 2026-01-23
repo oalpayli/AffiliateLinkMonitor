@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Play, Clock, Plus, Activity, CheckCircle, RefreshCw, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import ConfirmDialog from './ConfirmDialog';
+import posthog from 'posthog-js';
 
 interface Monitor {
     id: string;
@@ -99,6 +100,14 @@ export default function MonitorList() {
                 setNewUrl('');
                 // Only clear email if user wants? Keeping it sticky is usually better for bulk add flows
                 // setAlertEmail(''); 
+
+                // Track success
+                posthog.capture('Monitor Added', {
+                    count: Array.isArray(data) ? data.length : 1,
+                    frequency,
+                    is_pro: usage.isPro
+                });
+
                 toast.success(`${Array.isArray(data) ? data.length : 1} Link(s) added!`);
                 fetchMonitors();
             } else {
@@ -204,6 +213,10 @@ export default function MonitorList() {
 
             if (res.ok) {
                 toast.success('Monitor deleted!');
+
+                // Track deletion
+                posthog.capture('Monitor Deleted', { url: monitorToDelete.url });
+
                 setMonitors(prev => prev.filter(m => m.id !== monitorToDelete.id));
                 setMonitorToDelete(null);
             } else {
