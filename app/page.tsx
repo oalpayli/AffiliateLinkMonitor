@@ -8,6 +8,8 @@ import UpgradeDialog from '@/components/UpgradeDialog';
 import Testimonials from '@/components/Testimonials';
 import TrustSignals from '@/components/TrustSignals';
 import FAQ from '@/components/FAQ';
+import Team from '@/components/Team';
+import ServiceAreas from '@/components/ServiceAreas';
 
 interface ScanResult {
     url: string;
@@ -109,10 +111,7 @@ export default function LandingPage() {
                 {/* Hero Section with Magic Box */}
                 <section className="min-h-screen flex flex-col justify-center pt-20 pb-32 relative">
                     <div className="container mx-auto px-4 md:px-6 z-20">
-                        <div className="max-w-4xl mx-auto text-center">
-
-
-
+                        <div className="max-w-4xl mx-auto text-center relative z-20">
                             <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.1]">
                                 24/7 Affiliate Link Monitoring <br className="hidden md:block" />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">for Content Creators Worldwide</span>
@@ -147,7 +146,7 @@ export default function LandingPage() {
                                                 </>
                                             ) : (
                                                 <>
-                                                    Scan Free
+                                                    Check Link
                                                     <ArrowRight className="h-5 w-5" />
                                                 </>
                                             )}
@@ -162,27 +161,28 @@ export default function LandingPage() {
                                 )}
                             </div>
 
-                            {/* Team Photos */}
-                            <div className="flex items-center justify-center gap-4 mb-4">
-                                <div className="flex -space-x-3">
-                                    <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-slate-900">
-                                        <Image src="/images/team/founder.png" alt="Team" fill className="object-cover" />
-                                    </div>
-                                    <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-slate-900">
-                                        <Image src="/images/team/member1.png" alt="Team" fill className="object-cover" />
-                                    </div>
-                                    <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-slate-900">
-                                        <Image src="/images/team/member2.png" alt="Team" fill className="object-cover" />
-                                    </div>
-                                </div>
-                                <p className="text-sm text-slate-400">
-                                    <span className="font-semibold text-white">Built by affiliate marketers,</span> for affiliate marketers
-                                </p>
-                            </div>
-
-                            <p className="text-sm text-slate-500">
+                            <p className="text-sm text-slate-500 mb-8">
                                 No credit card required • 10 monitors free • Setup in 30 seconds
                             </p>
+
+                            {/* Trust Signals (Moved Above Fold) */}
+                            <div className="mt-8">
+                                <TrustSignals />
+                            </div>
+                        </div>
+
+                        {/* Hero Image */}
+                        <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-0 w-[500px] h-[600px] z-10 pointer-events-none">
+                            <div className="relative w-full h-full">
+                                <Image
+                                    src="/images/hero-face.png"
+                                    alt="Content Creator"
+                                    fill
+                                    className="object-contain drop-shadow-2xl opacity-80 mix-blend-lighten"
+                                    priority
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-80" />
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -209,9 +209,6 @@ export default function LandingPage() {
                         ))}
                     </div>
                 </div>
-
-                {/* Trust Signals */}
-                <TrustSignals />
 
                 {/* Problem Section */}
                 <section className="py-24 relative">
@@ -307,6 +304,12 @@ export default function LandingPage() {
                 {/* Testimonials */}
                 <Testimonials />
 
+                {/* Service Areas */}
+                <ServiceAreas />
+
+                {/* Team */}
+                <Team />
+
                 {/* FAQ */}
                 <FAQ />
 
@@ -349,9 +352,6 @@ export default function LandingPage() {
                         </div>
                     </div>
                 </section>
-
-
-
 
             </div>
 

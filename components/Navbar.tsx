@@ -84,12 +84,20 @@ export default function Navbar() {
                     {!loading && (
                         <>
                             {!user ? (
-                                <Link
-                                    href="/login"
-                                    className="text-sm font-medium text-slate-300 hover:text-white transition-colors bg-slate-800/50 hover:bg-slate-800 px-4 py-2 rounded-lg border border-slate-700/50"
-                                >
-                                    Sign In
-                                </Link>
+                                <>
+                                    <Link
+                                        href="/login"
+                                        className="text-sm font-medium text-slate-300 hover:text-white transition-colors bg-slate-800/50 hover:bg-slate-800 px-4 py-2 rounded-lg border border-slate-700/50"
+                                    >
+                                        Sign In
+                                    </Link>
+                                    <Link
+                                        href="/login" // Or /signup or /dashboard depending on logic, but keeping login flow usually
+                                        className="btn-primary px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-lg shadow-violet-500/20"
+                                    >
+                                        Start Free
+                                    </Link>
+                                </>
                             ) : (
                                 <UserMenu />
                             )}
