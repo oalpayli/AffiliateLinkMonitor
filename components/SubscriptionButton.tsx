@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Loader2, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
 
 interface SubscriptionButtonProps {
     isPro: boolean;
@@ -15,6 +16,9 @@ export const SubscriptionButton = ({ isPro = false, className }: SubscriptionBut
     const router = useRouter();
 
     const onClick = async () => {
+        // Track click
+        posthog.capture('Subscription Started', { is_pro_currently: isPro });
+
         // If already Pro, go to settings page where custom management UI is
         if (isPro) {
             router.push('/settings');
@@ -69,6 +73,9 @@ export const SubscriptionButton = ({ isPro = false, className }: SubscriptionBut
                             }
 
                             toast.success("🎉 Successfully upgraded to Pro!");
+
+                            // Track success
+                            posthog.capture('Subscription Success');
 
                             // Refresh the page to show Pro UI
                             // Force full reload to ensure server state is fresh

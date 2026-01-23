@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, Loader2, ArrowRight } from 'lucide-react';
 import UpgradeDialog from './UpgradeDialog';
+import posthog from 'posthog-js';
 
 export default function ScanForm() {
     const [url, setUrl] = useState('');
@@ -18,6 +19,10 @@ export default function ScanForm() {
         if (!url) return;
 
         setIsLoading(true);
+
+        // Track the scan attempt
+        posthog.capture('Scan Started', { url });
+
         try {
             const response = await fetch('/api/scan', {
                 method: 'POST',
