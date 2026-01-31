@@ -8,11 +8,30 @@ import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 
 async function getRecentScans(userId: string) {
+    // Get user's monitors to find their scan IDs
+    const userMonitors = await prisma.monitor.findMany({
+        where: { userId },
+        select: { id: true }
+    });
+
+    const monitorIds = userMonitors.map(m => m.id);
+
+    // Get scans that are either:
+    // 1. Linked to user's monitors, OR
+    // 2. Manual scans (no monitor) - we'll show all recent manual scans for now
+    //    (In future, you might want to add a userId field to Scan table)
     const scans = await prisma.scan.findMany({
         where: {
-            monitor: {
-                userId: userId
-            }
+            OR: [
+                // Scans from user's monitors
+                {
+                    monitorId: { in: monitorIds }
+                },
+                // Manual scans (no monitor)
+                {
+                    monitorId: null
+                }
+            ]
         },
         orderBy: { createdAt: 'desc' },
         take: 10,
@@ -41,22 +60,22 @@ async function getRecentScans(userId: string) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .filter((c: any) => c.status === 'healthy')
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .reduce((acc: number, curr: any) => acc + (curr._count._all || 0), 0);
+            .reduce((acc: number, curr: any) => acc + (curr._count || 0), 0);
 
         const brokenCount = counts
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .filter((c: any) => c.status === 'broken')
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .reduce((acc: number, curr: any) => acc + (curr._count._all || 0), 0);
+            .reduce((acc: number, curr: any) => acc + (curr._count || 0), 0);
 
         const oosCount = counts
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .filter((c: any) => c.stockStatus === 'out_of_stock')
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            .reduce((acc: number, curr: any) => acc + (curr._count._all || 0), 0);
+            .reduce((acc: number, curr: any) => acc + (curr._count || 0), 0);
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const totalCount = counts.reduce((acc: number, curr: any) => acc + (curr._count._all || 0), 0);
+        const totalCount = counts.reduce((acc: number, curr: any) => acc + (curr._count || 0), 0);
 
         return {
             ...scan,
