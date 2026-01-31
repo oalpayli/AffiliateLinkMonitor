@@ -58,7 +58,7 @@ const AFFILIATE_PATHS = [
   '/aff/'
 ];
 
-function isAffiliateLink(href: string): boolean {
+export function isAffiliateLink(href: string): boolean {
   try {
     const url = new URL(href);
     const lowerHref = href.toLowerCase();

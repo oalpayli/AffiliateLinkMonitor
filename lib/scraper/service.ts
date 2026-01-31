@@ -46,12 +46,25 @@ export async function performFullScan(url: string, monitorId?: string) {
         stockStatus: 'in_stock' | 'out_of_stock' | 'unknown'
     }> = [];
 
-    if (result.affiliateLinks.length > 0) {
+    // IMPORTANT: If the URL being scanned is itself an affiliate link (e.g., amzn.to/xyz),
+    // we should check it even if we found no links on the page
+    let linksToCheck = result.affiliateLinks;
+
+    if (linksToCheck.length === 0) {
+        // Check if the URL itself is an affiliate link
+        const { isAffiliateLink } = await import('./idx.ts');
+        if (isAffiliateLink(url)) {
+            console.log(`[Scan] URL itself is an affiliate link, adding to check list: ${url}`);
+            linksToCheck = [{ href: url, text: 'Direct Link', status: 'unchecked' as const }];
+        }
+    }
+
+    if (linksToCheck.length > 0) {
         // Process links in parallel batches of 5 for speed
         const BATCH_SIZE = 5;
 
-        for (let i = 0; i < result.affiliateLinks.length; i += BATCH_SIZE) {
-            const batch = result.affiliateLinks.slice(i, i + BATCH_SIZE);
+        for (let i = 0; i < linksToCheck.length; i += BATCH_SIZE) {
+            const batch = linksToCheck.slice(i, i + BATCH_SIZE);
 
             // Process batch in parallel
             const batchResults = await Promise.all(
@@ -69,7 +82,7 @@ export async function performFullScan(url: string, monitorId?: string) {
             processedLinks.push(...batchResults);
 
             // Small delay between batches to avoid overwhelming the target
-            if (i + BATCH_SIZE < result.affiliateLinks.length) {
+            if (i + BATCH_SIZE < linksToCheck.length) {
                 await new Promise(resolve => setTimeout(resolve, 500));
             }
         }

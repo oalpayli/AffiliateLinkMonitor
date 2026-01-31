@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Activity, Zap, TrendingUp, Globe, Mail, Target, BarChart3, Loader2, CheckCircle2, XCircle, AlertCircle, Check } from "lucide-react";
+import { usePostHog } from 'posthog-js/react';
 import UpgradeDialog from '@/components/UpgradeDialog';
 import Testimonials from '@/components/Testimonials';
 import TrustSignals from '@/components/TrustSignals';
@@ -25,6 +26,7 @@ interface ScanResult {
 }
 
 export default function LandingPage() {
+    const posthog = usePostHog();
     const [scanUrl, setScanUrl] = useState('');
     const [isScanning, setIsScanning] = useState(false);
     const [scanResult, setScanResult] = useState<ScanResult | null>(null);
@@ -32,9 +34,19 @@ export default function LandingPage() {
     const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
     const [upgradeMessage, setUpgradeMessage] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [scanStartTime, setScanStartTime] = useState<number>(0);
 
     const handleScan = async () => {
         if (!scanUrl.trim()) return;
+
+        // Track scan started
+        const startTime = Date.now();
+        setScanStartTime(startTime);
+        posthog?.capture('scan_started', {
+            url_length: scanUrl.length,
+            is_amazon_link: scanUrl.includes('amazon') || scanUrl.includes('amzn'),
+            page: 'landing'
+        });
 
         setIsScanning(true);
         setError('');
@@ -74,13 +86,27 @@ export default function LandingPage() {
                 l.href?.includes('affiliate')
             ).length || 0;
 
-            setScanResult({
+            const result = {
                 url: data.url,
                 totalLinks,
                 affiliateLinks,
                 brokenLinks,
                 oosLinks,
                 links: data.links || []
+            };
+
+            setScanResult(result);
+
+            // Track scan completed
+            posthog?.capture('scan_completed', {
+                total_links: totalLinks,
+                broken_links: brokenLinks,
+                healthy_links: totalLinks - brokenLinks,
+                out_of_stock: oosLinks,
+                affiliate_links: affiliateLinks,
+                scan_duration_ms: Date.now() - scanStartTime,
+                has_broken_links: brokenLinks > 0,
+                page: 'landing'
             });
         } catch (err) {
             // Check if it's a rate limit error (429)
@@ -129,7 +155,17 @@ export default function LandingPage() {
                                             type="url"
                                             placeholder="https://yourblog.com/article"
                                             value={scanUrl}
-                                            onChange={(e) => setScanUrl(e.target.value)}
+                                            onFocus={() => posthog?.capture('scan_input_focused', { page: 'landing' })}
+                                            onChange={(e) => {
+                                                setScanUrl(e.target.value);
+                                                if (e.target.value.length > 5) {
+                                                    posthog?.capture('scan_url_entered', {
+                                                        url_length: e.target.value.length,
+                                                        is_amazon_link: e.target.value.includes('amazon') || e.target.value.includes('amzn'),
+                                                        page: 'landing'
+                                                    });
+                                                }
+                                            }}
                                             onKeyDown={(e) => e.key === 'Enter' && handleScan()}
                                             disabled={isScanning}
                                             className="flex-1 px-6 py-4 bg-slate-950/50 border border-slate-800 rounded-xl text-white placeholder:text-slate-600 focus:outline-none focus:border-violet-500/50 transition-all disabled:opacity-50"
@@ -414,6 +450,13 @@ export default function LandingPage() {
                         <div className="flex flex-col sm:flex-row gap-3">
                             <Link
                                 href="/dashboard"
+                                onClick={() => posthog?.capture('cta_clicked', {
+                                    cta_location: 'scan_results',
+                                    cta_text: 'Start Monitoring Free',
+                                    has_broken_links: scanResult.brokenLinks > 0,
+                                    broken_links_count: scanResult.brokenLinks,
+                                    page: 'landing'
+                                })}
                                 className="flex-1 px-6 py-3 btn-primary rounded-xl font-semibold transition-all text-center flex items-center justify-center gap-2"
                             >
                                 Start Monitoring Free

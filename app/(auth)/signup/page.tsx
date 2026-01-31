@@ -1,20 +1,28 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
 import { Mail, Lock, Loader2, ArrowLeft, Check, X } from 'lucide-react'
+import { usePostHog } from 'posthog-js/react'
 import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton'
 
 export default function SignupPage() {
+    const posthog = usePostHog();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [loading, setLoading] = useState(false)
+    const [formStarted, setFormStarted] = useState(false)
     const router = useRouter()
     const supabase = createClient()
+
+    // Track page view
+    useEffect(() => {
+        posthog?.capture('signup_page_viewed');
+    }, [posthog]);
 
     // Password validation
     const passwordRequirements = {
@@ -42,6 +50,11 @@ export default function SignupPage() {
 
         setLoading(true)
 
+        // Track signup started
+        posthog?.capture('signup_started', {
+            method: 'email'
+        });
+
         try {
             const { data, error } = await supabase.auth.signUp({
                 email,
@@ -54,6 +67,12 @@ export default function SignupPage() {
             }
 
             if (data.user) {
+                // Track signup completed
+                posthog?.capture('signup_completed', {
+                    method: 'email',
+                    user_id: data.user.id
+                });
+
                 toast.success('Account created! Please check your email to verify your account.')
                 router.push('/login')
             }
@@ -105,6 +124,12 @@ export default function SignupPage() {
                                     id="email"
                                     type="email"
                                     value={email}
+                                    onFocus={() => {
+                                        if (!formStarted) {
+                                            posthog?.capture('signup_form_started');
+                                            setFormStarted(true);
+                                        }
+                                    }}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
                                     className="w-full pl-10 pr-4 py-3 bg-slate-950/50 border border-slate-800 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
