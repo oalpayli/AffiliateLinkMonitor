@@ -29,19 +29,19 @@ I came across your Linktree and noticed you're doing great work sharing Amazon p
 
 I run a tool that monitors affiliate links, and I spotted something that might be costing you commissions:
 
-- [X] broken links (returning 404/500 errors)
-- [X] products that are out of stock
+- 6 broken links (returning 404/500 errors)
+- 12 products that are out of stock
 
 When these links don't work, your followers can't buy - and you don't earn.
 
 I put together a quick report showing exactly which links need attention. Want me to send it over? Totally free, just trying to help a fellow affiliate.
 
-Also, if you want to catch these issues automatically in the future, I built a free tool at [YOUR-SITE.com] that monitors your links daily and alerts you when something breaks.
+Also, if you want to catch these issues automatically in the future, I built a free tool at https://affiliatelinkmonitoring.com that monitors your links daily and alerts you when something breaks.
 
 Let me know if you'd like the report!
 
-[Your Name]
-```
+info@affiliatelinkmonitoring.com
+
 
 ---
 

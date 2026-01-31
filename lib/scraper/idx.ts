@@ -198,6 +198,26 @@ function detectStockStatus(html: string): 'in_stock' | 'out_of_stock' | 'unknown
   return 'unknown';
 }
 
+function detectAmazonErrorPage(html: string, url: string): boolean {
+  // Only check for Amazon domains
+  if (!url.includes('amazon.') && !url.includes('amzn.')) {
+    return false;
+  }
+
+  const lowerHtml = html.toLowerCase();
+
+  // Amazon error page indicators
+  const errorIndicators = [
+    'looking for something',
+    'web address you entered is not a functioning page',
+    'page you requested cannot be found',
+    'sorry, we couldn\'t find that page',
+    'dogs of amazon'  // 503 Service Unavailable error page
+  ];
+
+  return errorIndicators.some(indicator => lowerHtml.includes(indicator));
+}
+
 export async function checkLinkHealth(url: string): Promise<{ status: 'healthy' | 'broken' | 'error', statusCode: number, stockStatus: 'in_stock' | 'out_of_stock' | 'unknown' }> {
   try {
     const response = await axios.head(url, {
@@ -220,6 +240,15 @@ export async function checkLinkHealth(url: string): Promise<{ status: 'healthy' 
         });
 
         const stockStatus = detectStockStatus(getResponse.data);
+
+        // Check if this is an Amazon error page
+        if (detectAmazonErrorPage(getResponse.data, url)) {
+          return {
+            status: 'broken',
+            statusCode: getResponse.status,
+            stockStatus: 'unknown'
+          };
+        }
 
         return {
           status: 'healthy',
@@ -250,9 +279,19 @@ export async function checkLinkHealth(url: string): Promise<{ status: 'healthy' 
           try {
             const { fetchPageContent } = await import('./browser.ts');
             const html = await fetchPageContent(url);
+
+            // Check if this is an Amazon error page
+            if (detectAmazonErrorPage(html, url)) {
+              return {
+                status: 'broken',
+                statusCode: 200,
+                stockStatus: 'unknown'
+              };
+            }
+
             const stockStatus = detectStockStatus(html);
             return {
-              status: 'healthy', // If browser loads it, it's exists
+              status: 'healthy', // If browser loads it, it exists
               statusCode: 200,
               stockStatus
             };
@@ -267,6 +306,16 @@ export async function checkLinkHealth(url: string): Promise<{ status: 'healthy' 
         }
 
         const stockStatus = detectStockStatus(getResponse.data);
+
+        // Check if this is an Amazon error page
+        if (getResponse.status >= 200 && getResponse.status < 400 && detectAmazonErrorPage(getResponse.data, url)) {
+          return {
+            status: 'broken',
+            statusCode: getResponse.status,
+            stockStatus: 'unknown'
+          };
+        }
+
         return {
           status: getResponse.status >= 200 && getResponse.status < 400 ? 'healthy' : 'broken',
           statusCode: getResponse.status,
@@ -297,6 +346,16 @@ export async function checkLinkHealth(url: string): Promise<{ status: 'healthy' 
         timeout: 8000
       });
       const stockStatus = detectStockStatus(getResponse.data);
+
+      // Check if this is an Amazon error page
+      if (getResponse.status >= 200 && getResponse.status < 400 && detectAmazonErrorPage(getResponse.data, url)) {
+        return {
+          status: 'broken',
+          statusCode: getResponse.status,
+          stockStatus: 'unknown'
+        };
+      }
+
       return {
         status: getResponse.status >= 200 && getResponse.status < 400 ? 'healthy' : 'broken',
         statusCode: getResponse.status,
@@ -309,6 +368,16 @@ export async function checkLinkHealth(url: string): Promise<{ status: 'healthy' 
       try {
         const { fetchPageContent } = await import('./browser.ts');
         const html = await fetchPageContent(url);
+
+        // Check if this is an Amazon error page
+        if (detectAmazonErrorPage(html, url)) {
+          return {
+            status: 'broken',
+            statusCode: 200,
+            stockStatus: 'unknown'
+          };
+        }
+
         const stockStatus = detectStockStatus(html);
         return {
           status: 'healthy',
