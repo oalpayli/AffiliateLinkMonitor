@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Github, Twitter, Linkedin, Heart } from 'lucide-react';
+import { Instagram } from 'lucide-react';
 
 export default function Footer() {
     return (
@@ -55,14 +55,14 @@ export default function Footer() {
                     </p>
 
                     <div className="flex items-center gap-6">
-                        <a href="https://github.com" target="_blank" rel="noreferrer" className="text-slate-500 hover:text-white transition-colors">
-                            <Github className="h-5 w-5" />
-                        </a>
-                        <a href="https://twitter.com" target="_blank" rel="noreferrer" className="text-slate-500 hover:text-white transition-colors">
-                            <Twitter className="h-5 w-5" />
-                        </a>
-                        <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-slate-500 hover:text-white transition-colors">
-                            <Linkedin className="h-5 w-5" />
+                        <a
+                            href="https://instagram.com/affiliatelinkmonitoring"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-slate-500 hover:text-white transition-colors"
+                            aria-label="Follow us on Instagram"
+                        >
+                            <Instagram className="h-5 w-5" />
                         </a>
                     </div>
                 </div>
