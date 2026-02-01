@@ -372,7 +372,7 @@ export default function LandingPage() {
                             />
                             <PricingCard
                                 tier="Pro"
-                                price="$9"
+                                price="$12"
                                 period="per month"
                                 features={[
                                     "60 monitors",

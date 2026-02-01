@@ -72,7 +72,7 @@ export default async function PricingPage() {
                         <div className="text-center mb-8">
                             <h3 className="text-2xl font-bold mb-2">Pro</h3>
                             <div className="flex items-baseline justify-center gap-1 mb-1">
-                                <span className="text-5xl font-bold">$9</span>
+                                <span className="text-5xl font-bold">$12</span>
                                 <span className="text-slate-400">/per</span>
                             </div>
                             <p className="text-sm text-slate-500">month</p>
