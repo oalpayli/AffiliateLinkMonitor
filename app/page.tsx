@@ -173,13 +173,18 @@ export default function LandingPage() {
                                         <button
                                             onClick={handleScan}
                                             disabled={isScanning || !scanUrl.trim()}
-                                            className="btn-primary px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                                            className="btn-primary px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap min-w-[160px]"
                                         >
                                             {isScanning ? (
-                                                <>
-                                                    <Loader2 className="h-5 w-5 animate-spin" />
-                                                    Scanning...
-                                                </>
+                                                <div className="flex flex-col items-center gap-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <Loader2 className="h-5 w-5 animate-spin" />
+                                                        <span>Scanning...</span>
+                                                    </div>
+                                                    <span className="text-xs opacity-75 animate-pulse">
+                                                        Checking links
+                                                    </span>
+                                                </div>
                                             ) : (
                                                 <>
                                                     Check Link
@@ -188,6 +193,30 @@ export default function LandingPage() {
                                             )}
                                         </button>
                                     </div>
+
+                                    {/* Try Example Button */}
+                                    <div className="mt-3 flex items-center justify-center gap-2">
+                                        <button
+                                            onClick={() => {
+                                                const exampleUrl = 'https://www.amazon.com/dp/B0BSHF7WHW';
+                                                setScanUrl(exampleUrl);
+                                                posthog?.capture('try_example_clicked', { page: 'landing' });
+                                                // Auto-trigger scan after setting URL
+                                                setTimeout(() => {
+                                                    if (!isScanning) {
+                                                        handleScan();
+                                                    }
+                                                }, 100);
+                                            }}
+                                            disabled={isScanning}
+                                            className="text-sm text-violet-400 hover:text-violet-300 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            <Zap className="h-3.5 w-3.5" />
+                                            Try with example link
+                                        </button>
+                                        <span className="text-slate-600 text-xs">•</span>
+                                        <span className="text-xs text-slate-500">No signup required</span>
+                                    </div>
                                 </div>
                                 {error && (
                                     <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-200 text-sm flex items-center gap-2">
@@ -195,6 +224,36 @@ export default function LandingPage() {
                                         {error}
                                     </div>
                                 )}
+                            </div>
+
+                            {/* Social Proof */}
+                            <div className="flex items-center justify-center gap-2 mb-3">
+                                <div className="flex -space-x-2">
+                                    <Image
+                                        src="/avatars/user1.png"
+                                        alt="User"
+                                        width={28}
+                                        height={28}
+                                        className="w-7 h-7 rounded-full border-2 border-slate-950 object-cover"
+                                    />
+                                    <Image
+                                        src="/avatars/user2.png"
+                                        alt="User"
+                                        width={28}
+                                        height={28}
+                                        className="w-7 h-7 rounded-full border-2 border-slate-950 object-cover"
+                                    />
+                                    <Image
+                                        src="/avatars/user3.png"
+                                        alt="User"
+                                        width={28}
+                                        height={28}
+                                        className="w-7 h-7 rounded-full border-2 border-slate-950 object-cover"
+                                    />
+                                </div>
+                                <p className="text-xs text-slate-400">
+                                    <span className="text-white font-semibold">1,200+</span> creators monitoring links
+                                </p>
                             </div>
 
                             <p className="text-sm text-slate-500 mb-8">
