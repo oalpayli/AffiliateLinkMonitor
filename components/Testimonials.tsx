@@ -18,7 +18,7 @@ const testimonials: Testimonial[] = [
         role: "Lifestyle Blogger",
         company: "TheDailyEdit.com",
         quote: "Found 14 broken Amazon links in my first scan! Would've lost hundreds in commissions if I hadn't caught them. This tool pays for itself immediately.",
-        avatar: "/images/testimonials/testimonial_avatar_1_1768908588855.png",
+        avatar: "/images/testimonials/testimonial_avatar_1.png",
         rating: 5
     },
     {
@@ -26,7 +26,7 @@ const testimonials: Testimonial[] = [
         role: "Tech Reviewer",
         company: "GadgetGuru",
         quote: "I was manually checking links every week. Now I just get an email when something breaks. Saved me 5+ hours per month and never miss a broken link again.",
-        avatar: "/images/testimonials/testimonial_avatar_2_1768908607487.png",
+        avatar: "/images/testimonials/testimonial_avatar_2.png",
         rating: 5
     },
     {
@@ -34,7 +34,7 @@ const testimonials: Testimonial[] = [
         role: "Affiliate Marketer",
         company: "SmartShopperHub",
         quote: "The out-of-stock detection is a game-changer. I update my content immediately and my audience trusts me more. My CTR increased by 23% since using this.",
-        avatar: "/images/testimonials/testimonial_avatar_3_1768908625896.png",
+        avatar: "/images/testimonials/testimonial_avatar_3.png",
         rating: 5
     }
 ];
