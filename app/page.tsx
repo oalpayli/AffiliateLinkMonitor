@@ -509,6 +509,67 @@ export default function LandingPage() {
                 isAuthenticated={isAuthenticated}
                 message={upgradeMessage}
             />
+
+            {/* FAQ JSON-LD Schema for Rich Results */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "FAQPage",
+                        mainEntity: [
+                            {
+                                "@type": "Question",
+                                name: "How accurate is the affiliate link monitoring?",
+                                acceptedAnswer: {
+                                    "@type": "Answer",
+                                    text: "Our monitoring system checks your links multiple times per day using advanced detection algorithms. We verify HTTP status codes, detect redirects, and check product availability. We maintain 99.9% accuracy in detecting broken links and out-of-stock items.",
+                                },
+                            },
+                            {
+                                "@type": "Question",
+                                name: "What happens when an affiliate link breaks?",
+                                acceptedAnswer: {
+                                    "@type": "Answer",
+                                    text: "You'll receive an instant email alert within 60 seconds of detection. The alert includes the broken link URL, the page it's on, and the error type (404, out-of-stock, etc.). You can then quickly update your content before losing any significant commissions.",
+                                },
+                            },
+                            {
+                                "@type": "Question",
+                                name: "How often do you scan my affiliate links?",
+                                acceptedAnswer: {
+                                    "@type": "Answer",
+                                    text: "Free users get daily or weekly scans. Pro users can choose hourly, daily, or weekly monitoring frequency. You can set different frequencies for different monitors based on your needs.",
+                                },
+                            },
+                            {
+                                "@type": "Question",
+                                name: "Can I monitor international affiliate programs?",
+                                acceptedAnswer: {
+                                    "@type": "Answer",
+                                    text: "Absolutely! We support monitoring any link on any website worldwide. If it's a URL, we can monitor it — including Amazon links from any country, Linktree pages, Pinterest pins, and any blog or website.",
+                                },
+                            },
+                            {
+                                "@type": "Question",
+                                name: "Is my data secure with Affiliate Link Monitor?",
+                                acceptedAnswer: {
+                                    "@type": "Answer",
+                                    text: "Yes. We use enterprise-grade encryption and secure cloud infrastructure. We only store the URLs you want monitored — we never store your page content, images, or any other private data.",
+                                },
+                            },
+                            {
+                                "@type": "Question",
+                                name: "Why do affiliate links break?",
+                                acceptedAnswer: {
+                                    "@type": "Answer",
+                                    text: "Affiliate links break for several reasons: products get discontinued, merchants change URL structures, Amazon removes listings, affiliate programs shut down, or websites restructure their pages. About 15% of affiliate links break within 6 months.",
+                                },
+                            },
+                        ],
+                    }),
+                }}
+            />
         </div>
     );
 }

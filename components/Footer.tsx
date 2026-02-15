@@ -6,9 +6,9 @@ export default function Footer() {
     return (
         <footer className="bg-slate-900/50 border-t border-white/5 pt-16 pb-8 mt-auto relative z-50">
             <div className="container mx-auto px-4">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-12">
                     {/* Brand */}
-                    <div className="space-y-4">
+                    <div className="col-span-2 md:col-span-3 lg:col-span-2 space-y-4">
                         <div className="flex items-center gap-2">
                             <div className="h-8 w-8 overflow-hidden rounded-lg">
                                 <img src="/logo.png" alt="Logo" className="h-full w-full object-cover opacity-80" />
@@ -27,15 +27,28 @@ export default function Footer() {
                             <li><Link href="/dashboard" className="hover:text-emerald-400 transition-colors">Dashboard</Link></li>
                             <li><Link href="/pricing" className="hover:text-emerald-400 transition-colors">Pricing</Link></li>
                             <li><Link href="/manual" className="hover:text-emerald-400 transition-colors">User Manual</Link></li>
+                            <li><Link href="/tools/link-health-scanner" className="hover:text-emerald-400 transition-colors">Free Link Scanner</Link></li>
                         </ul>
                     </div>
 
-                    {/* Company */}
+                    {/* Link Checkers */}
                     <div>
-                        <h3 className="font-semibold text-white mb-4">Company</h3>
+                        <h3 className="font-semibold text-white mb-4">Link Checkers</h3>
                         <ul className="space-y-3 text-sm text-slate-400">
+                            <li><Link href="/amazon-broken-link-checker" className="hover:text-violet-400 transition-colors">Amazon Checker</Link></li>
+                            <li><Link href="/pinterest-link-monitor" className="hover:text-violet-400 transition-colors">Pinterest Monitor</Link></li>
+                            <li><Link href="/check-linktree-links" className="hover:text-violet-400 transition-colors">Linktree Checker</Link></li>
+                        </ul>
+                    </div>
+
+                    {/* Resources */}
+                    <div>
+                        <h3 className="font-semibold text-white mb-4">Resources</h3>
+                        <ul className="space-y-3 text-sm text-slate-400">
+                            <li><Link href="/blog" className="hover:text-blue-400 transition-colors">Blog</Link></li>
+                            <li><Link href="/alternative/amz-watcher" className="hover:text-blue-400 transition-colors">vs AMZ Watcher</Link></li>
+                            <li><Link href="/alternative/lasso" className="hover:text-blue-400 transition-colors">vs Lasso</Link></li>
                             <li><Link href="/support" className="hover:text-blue-400 transition-colors">Support</Link></li>
-                            <li><a href="mailto:info@affiliatelinkmonitoring.com" className="hover:text-blue-400 transition-colors">Contact</a></li>
                         </ul>
                     </div>
 
@@ -45,6 +58,7 @@ export default function Footer() {
                         <ul className="space-y-3 text-sm text-slate-400">
                             <li><Link href="/privacy" className="hover:text-purple-400 transition-colors">Privacy Policy</Link></li>
                             <li><Link href="/terms" className="hover:text-purple-400 transition-colors">Terms of Service</Link></li>
+                            <li><a href="mailto:info@affiliatelinkmonitoring.com" className="hover:text-purple-400 transition-colors">Contact</a></li>
                         </ul>
                     </div>
                 </div>
