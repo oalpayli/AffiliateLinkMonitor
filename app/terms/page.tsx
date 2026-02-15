@@ -67,7 +67,7 @@ export default function TermsOfService() {
                         5. Contact Info
                     </h2>
                     <p>
-                        If you have any questions about these Terms, pleas contact us at <a href="mailto:info@affiliatelinkmonitor.com" className="text-indigo-400 hover:underline">info@affiliatelinkmonitor.com</a>.
+                        If you have any questions about these Terms, pleas contact us at <a href="mailto:info@affiliatelinkmonitoring.com" className="text-indigo-400 hover:underline">info@affiliatelinkmonitoring.com</a>.
                     </p>
                 </section>
             </div>

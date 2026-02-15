@@ -108,7 +108,7 @@ Hey [Name]!
 
 I ran your Linktree through my affiliate link checker and good news - everything's working!
 
-Just wanted to let you know. If you ever want automated daily monitoring (so you catch broken links the moment they happen), check out [YOUR-SITE.com]. It's free for up to 50 links.
+Just wanted to let you know. If you ever want automated daily monitoring (so you catch broken links the moment they happen), check out [YOUR-SITE.com]. It's free for up to 10 links.
 
 Keep crushing it!
 

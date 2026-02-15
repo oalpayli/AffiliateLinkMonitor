@@ -143,7 +143,7 @@ export default function SupportPage() {
 
                 <div className="mt-8 text-center">
                     <p className="text-slate-500 text-sm">
-                        Prefer to email us directly? <a href="mailto:info@affiliatelinkmonitor.com" className="text-blue-400 hover:text-blue-300 transition-colors">info@affiliatelinkmonitor.com</a>
+                        Prefer to email us directly? <a href="mailto:info@affiliatelinkmonitoring.com" className="text-blue-400 hover:text-blue-300 transition-colors">info@affiliatelinkmonitoring.com</a>
                     </p>
                 </div>
             </div>

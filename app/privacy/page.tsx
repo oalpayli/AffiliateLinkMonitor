@@ -63,7 +63,7 @@ export default function PrivacyPolicy() {
                     <p>
                         If you have any questions about this Privacy Policy, please contact us at:
                         <br />
-                        <a href="mailto:info@affiliatelinkmonitor.com" className="text-emerald-400 hover:underline">info@affiliatelinkmonitor.com</a>
+                        <a href="mailto:info@affiliatelinkmonitoring.com" className="text-emerald-400 hover:underline">info@affiliatelinkmonitoring.com</a>
                     </p>
                 </section>
             </div>
