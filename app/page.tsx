@@ -11,6 +11,7 @@ import TrustSignals from '@/components/TrustSignals';
 import FAQ from '@/components/FAQ';
 import Team from '@/components/Team';
 import ServiceAreas from '@/components/ServiceAreas';
+import LeadMagnet from '@/components/LeadMagnet';
 
 interface ScanResult {
     url: string;
@@ -266,44 +267,11 @@ export default function LandingPage() {
                             </div>
                         </div>
 
-                        {/* Hero Image */}
-                        <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-0 w-[500px] h-[600px] z-10 pointer-events-none">
-                            <div className="relative w-full h-full">
-                                <Image
-                                    src="/images/hero-face.png"
-                                    alt="Content Creator"
-                                    fill
-                                    className="object-contain drop-shadow-2xl opacity-80 mix-blend-lighten"
-                                    priority
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-80" />
-                            </div>
-                        </div>
+
                     </div>
                 </section>
 
-                {/* Logo Marquee */}
-                <div className="w-full py-10 border-y border-slate-800/50 bg-slate-950/30 backdrop-blur-sm overflow-hidden relative">
-                    <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#020617] to-transparent z-10" />
-                    <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#020617] to-transparent z-10" />
 
-                    <div className="flex gap-16 animate-scroll whitespace-nowrap min-w-full items-center justify-center opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                        {/* Duplicated list for infinite scroll effect */}
-                        {[...Array(2)].map((_, i) => (
-                            <div key={i} className="flex gap-16 items-center">
-                                <span className="text-2xl font-bold tracking-tighter">amazon</span>
-                                <span className="text-xl font-bold tracking-wide">Hepsiburada</span>
-                                <span className="text-2xl font-bold italic">TRENDYOL</span>
-                                <span className="text-xl font-bold">BestBuy</span>
-                                <span className="text-2xl font-serif">WIRED</span>
-                                <span className="text-xl font-bold tracking-tight">Vogue</span>
-                                <span className="text-2xl font-bold">ShareASale</span>
-                                <span className="text-xl font-extrabold tracking-tighter">CommisionJunction</span>
-                                <span className="text-2xl font-bold">ClickBank</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
 
                 {/* Problem Section */}
                 <section className="py-24 relative">
@@ -320,7 +288,7 @@ export default function LandingPage() {
                             />
                             <StatCard
                                 stat="100%"
-                                description="support for Amazon, Hepsiburada, BestBuy & Schema.org"
+                                description="checks any link on any page — with Amazon stock detection"
                             />
                             <StatCard
                                 stat="$$$"
@@ -329,6 +297,9 @@ export default function LandingPage() {
                         </div>
                     </div>
                 </section>
+
+                {/* Lead Magnet / Free Guide - Strategic Placement */}
+                <LeadMagnet />
 
                 {/* How It Works */}
                 <section className="py-24 relative bg-slate-950/50">
@@ -379,7 +350,7 @@ export default function LandingPage() {
                             />
                             <FeatureCard
                                 title="Auto-detects affiliate links"
-                                description="Recognizes Amazon, CJ, ShareASale patterns automatically."
+                                description="Finds Amazon, Linktree, and any affiliate link on your page automatically."
                                 icon={<Target className="h-6 w-6 text-emerald-400" />}
                             />
                             <FeatureCard
