@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
-const BASE_URL = "https://affiliatelinkmonitoring.com";
+const BASE_URL = "https://www.affiliatelinkmonitoring.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
     "pinterest link checker",
     "linktree link checker",
   ],
-  authors: [{ name: "LinkMonitor" }],
-  creator: "LinkMonitor",
+  authors: [{ name: "Affiliate Link Monitor" }],
+  creator: "Affiliate Link Monitor",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -39,10 +39,10 @@ export const metadata: Metadata = {
       "Never lose commissions to broken links & out-of-stock products. Monitor 24/7, get instant alerts. Free plan available.",
     images: [
       {
-        url: `${BASE_URL}/logo.png`,
-        width: 512,
-        height: 512,
-        alt: "Affiliate Link Monitor Logo",
+        url: `${BASE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "Affiliate Link Monitor — 24/7 Broken Link & Out-of-Stock Detection",
       },
     ],
   },
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     title: "Affiliate Link Monitor — 24/7 Broken Link Detection",
     description:
       "Never lose commissions to broken links. Monitor Amazon, Linktree, Pinterest links 24/7. Free plan available.",
-    images: [`${BASE_URL}/logo.png`],
+    images: [`${BASE_URL}/og-image.png`],
   },
   robots: {
     index: true,
@@ -69,41 +69,35 @@ export const metadata: Metadata = {
   },
 };
 
-// JSON-LD Schemas
-const softwareAppSchema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "Affiliate Link Monitor",
-  applicationCategory: "BusinessApplication",
-  operatingSystem: "Web",
-  url: BASE_URL,
-  description:
-    "24/7 affiliate link monitoring tool that detects broken links and out-of-stock products. Get instant email alerts when your affiliate links break.",
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "USD",
-    description: "Free plan with 10 monitors. Pro plan at $12/month.",
-  },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.8",
-    ratingCount: "120",
-    bestRating: "5",
-    worstRating: "1",
-  },
-};
-
+// JSON-LD Schemas — SoftwareApplication is injected by the homepage only
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "LinkMonitor",
+  "@id": `${BASE_URL}/#organization`,
+  name: "Affiliate Link Monitor",
+  alternateName: "LinkMonitor",
   url: BASE_URL,
-  logo: `${BASE_URL}/logo.png`,
+  logo: {
+    "@type": "ImageObject",
+    url: `${BASE_URL}/logo.png`,
+    width: 512,
+    height: 512,
+  },
   email: "info@affiliatelinkmonitoring.com",
   sameAs: ["https://instagram.com/affiliatelinkmonitoring"],
   description:
     "We help content creators and affiliate marketers protect their revenue by automatically detecting broken links and out-of-stock products.",
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${BASE_URL}/#website`,
+  name: "Affiliate Link Monitor",
+  url: BASE_URL,
+  publisher: {
+    "@id": `${BASE_URL}/#organization`,
+  },
 };
 
 export default function RootLayout({
@@ -117,13 +111,13 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(softwareAppSchema),
+            __html: JSON.stringify(organizationSchema),
           }}
         />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema),
+            __html: JSON.stringify(websiteSchema),
           }}
         />
       </head>

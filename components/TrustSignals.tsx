@@ -19,7 +19,7 @@ export default function TrustSignals() {
                     />
                     <TrustMetric
                         icon={<Star className="h-5 w-5" />}
-                        value="4.9★"
+                        value="4.8★"
                         label="User Rating"
                     />
                     <TrustMetric

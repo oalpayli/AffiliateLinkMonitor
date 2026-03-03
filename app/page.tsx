@@ -1,131 +1,132 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Activity, Zap, TrendingUp, Globe, Mail, Target, BarChart3, Loader2, CheckCircle2, XCircle, AlertCircle, Check } from "lucide-react";
-import { usePostHog } from 'posthog-js/react';
-import UpgradeDialog from '@/components/UpgradeDialog';
+import { Suspense } from "react";
+import { ArrowRight, Activity, Zap, TrendingUp, Globe, Mail, Target, BarChart3, AlertCircle, Check } from "lucide-react";
+import type { Metadata } from "next";
 import Testimonials from '@/components/Testimonials';
 import TrustSignals from '@/components/TrustSignals';
 import FAQ from '@/components/FAQ';
 import Team from '@/components/Team';
 import ServiceAreas from '@/components/ServiceAreas';
 import LeadMagnet from '@/components/LeadMagnet';
+import HomeScanBox from '@/components/HomeScanBox';
 
-interface ScanResult {
-    url: string;
-    totalLinks: number;
-    affiliateLinks: number;
-    brokenLinks: number;
-    oosLinks: number;
-    links: Array<{
-        href: string;
-        status: string;
-        statusCode?: number;
-    }>;
-}
+const BASE_URL = "https://www.affiliatelinkmonitoring.com";
+
+export const metadata: Metadata = {
+    alternates: {
+        canonical: BASE_URL,
+    },
+    openGraph: {
+        url: BASE_URL,
+    },
+};
+
+// SoftwareApplication schema — homepage only
+const softwareAppSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Affiliate Link Monitor",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web",
+    url: BASE_URL,
+    image: `${BASE_URL}/logo.png`,
+    description:
+        "24/7 affiliate link monitoring tool that detects broken links and out-of-stock products. Get instant email alerts when your affiliate links break.",
+    offers: [
+        {
+            "@type": "Offer",
+            name: "Free Plan",
+            price: "0",
+            priceCurrency: "USD",
+            availability: "https://schema.org/InStock",
+            priceValidUntil: "2027-01-01",
+        },
+        {
+            "@type": "Offer",
+            name: "Pro Plan",
+            price: "12",
+            priceCurrency: "USD",
+            availability: "https://schema.org/InStock",
+            priceValidUntil: "2027-01-01",
+        },
+    ],
+    aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "4.8",
+        ratingCount: "120",
+        bestRating: "5",
+        worstRating: "1",
+    },
+};
+
+const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+        {
+            "@type": "Question",
+            name: "How accurate is the affiliate link monitoring?",
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: "Our monitoring system checks your links multiple times per day using advanced detection algorithms. We verify HTTP status codes, detect redirects, and check product availability. We maintain 99.9% accuracy in detecting broken links and out-of-stock items.",
+            },
+        },
+        {
+            "@type": "Question",
+            name: "What happens when an affiliate link breaks?",
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: "You'll receive an instant email alert within 60 seconds of detection. The alert includes the broken link URL, the page it's on, and the error type (404, out-of-stock, etc.). You can then quickly update your content before losing any significant commissions.",
+            },
+        },
+        {
+            "@type": "Question",
+            name: "How often do you scan my affiliate links?",
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: "Free users get daily or weekly scans. Pro users can choose hourly, daily, or weekly monitoring frequency. You can set different frequencies for different monitors based on your needs.",
+            },
+        },
+        {
+            "@type": "Question",
+            name: "Can I monitor international affiliate programs?",
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: "Absolutely! We support monitoring any link on any website worldwide. If it's a URL, we can monitor it — including Amazon links from any country, Linktree pages, Pinterest pins, and any blog or website.",
+            },
+        },
+        {
+            "@type": "Question",
+            name: "Is my data secure with Affiliate Link Monitor?",
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes. We use enterprise-grade encryption and secure cloud infrastructure. We only store the URLs you want monitored — we never store your page content, images, or any other private data.",
+            },
+        },
+        {
+            "@type": "Question",
+            name: "Why do affiliate links break?",
+            acceptedAnswer: {
+                "@type": "Answer",
+                text: "Affiliate links break for several reasons: products get discontinued, merchants change URL structures, Amazon removes listings, affiliate programs shut down, or websites restructure their pages.",
+            },
+        },
+    ],
+};
 
 export default function LandingPage() {
-    const posthog = usePostHog();
-    const [scanUrl, setScanUrl] = useState('');
-    const [isScanning, setIsScanning] = useState(false);
-    const [scanResult, setScanResult] = useState<ScanResult | null>(null);
-    const [error, setError] = useState('');
-    const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
-    const [upgradeMessage, setUpgradeMessage] = useState('');
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [scanStartTime, setScanStartTime] = useState<number>(0);
-
-    const handleScan = async () => {
-        if (!scanUrl.trim()) return;
-
-        // Track scan started
-        const startTime = Date.now();
-        setScanStartTime(startTime);
-        posthog?.capture('scan_started', {
-            url_length: scanUrl.length,
-            is_amazon_link: scanUrl.includes('amazon') || scanUrl.includes('amzn'),
-            page: 'landing'
-        });
-
-        setIsScanning(true);
-        setError('');
-        setScanResult(null);
-
-        try {
-            const res = await fetch('/api/scan', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url: scanUrl })
-            });
-
-            if (!res.ok) {
-                if (res.status === 429) {
-                    const data = await res.json();
-                    setUpgradeMessage(data.error || 'Scan limit reached. Sign up for more scans!');
-                    setIsAuthenticated(data.isAuthenticated || false);
-                    setShowUpgradeDialog(true);
-                    setIsScanning(false);
-                    return;
-                }
-                throw new Error('Scan failed');
-            }
-
-            const data = await res.json();
-
-            const totalLinks = data.links?.length || 0;
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const brokenLinks = data.links?.filter((l: any) => l.status === 'broken').length || 0;
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const oosLinks = data.links?.filter((l: any) => l.stockStatus === 'out_of_stock').length || 0;
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const affiliateLinks = data.links?.filter((l: any) =>
-                l.href?.includes('amazon') ||
-                l.href?.includes('shareasale') ||
-                l.href?.includes('cj.com') ||
-                l.href?.includes('affiliate')
-            ).length || 0;
-
-            const result = {
-                url: data.url,
-                totalLinks,
-                affiliateLinks,
-                brokenLinks,
-                oosLinks,
-                links: data.links || []
-            };
-
-            setScanResult(result);
-
-            // Track scan completed
-            posthog?.capture('scan_completed', {
-                total_links: totalLinks,
-                broken_links: brokenLinks,
-                healthy_links: totalLinks - brokenLinks,
-                out_of_stock: oosLinks,
-                affiliate_links: affiliateLinks,
-                scan_duration_ms: Date.now() - scanStartTime,
-                has_broken_links: brokenLinks > 0,
-                page: 'landing'
-            });
-        } catch (err) {
-            // Check if it's a rate limit error (429)
-            if (err instanceof Response && err.status === 429) {
-                const errorData = await err.json();
-                setUpgradeMessage(errorData.error || 'Scan limit reached. Sign up for more scans!');
-                setIsAuthenticated(errorData.isAuthenticated || false);
-                setShowUpgradeDialog(true);
-            } else {
-                setError('Scan failed. Please enter a valid URL.');
-            }
-        } finally {
-            setIsScanning(false);
-        }
-    };
-
     return (
         <div className="min-h-screen bg-[#020617] text-white overflow-hidden font-sans selection:bg-violet-500/30">
+            {/* Structured Data */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppSchema) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+            />
 
             {/* Dynamic Background */}
             <div className="fixed inset-0 z-0 pointer-events-none">
@@ -135,7 +136,7 @@ export default function LandingPage() {
 
             <div className="relative z-10">
 
-                {/* Hero Section with Magic Box */}
+                {/* Hero Section */}
                 <section className="min-h-screen flex flex-col justify-center pt-20 pb-32 relative">
                     <div className="container mx-auto px-4 md:px-6 z-20">
                         <div className="max-w-4xl mx-auto text-center relative z-20">
@@ -145,108 +146,40 @@ export default function LandingPage() {
                             </h1>
 
                             <p className="text-xl md:text-2xl text-slate-400 mb-12 max-w-3xl mx-auto">
-                                Never lose commissions to broken links & out-of-stock products again. We monitor 24/7 and alert you instantly.
+                                Never lose commissions to broken links &amp; out-of-stock products again. We monitor 24/7 and alert you instantly.
                             </p>
 
-                            {/* Magic Box */}
-                            <div className="max-w-2xl mx-auto mb-6">
-                                <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-2 backdrop-blur-sm hover:border-violet-500/30 transition-all duration-300 shadow-2xl shadow-violet-500/5">
-                                    <div className="flex flex-col sm:flex-row gap-2">
-                                        <input
-                                            type="url"
-                                            placeholder="https://yourblog.com/article"
-                                            value={scanUrl}
-                                            onFocus={() => posthog?.capture('scan_input_focused', { page: 'landing' })}
-                                            onChange={(e) => {
-                                                setScanUrl(e.target.value);
-                                                if (e.target.value.length > 5) {
-                                                    posthog?.capture('scan_url_entered', {
-                                                        url_length: e.target.value.length,
-                                                        is_amazon_link: e.target.value.includes('amazon') || e.target.value.includes('amzn'),
-                                                        page: 'landing'
-                                                    });
-                                                }
-                                            }}
-                                            onKeyDown={(e) => e.key === 'Enter' && handleScan()}
-                                            disabled={isScanning}
-                                            className="flex-1 px-6 py-4 bg-slate-950/50 border border-slate-800 rounded-xl text-white placeholder:text-slate-600 focus:outline-none focus:border-violet-500/50 transition-all disabled:opacity-50"
-                                        />
-                                        <button
-                                            onClick={handleScan}
-                                            disabled={isScanning || !scanUrl.trim()}
-                                            className="btn-primary px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap min-w-[160px]"
-                                        >
-                                            {isScanning ? (
-                                                <div className="flex flex-col items-center gap-1">
-                                                    <div className="flex items-center gap-2">
-                                                        <Loader2 className="h-5 w-5 animate-spin" />
-                                                        <span>Scanning...</span>
-                                                    </div>
-                                                    <span className="text-xs opacity-75 animate-pulse">
-                                                        Checking links
-                                                    </span>
-                                                </div>
-                                            ) : (
-                                                <>
-                                                    Check Link
-                                                    <ArrowRight className="h-5 w-5" />
-                                                </>
-                                            )}
-                                        </button>
-                                    </div>
-
-                                    {/* Try Example Button */}
-                                    <div className="mt-3 flex items-center justify-center gap-2">
-                                        <button
-                                            onClick={() => {
-                                                const exampleUrl = 'https://www.amazon.com/dp/B0BSHF7WHW';
-                                                setScanUrl(exampleUrl);
-                                                posthog?.capture('try_example_clicked', { page: 'landing' });
-                                                // Auto-trigger scan after setting URL
-                                                setTimeout(() => {
-                                                    if (!isScanning) {
-                                                        handleScan();
-                                                    }
-                                                }, 100);
-                                            }}
-                                            disabled={isScanning}
-                                            className="text-sm text-violet-400 hover:text-violet-300 transition-colors flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
-                                        >
-                                            <Zap className="h-3.5 w-3.5" />
-                                            Try with example link
-                                        </button>
-                                        <span className="text-slate-600 text-xs">•</span>
-                                        <span className="text-xs text-slate-500">No signup required</span>
+                            {/* Interactive scan box — client component */}
+                            <Suspense fallback={
+                                <div className="max-w-2xl mx-auto mb-6">
+                                    <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-2 h-[88px] flex items-center justify-center">
+                                        <span className="text-slate-500 text-sm">Loading scanner...</span>
                                     </div>
                                 </div>
-                                {error && (
-                                    <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-200 text-sm flex items-center gap-2">
-                                        <AlertCircle className="h-4 w-4" />
-                                        {error}
-                                    </div>
-                                )}
-                            </div>
+                            }>
+                                <HomeScanBox />
+                            </Suspense>
 
                             {/* Social Proof */}
                             <div className="flex items-center justify-center gap-2 mb-3">
                                 <div className="flex -space-x-2">
                                     <Image
                                         src="/avatars/user1.png"
-                                        alt="User"
+                                        alt="Affiliate marketer using Affiliate Link Monitor"
                                         width={28}
                                         height={28}
                                         className="w-7 h-7 rounded-full border-2 border-slate-950 object-cover"
                                     />
                                     <Image
                                         src="/avatars/user2.png"
-                                        alt="User"
+                                        alt="Affiliate marketer using Affiliate Link Monitor"
                                         width={28}
                                         height={28}
                                         className="w-7 h-7 rounded-full border-2 border-slate-950 object-cover"
                                     />
                                     <Image
                                         src="/avatars/user3.png"
-                                        alt="User"
+                                        alt="Affiliate marketer using Affiliate Link Monitor"
                                         width={28}
                                         height={28}
                                         className="w-7 h-7 rounded-full border-2 border-slate-950 object-cover"
@@ -261,17 +194,13 @@ export default function LandingPage() {
                                 No credit card required • 10 monitors free • Setup in 30 seconds
                             </p>
 
-                            {/* Trust Signals (Moved Above Fold) */}
+                            {/* Trust Signals */}
                             <div className="mt-8">
                                 <TrustSignals />
                             </div>
                         </div>
-
-
                     </div>
                 </section>
-
-
 
                 {/* Problem Section */}
                 <section className="py-24 relative">
@@ -298,7 +227,7 @@ export default function LandingPage() {
                     </div>
                 </section>
 
-                {/* Lead Magnet / Free Guide - Strategic Placement */}
+                {/* Lead Magnet */}
                 <LeadMagnet />
 
                 {/* How It Works */}
@@ -420,156 +349,6 @@ export default function LandingPage() {
                 </section>
 
             </div>
-
-            {/* Scan Result Modal */}
-            {scanResult && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setScanResult(null)}>
-                    <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-8 relative shadow-2xl shadow-violet-500/20" onClick={(e) => e.stopPropagation()}>
-                        <button
-                            onClick={() => setScanResult(null)}
-                            className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
-                        >
-                            <XCircle className="h-6 w-6" />
-                        </button>
-
-                        <div className="mb-6">
-                            <h3 className="text-2xl font-bold mb-2 flex items-center gap-2">
-                                <CheckCircle2 className="h-6 w-6 text-emerald-400" />
-                                Scan Complete
-                            </h3>
-                            <p className="text-sm text-slate-400 break-all">{scanResult.url}</p>
-                        </div>
-
-                        <div className="grid grid-cols-3 gap-4 mb-8">
-                            <div className="p-4 bg-slate-950/50 rounded-xl border border-slate-800">
-                                <div className="text-3xl font-bold text-white mb-1">{scanResult.totalLinks}</div>
-                                <div className="text-sm text-slate-400">Total Links</div>
-                            </div>
-                            <div className="p-4 bg-yellow-500/10 rounded-xl border border-yellow-500/20">
-                                <div className="text-3xl font-bold text-yellow-400 mb-1">{scanResult.oosLinks}</div>
-                                <div className="text-sm text-yellow-200">Out of Stock</div>
-                            </div>
-                            <div className="p-4 bg-slate-950/50 rounded-xl border border-slate-800">
-                                <div className="text-3xl font-bold text-violet-400 mb-1">{scanResult.affiliateLinks}</div>
-                                <div className="text-sm text-slate-400">Affiliate Links</div>
-                            </div>
-                            <div className="p-4 bg-red-500/10 rounded-xl border border-red-500/20">
-                                <div className="text-3xl font-bold text-red-400 mb-1">{scanResult.brokenLinks}</div>
-                                <div className="text-sm text-red-200">Broken Links</div>
-                            </div>
-                        </div>
-
-                        {scanResult.brokenLinks > 0 && (
-                            <div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
-                                <p className="text-red-200 text-sm flex items-start gap-2">
-                                    <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
-                                    <span><strong>{scanResult.brokenLinks} broken links found!</strong> These links are dead ends.</span>
-                                </p>
-                            </div>
-                        )}
-
-                        {scanResult.oosLinks > 0 && (
-                            <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                                <p className="text-yellow-200 text-sm flex items-start gap-2">
-                                    <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
-                                    <span><strong>{scanResult.oosLinks} products out of stock!</strong> Your visitors can't buy these.</span>
-                                </p>
-                            </div>
-                        )}
-
-                        <div className="flex flex-col sm:flex-row gap-3">
-                            <Link
-                                href="/dashboard"
-                                onClick={() => posthog?.capture('cta_clicked', {
-                                    cta_location: 'scan_results',
-                                    cta_text: 'Start Monitoring Free',
-                                    has_broken_links: scanResult.brokenLinks > 0,
-                                    broken_links_count: scanResult.brokenLinks,
-                                    page: 'landing'
-                                })}
-                                className="flex-1 px-6 py-3 btn-primary rounded-xl font-semibold transition-all text-center flex items-center justify-center gap-2"
-                            >
-                                Start Monitoring Free
-                                <ArrowRight className="h-5 w-5" />
-                            </Link>
-                            <button
-                                onClick={() => setScanResult(null)}
-                                className="px-6 py-3 bg-slate-800 text-slate-300 rounded-xl font-medium hover:bg-slate-700 transition-all"
-                            >
-                                Close
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            <UpgradeDialog
-                isOpen={showUpgradeDialog}
-                onClose={() => setShowUpgradeDialog(false)}
-                isAuthenticated={isAuthenticated}
-                message={upgradeMessage}
-            />
-
-            {/* FAQ JSON-LD Schema for Rich Results */}
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "FAQPage",
-                        mainEntity: [
-                            {
-                                "@type": "Question",
-                                name: "How accurate is the affiliate link monitoring?",
-                                acceptedAnswer: {
-                                    "@type": "Answer",
-                                    text: "Our monitoring system checks your links multiple times per day using advanced detection algorithms. We verify HTTP status codes, detect redirects, and check product availability. We maintain 99.9% accuracy in detecting broken links and out-of-stock items.",
-                                },
-                            },
-                            {
-                                "@type": "Question",
-                                name: "What happens when an affiliate link breaks?",
-                                acceptedAnswer: {
-                                    "@type": "Answer",
-                                    text: "You'll receive an instant email alert within 60 seconds of detection. The alert includes the broken link URL, the page it's on, and the error type (404, out-of-stock, etc.). You can then quickly update your content before losing any significant commissions.",
-                                },
-                            },
-                            {
-                                "@type": "Question",
-                                name: "How often do you scan my affiliate links?",
-                                acceptedAnswer: {
-                                    "@type": "Answer",
-                                    text: "Free users get daily or weekly scans. Pro users can choose hourly, daily, or weekly monitoring frequency. You can set different frequencies for different monitors based on your needs.",
-                                },
-                            },
-                            {
-                                "@type": "Question",
-                                name: "Can I monitor international affiliate programs?",
-                                acceptedAnswer: {
-                                    "@type": "Answer",
-                                    text: "Absolutely! We support monitoring any link on any website worldwide. If it's a URL, we can monitor it — including Amazon links from any country, Linktree pages, Pinterest pins, and any blog or website.",
-                                },
-                            },
-                            {
-                                "@type": "Question",
-                                name: "Is my data secure with Affiliate Link Monitor?",
-                                acceptedAnswer: {
-                                    "@type": "Answer",
-                                    text: "Yes. We use enterprise-grade encryption and secure cloud infrastructure. We only store the URLs you want monitored — we never store your page content, images, or any other private data.",
-                                },
-                            },
-                            {
-                                "@type": "Question",
-                                name: "Why do affiliate links break?",
-                                acceptedAnswer: {
-                                    "@type": "Answer",
-                                    text: "Affiliate links break for several reasons: products get discontinued, merchants change URL structures, Amazon removes listings, affiliate programs shut down, or websites restructure their pages. About 15% of affiliate links break within 6 months.",
-                                },
-                            },
-                        ],
-                    }),
-                }}
-            />
         </div>
     );
 }

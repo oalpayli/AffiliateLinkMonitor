@@ -15,12 +15,13 @@ export const metadata: Metadata = {
         'bio link affiliate marketing',
     ],
     alternates: {
-        canonical: 'https://affiliatelinkmonitoring.com/blog/does-linktree-hurt-affiliate-commissions',
+        canonical: 'https://www.affiliatelinkmonitoring.com/blog/does-linktree-hurt-affiliate-commissions',
     },
     openGraph: {
         title: 'Does Linktree Hurt Your Affiliate Commissions?',
         description: 'An honest analysis of how Linktree affects your affiliate revenue and what you can do about it.',
         type: 'article',
+        url: 'https://www.affiliatelinkmonitoring.com/blog/does-linktree-hurt-affiliate-commissions',
         publishedTime: '2026-02-14T00:00:00Z',
     },
 };
@@ -159,21 +160,38 @@ export default function LinktreeCommissionsPage() {
                 </article>
             </div>
 
-            {/* Article JSON-LD */}
+            {/* BlogPosting JSON-LD Schema */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         '@context': 'https://schema.org',
-                        '@type': 'Article',
+                        '@type': 'BlogPosting',
                         headline: 'Does Linktree Hurt Your Affiliate Commissions?',
                         description: 'An honest analysis of how Linktree affects your affiliate commissions.',
                         datePublished: '2026-02-14',
-                        author: { '@type': 'Organization', name: 'LinkMonitor' },
+                        dateModified: '2026-03-03',
+                        author: {
+                            '@type': 'Person',
+                            name: 'Alex M.',
+                            url: 'https://www.affiliatelinkmonitoring.com',
+                        },
                         publisher: {
                             '@type': 'Organization',
-                            name: 'LinkMonitor',
-                            logo: { '@type': 'ImageObject', url: 'https://affiliatelinkmonitoring.com/logo.png' },
+                            '@id': 'https://www.affiliatelinkmonitoring.com/#organization',
+                            name: 'Affiliate Link Monitor',
+                        },
+                        mainEntityOfPage: {
+                            '@type': 'WebPage',
+                            '@id': 'https://www.affiliatelinkmonitoring.com/blog/does-linktree-hurt-affiliate-commissions',
+                        },
+                        breadcrumb: {
+                            '@type': 'BreadcrumbList',
+                            itemListElement: [
+                                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.affiliatelinkmonitoring.com' },
+                                { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.affiliatelinkmonitoring.com/blog' },
+                                { '@type': 'ListItem', position: 3, name: 'Does Linktree Hurt Your Affiliate Commissions?', item: 'https://www.affiliatelinkmonitoring.com/blog/does-linktree-hurt-affiliate-commissions' },
+                            ],
                         },
                     }),
                 }}

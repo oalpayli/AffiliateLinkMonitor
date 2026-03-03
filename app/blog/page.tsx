@@ -6,7 +6,10 @@ export const metadata: Metadata = {
     title: 'Affiliate Marketing Blog — Tips, Guides & Link Monitoring Insights',
     description: 'Expert tips for affiliate marketers. Learn how to fix broken Amazon links, protect your commissions, and grow your affiliate income.',
     alternates: {
-        canonical: 'https://affiliatelinkmonitoring.com/blog',
+        canonical: 'https://www.affiliatelinkmonitoring.com/blog',
+    },
+    openGraph: {
+        url: 'https://www.affiliatelinkmonitoring.com/blog',
     },
 };
 

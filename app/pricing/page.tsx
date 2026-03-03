@@ -1,6 +1,22 @@
+import type { Metadata } from 'next';
 import { checkSubscription } from '@/lib/subscription';
 import { SubscriptionButton } from '@/components/SubscriptionButton';
-import { Check } from 'lucide-react';
+import { Check, ShieldCheck } from 'lucide-react';
+
+const BASE_URL = 'https://www.affiliatelinkmonitoring.com';
+
+export const metadata: Metadata = {
+    title: 'Pricing — Affiliate Link Monitor | Free & Pro Plans',
+    description: 'Start free with 10 monitors. Upgrade to Pro for $12/month with hourly scans, bulk import, and priority support. No credit card required. 14-day money-back guarantee.',
+    alternates: {
+        canonical: `${BASE_URL}/pricing`,
+    },
+    openGraph: {
+        title: 'Pricing — Affiliate Link Monitor | Free & Pro Plans',
+        description: 'Start free with 10 monitors. Upgrade to Pro for $12/month. No credit card required.',
+        url: `${BASE_URL}/pricing`,
+    },
+};
 
 export default async function PricingPage() {
     const isPro = await checkSubscription();
@@ -102,6 +118,46 @@ export default async function PricingPage() {
                         </ul>
 
                         <SubscriptionButton isPro={isPro} className="w-full !bg-white !text-slate-900 font-bold hover:!bg-slate-200" />
+                    </div>
+                </div>
+
+                {/* Money-back guarantee badge */}
+                <div className="flex items-center justify-center gap-2 mt-8 text-slate-400 text-sm">
+                    <ShieldCheck className="h-5 w-5 text-emerald-400" />
+                    <span><span className="text-emerald-400 font-semibold">14-day money-back guarantee</span> — no questions asked</span>
+                </div>
+
+                {/* Pricing FAQ */}
+                <div className="mt-24 max-w-3xl mx-auto">
+                    <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+                    <div className="space-y-4">
+                        {[
+                            {
+                                q: 'How does the free plan work?',
+                                a: 'The free plan includes 10 monitors and 5 one-time scans per day with daily or weekly scan frequency. No credit card required — just sign up and start monitoring immediately.',
+                            },
+                            {
+                                q: 'Can I upgrade or downgrade anytime?',
+                                a: 'Yes! You can upgrade from Free to Pro at any time. If you want to downgrade, you can cancel and your Pro features will remain active until the end of your billing period.',
+                            },
+                            {
+                                q: 'Is there a money-back guarantee?',
+                                a: 'Absolutely. We offer a 14-day money-back guarantee, no questions asked. If you\'re not satisfied for any reason, email us and we\'ll process your refund within 2 business days.',
+                            },
+                            {
+                                q: 'Do you support team accounts?',
+                                a: 'Currently all plans are single-user accounts. If you need multi-seat access, contact us at info@affiliatelinkmonitoring.com and we\'ll work something out for your team.',
+                            },
+                            {
+                                q: 'What payment methods do you accept?',
+                                a: 'We accept all major credit and debit cards (Visa, Mastercard, American Express) through our secure Stripe integration. Payments are processed securely — we never store your card details.',
+                            },
+                        ].map((item, i) => (
+                            <div key={i} className="border border-slate-800 rounded-xl bg-slate-900/50 p-6">
+                                <h3 className="font-semibold text-white mb-2">{item.q}</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">{item.a}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

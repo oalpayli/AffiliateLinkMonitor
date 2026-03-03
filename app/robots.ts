@@ -1,14 +1,26 @@
 import { MetadataRoute } from 'next';
 
+const BASE_URL = 'https://www.affiliatelinkmonitoring.com';
+
 export default function robots(): MetadataRoute.Robots {
     return {
         rules: [
             {
                 userAgent: '*',
                 allow: '/',
-                disallow: ['/api/', '/dashboard/', '/settings/', '/scans/', '/debug/', '/test/', '/test-page/'],
+                disallow: [
+                    '/api/',
+                    '/dashboard/',
+                    '/settings/',
+                    '/scans/',
+                    '/debug/',
+                    '/test/',
+                    '/test-page/',
+                    '/login',
+                    '/signup',
+                ],
             },
         ],
-        sitemap: 'https://affiliatelinkmonitoring.com/sitemap.xml',
+        sitemap: `${BASE_URL}/sitemap.xml`,
     };
 }

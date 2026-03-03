@@ -15,12 +15,13 @@ export const metadata: Metadata = {
         'amazon associates broken links',
     ],
     alternates: {
-        canonical: 'https://affiliatelinkmonitoring.com/blog/amazon-associates-links-stop-working',
+        canonical: 'https://www.affiliatelinkmonitoring.com/blog/amazon-associates-links-stop-working',
     },
     openGraph: {
         title: 'Why Amazon Associates Links Stop Working (and How to Fix Them)',
         description: 'The 7 most common reasons Amazon affiliate links break and step-by-step fixes for each.',
         type: 'article',
+        url: 'https://www.affiliatelinkmonitoring.com/blog/amazon-associates-links-stop-working',
         publishedTime: '2026-02-15T00:00:00Z',
     },
 };
@@ -185,21 +186,38 @@ export default function AmazonAssociatesLinksPage() {
                 </article>
             </div>
 
-            {/* Article JSON-LD */}
+            {/* BlogPosting JSON-LD Schema */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         '@context': 'https://schema.org',
-                        '@type': 'Article',
+                        '@type': 'BlogPosting',
                         headline: 'Why Amazon Associates Links Stop Working (and How to Fix Them)',
                         description: 'The 7 most common reasons Amazon affiliate links break and step-by-step fixes.',
                         datePublished: '2026-02-15',
-                        author: { '@type': 'Organization', name: 'LinkMonitor' },
+                        dateModified: '2026-03-03',
+                        author: {
+                            '@type': 'Person',
+                            name: 'Alex M.',
+                            url: 'https://www.affiliatelinkmonitoring.com',
+                        },
                         publisher: {
                             '@type': 'Organization',
-                            name: 'LinkMonitor',
-                            logo: { '@type': 'ImageObject', url: 'https://affiliatelinkmonitoring.com/logo.png' },
+                            '@id': 'https://www.affiliatelinkmonitoring.com/#organization',
+                            name: 'Affiliate Link Monitor',
+                        },
+                        mainEntityOfPage: {
+                            '@type': 'WebPage',
+                            '@id': 'https://www.affiliatelinkmonitoring.com/blog/amazon-associates-links-stop-working',
+                        },
+                        breadcrumb: {
+                            '@type': 'BreadcrumbList',
+                            itemListElement: [
+                                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.affiliatelinkmonitoring.com' },
+                                { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.affiliatelinkmonitoring.com/blog' },
+                                { '@type': 'ListItem', position: 3, name: 'Why Amazon Associates Links Stop Working', item: 'https://www.affiliatelinkmonitoring.com/blog/amazon-associates-links-stop-working' },
+                            ],
                         },
                     }),
                 }}

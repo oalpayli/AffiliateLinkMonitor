@@ -1,47 +1,33 @@
 import { MetadataRoute } from 'next';
 
-const BASE_URL = 'https://affiliatelinkmonitoring.com';
+const BASE_URL = 'https://www.affiliatelinkmonitoring.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const now = new Date();
-
-    // Static pages
+    // Static pages — use actual last edit dates, not build-time timestamps
     const staticPages: MetadataRoute.Sitemap = [
         {
             url: BASE_URL,
-            lastModified: now,
-            changeFrequency: 'weekly',
-            priority: 1.0,
+            lastModified: new Date('2026-03-03'),
         },
         {
             url: `${BASE_URL}/pricing`,
-            lastModified: now,
-            changeFrequency: 'monthly',
-            priority: 0.8,
+            lastModified: new Date('2026-03-03'),
         },
         {
             url: `${BASE_URL}/support`,
-            lastModified: now,
-            changeFrequency: 'monthly',
-            priority: 0.5,
+            lastModified: new Date('2026-02-15'),
         },
         {
             url: `${BASE_URL}/manual`,
-            lastModified: now,
-            changeFrequency: 'monthly',
-            priority: 0.6,
+            lastModified: new Date('2026-02-15'),
         },
         {
             url: `${BASE_URL}/privacy`,
-            lastModified: now,
-            changeFrequency: 'yearly',
-            priority: 0.3,
+            lastModified: new Date('2026-02-15'),
         },
         {
             url: `${BASE_URL}/terms`,
-            lastModified: now,
-            changeFrequency: 'yearly',
-            priority: 0.3,
+            lastModified: new Date('2026-02-15'),
         },
     ];
 
@@ -49,21 +35,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const platformPages: MetadataRoute.Sitemap = [
         {
             url: `${BASE_URL}/amazon-broken-link-checker`,
-            lastModified: now,
-            changeFrequency: 'weekly',
-            priority: 0.9,
+            lastModified: new Date('2026-02-15'),
         },
         {
             url: `${BASE_URL}/pinterest-link-monitor`,
-            lastModified: now,
-            changeFrequency: 'weekly',
-            priority: 0.9,
+            lastModified: new Date('2026-02-15'),
         },
         {
             url: `${BASE_URL}/check-linktree-links`,
-            lastModified: now,
-            changeFrequency: 'weekly',
-            priority: 0.9,
+            lastModified: new Date('2026-02-15'),
         },
     ];
 
@@ -71,9 +51,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const toolPages: MetadataRoute.Sitemap = [
         {
             url: `${BASE_URL}/tools/link-health-scanner`,
-            lastModified: now,
-            changeFrequency: 'weekly',
-            priority: 0.9,
+            lastModified: new Date('2026-02-15'),
         },
     ];
 
@@ -81,15 +59,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const alternativePages: MetadataRoute.Sitemap = [
         {
             url: `${BASE_URL}/alternative/amz-watcher`,
-            lastModified: now,
-            changeFrequency: 'monthly',
-            priority: 0.7,
+            lastModified: new Date('2026-02-15'),
         },
         {
             url: `${BASE_URL}/alternative/lasso`,
-            lastModified: now,
-            changeFrequency: 'monthly',
-            priority: 0.7,
+            lastModified: new Date('2026-02-15'),
         },
     ];
 
@@ -97,21 +71,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const blogPages: MetadataRoute.Sitemap = [
         {
             url: `${BASE_URL}/blog`,
-            lastModified: now,
-            changeFrequency: 'weekly',
-            priority: 0.7,
+            lastModified: new Date('2026-02-15'),
         },
         {
             url: `${BASE_URL}/blog/amazon-associates-links-stop-working`,
-            lastModified: now,
-            changeFrequency: 'monthly',
-            priority: 0.6,
+            lastModified: new Date('2026-02-15'),
         },
         {
             url: `${BASE_URL}/blog/does-linktree-hurt-affiliate-commissions`,
-            lastModified: now,
-            changeFrequency: 'monthly',
-            priority: 0.6,
+            lastModified: new Date('2026-02-15'),
         },
     ];
 

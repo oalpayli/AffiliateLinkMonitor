@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Instagram } from 'lucide-react';
 
 export default function Footer() {
@@ -10,8 +11,8 @@ export default function Footer() {
                     {/* Brand */}
                     <div className="col-span-2 md:col-span-3 lg:col-span-2 space-y-4">
                         <div className="flex items-center gap-2">
-                            <div className="h-8 w-8 overflow-hidden rounded-lg">
-                                <img src="/logo.png" alt="Logo" className="h-full w-full object-cover opacity-80" />
+                            <div className="h-8 w-8 overflow-hidden rounded-lg flex-shrink-0">
+                                <Image src="/logo.png" alt="Affiliate Link Monitor Logo" width={32} height={32} className="h-full w-full object-cover opacity-80" />
                             </div>
                             <span className="font-bold text-lg text-white">LinkMonitor</span>
                         </div>
@@ -24,10 +25,10 @@ export default function Footer() {
                     <div>
                         <h3 className="font-semibold text-white mb-4">Product</h3>
                         <ul className="space-y-3 text-sm text-slate-400">
-                            <li><Link href="/dashboard" className="hover:text-emerald-400 transition-colors">Dashboard</Link></li>
-                            <li><Link href="/pricing" className="hover:text-emerald-400 transition-colors">Pricing</Link></li>
-                            <li><Link href="/manual" className="hover:text-emerald-400 transition-colors">User Manual</Link></li>
-                            <li><Link href="/tools/link-health-scanner" className="hover:text-emerald-400 transition-colors">Free Link Scanner</Link></li>
+                            <li><Link href="/dashboard" className="hover:text-emerald-400 transition-colors py-2 block">Dashboard</Link></li>
+                            <li><Link href="/pricing" className="hover:text-emerald-400 transition-colors py-2 block">Pricing</Link></li>
+                            <li><Link href="/manual" className="hover:text-emerald-400 transition-colors py-2 block">User Manual</Link></li>
+                            <li><Link href="/tools/link-health-scanner" className="hover:text-emerald-400 transition-colors py-2 block">Free Link Scanner</Link></li>
                         </ul>
                     </div>
 
@@ -35,9 +36,9 @@ export default function Footer() {
                     <div>
                         <h3 className="font-semibold text-white mb-4">Link Checkers</h3>
                         <ul className="space-y-3 text-sm text-slate-400">
-                            <li><Link href="/amazon-broken-link-checker" className="hover:text-violet-400 transition-colors">Amazon Checker</Link></li>
-                            <li><Link href="/pinterest-link-monitor" className="hover:text-violet-400 transition-colors">Pinterest Monitor</Link></li>
-                            <li><Link href="/check-linktree-links" className="hover:text-violet-400 transition-colors">Linktree Checker</Link></li>
+                            <li><Link href="/amazon-broken-link-checker" className="hover:text-violet-400 transition-colors py-2 block">Amazon Checker</Link></li>
+                            <li><Link href="/pinterest-link-monitor" className="hover:text-violet-400 transition-colors py-2 block">Pinterest Monitor</Link></li>
+                            <li><Link href="/check-linktree-links" className="hover:text-violet-400 transition-colors py-2 block">Linktree Checker</Link></li>
                         </ul>
                     </div>
 
@@ -45,10 +46,10 @@ export default function Footer() {
                     <div>
                         <h3 className="font-semibold text-white mb-4">Resources</h3>
                         <ul className="space-y-3 text-sm text-slate-400">
-                            <li><Link href="/blog" className="hover:text-blue-400 transition-colors">Blog</Link></li>
-                            <li><Link href="/alternative/amz-watcher" className="hover:text-blue-400 transition-colors">vs AMZ Watcher</Link></li>
-                            <li><Link href="/alternative/lasso" className="hover:text-blue-400 transition-colors">vs Lasso</Link></li>
-                            <li><Link href="/support" className="hover:text-blue-400 transition-colors">Support</Link></li>
+                            <li><Link href="/blog" className="hover:text-blue-400 transition-colors py-2 block">Blog</Link></li>
+                            <li><Link href="/alternative/amz-watcher" className="hover:text-blue-400 transition-colors py-2 block">vs AMZ Watcher</Link></li>
+                            <li><Link href="/alternative/lasso" className="hover:text-blue-400 transition-colors py-2 block">vs Lasso</Link></li>
+                            <li><Link href="/support" className="hover:text-blue-400 transition-colors py-2 block">Support</Link></li>
                         </ul>
                     </div>
 
@@ -56,9 +57,9 @@ export default function Footer() {
                     <div>
                         <h3 className="font-semibold text-white mb-4">Legal</h3>
                         <ul className="space-y-3 text-sm text-slate-400">
-                            <li><Link href="/privacy" className="hover:text-purple-400 transition-colors">Privacy Policy</Link></li>
-                            <li><Link href="/terms" className="hover:text-purple-400 transition-colors">Terms of Service</Link></li>
-                            <li><a href="mailto:info@affiliatelinkmonitoring.com" className="hover:text-purple-400 transition-colors">Contact</a></li>
+                            <li><Link href="/privacy" className="hover:text-purple-400 transition-colors py-2 block">Privacy Policy</Link></li>
+                            <li><Link href="/terms" className="hover:text-purple-400 transition-colors py-2 block">Terms of Service</Link></li>
+                            <li><a href="mailto:info@affiliatelinkmonitoring.com" className="hover:text-purple-400 transition-colors py-2 block">Contact</a></li>
                         </ul>
                     </div>
                 </div>

@@ -27,7 +27,7 @@ const faqs: FAQItem[] = [
     },
     {
         question: "Is my data secure?",
-        answer: "Yes. We use enterprise-grade encryption, secure cloud infrastructure, and never store your page content. We only store the URLs you want monitored. We're GDPR compliant and SOC 2 certified."
+        answer: "Yes. We use enterprise-grade encryption, secure cloud infrastructure, and never store your page content. We only store the URLs you want monitored. We're GDPR compliant and follow industry best practices for data security."
     },
     {
         question: "Do you store my website content?",

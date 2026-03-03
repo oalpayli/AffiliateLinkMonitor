@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { LayoutDashboard, BookOpen, Menu } from 'lucide-react';
 import { useAuth } from '@/components/auth/AuthProvider';
@@ -16,9 +17,9 @@ export default function Navbar() {
         <nav className="fixed top-0 left-0 right-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-white/5">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                 {/* Logo */}
-                <Link href="/" className="flex items-center gap-2 group">
+                <Link href="/" className="flex items-center gap-2 group py-2">
                     <div className="relative h-10 w-10 overflow-hidden rounded-lg transition-transform group-hover:scale-105">
-                        <img src="/logo.png" alt="LinkMonitor Logo" className="h-full w-full object-cover" />
+                        <Image src="/logo.png" alt="Affiliate Link Monitor Logo" width={40} height={40} className="h-full w-full object-cover" priority />
                     </div>
                     <span className="font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
                         LinkMonitor
