@@ -53,6 +53,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
             url: `${BASE_URL}/tools/link-health-scanner`,
             lastModified: new Date('2026-02-15'),
         },
+        {
+            url: `${BASE_URL}/tools/revenue-loss-calculator`,
+            lastModified: new Date('2026-03-03'),
+        },
+    ];
+
+    // Author / About pages
+    const aboutPages: MetadataRoute.Sitemap = [
+        {
+            url: `${BASE_URL}/about/alex`,
+            lastModified: new Date('2026-03-03'),
+        },
     ];
 
     // Alternative/Competitor pages
@@ -83,5 +95,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
     ];
 
-    return [...staticPages, ...platformPages, ...toolPages, ...alternativePages, ...blogPages];
+    return [...staticPages, ...platformPages, ...toolPages, ...aboutPages, ...alternativePages, ...blogPages];
 }

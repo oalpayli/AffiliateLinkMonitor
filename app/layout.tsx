@@ -84,7 +84,13 @@ const organizationSchema = {
     height: 512,
   },
   email: "info@affiliatelinkmonitoring.com",
-  sameAs: ["https://instagram.com/affiliatelinkmonitoring"],
+  sameAs: [
+    "https://instagram.com/affiliatelinkmonitoring",
+    "https://www.producthunt.com/products/affiliate-link-monitor",
+    "https://www.g2.com/products/affiliate-link-monitor",
+    "https://www.capterra.com/p/affiliate-link-monitor",
+    "https://alternativeto.net/software/affiliate-link-monitor/",
+  ],
   description:
     "We help content creators and affiliate marketers protect their revenue by automatically detecting broken links and out-of-stock products.",
 };

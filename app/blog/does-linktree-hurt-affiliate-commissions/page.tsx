@@ -47,6 +47,8 @@ export default function LinktreeCommissionsPage() {
                                 <span className="flex items-center gap-1"><Clock className="h-4 w-4" /> 5 min read</span>
                                 <span>•</span>
                                 <span>February 14, 2026</span>
+                                <span>•</span>
+                                <span className="text-violet-400">Updated March 2026</span>
                             </div>
                             <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-6">
                                 Does Linktree Hurt Your Affiliate Commissions?
@@ -174,7 +176,7 @@ export default function LinktreeCommissionsPage() {
                         author: {
                             '@type': 'Person',
                             name: 'Alex M.',
-                            url: 'https://www.affiliatelinkmonitoring.com',
+                            url: 'https://www.affiliatelinkmonitoring.com/about/alex',
                         },
                         publisher: {
                             '@type': 'Organization',
@@ -193,6 +195,51 @@ export default function LinktreeCommissionsPage() {
                                 { '@type': 'ListItem', position: 3, name: 'Does Linktree Hurt Your Affiliate Commissions?', item: 'https://www.affiliatelinkmonitoring.com/blog/does-linktree-hurt-affiliate-commissions' },
                             ],
                         },
+                    }),
+                }}
+            />
+
+            {/* FAQPage schema — enables AI Overview passage extraction */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'FAQPage',
+                        mainEntity: [
+                            {
+                                '@type': 'Question',
+                                name: 'Does Linktree hurt affiliate commissions?',
+                                acceptedAnswer: {
+                                    '@type': 'Answer',
+                                    text: 'No, Linktree itself does not hurt your affiliate commissions. The affiliate tracking still works through Linktree links. However, broken or out-of-stock links in your Linktree, extra redirect latency, and decision fatigue from too many links can indirectly reduce your earnings.',
+                                },
+                            },
+                            {
+                                '@type': 'Question',
+                                name: 'How many links should I have on my Linktree?',
+                                acceptedAnswer: {
+                                    '@type': 'Answer',
+                                    text: 'Research on the paradox of choice suggests keeping your Linktree to 5–7 links for best conversion. Too many options cause visitors to become overwhelmed and click nothing. Put your highest-converting affiliate links at the top.',
+                                },
+                            },
+                            {
+                                '@type': 'Question',
+                                name: 'How can I check if my Linktree links are broken?',
+                                acceptedAnswer: {
+                                    '@type': 'Answer',
+                                    text: 'Use Affiliate Link Monitor\'s free Linktree Link Checker to scan your entire Linktree instantly — no signup required. For ongoing protection, set up automated monitoring to receive email alerts whenever a Linktree link breaks or goes out of stock.',
+                                },
+                            },
+                            {
+                                '@type': 'Question',
+                                name: 'Does an extra redirect from Linktree slow down my links?',
+                                acceptedAnswer: {
+                                    '@type': 'Answer',
+                                    text: 'Yes. Each redirect adds approximately 100–300ms of latency. A typical Linktree redirect path (social media → Linktree → your site → affiliate link) adds multiple hops. This is especially noticeable on mobile with slower connections and can cause some visitors to abandon before the destination page loads.',
+                                },
+                            },
+                        ],
                     }),
                 }}
             />

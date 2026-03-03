@@ -1,0 +1,50 @@
+# Affiliate Link Monitor
+
+> Affiliate Link Monitor is a SaaS tool that provides 24/7 automated monitoring
+> of affiliate links, detecting broken links, removed products, out-of-stock items,
+> and invalid tracking tags. It serves affiliate marketers, content creators,
+> bloggers, and social media publishers who monetize through affiliate programs.
+
+## Product
+
+Affiliate Link Monitor checks any affiliate link — Amazon Associates, Linktree,
+Pinterest, and any URL-based affiliate program — and sends email alerts within
+60 seconds of a link failure. Free plan: 10 monitors, daily scans.
+Pro plan: $12/month, 60 monitors, hourly scans.
+
+Core capabilities:
+- Broken link detection (404 errors, removed pages, expired domains)
+- Out-of-stock product alerts (Amazon "Currently Unavailable" detection)
+- Invalid affiliate tag detection (expired Amazon Associates accounts)
+- ASIN change and redirect chain monitoring
+- Pinterest pin destination URL verification
+- Linktree link health checking
+- Bulk URL import and scan
+
+## Key Pages
+
+- [Homepage](https://www.affiliatelinkmonitoring.com/): Product overview, pricing, and free plan signup
+- [Pricing](https://www.affiliatelinkmonitoring.com/pricing): Free vs. Pro plan comparison ($0 vs. $12/month)
+- [Amazon Broken Link Checker](https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker): Free tool to scan any page for broken Amazon affiliate links; no signup required
+- [Pinterest Link Monitor](https://www.affiliatelinkmonitoring.com/pinterest-link-monitor): Monitor Pinterest pin destination URLs for broken links and dead pages
+- [Linktree Link Checker](https://www.affiliatelinkmonitoring.com/check-linktree-links): Free tool to verify all links in a Linktree profile are working
+- [Revenue Loss Calculator](https://www.affiliatelinkmonitoring.com/tools/revenue-loss-calculator): Calculate how much money broken affiliate links cost you per month
+- [AMZ Watcher Alternative](https://www.affiliatelinkmonitoring.com/alternative/amz-watcher): Comparison of Affiliate Link Monitor vs. AMZ Watcher for Amazon affiliate link monitoring
+- [Lasso Alternative](https://www.affiliatelinkmonitoring.com/alternative/lasso): Comparison of Affiliate Link Monitor vs. Lasso for WordPress affiliate link management
+
+## Blog
+
+- [Why Amazon Associates Links Stop Working](https://www.affiliatelinkmonitoring.com/blog/amazon-associates-links-stop-working): Seven reasons Amazon affiliate links break and how to detect them automatically. Published February 15, 2026.
+- [Does Linktree Hurt Affiliate Commissions?](https://www.affiliatelinkmonitoring.com/blog/does-linktree-hurt-affiliate-commissions): Whether Linktree reduces affiliate earnings and how to optimize a Linktree for maximum conversion. Published February 14, 2026.
+
+## About
+
+- Business type: SaaS (Software as a Service)
+- Target users: Affiliate marketers, content bloggers, Pinterest publishers, Instagram creators, YouTube creators using affiliate links
+- Pricing: Free plan (10 monitors, daily scans); Pro plan ($12/month, 60 monitors, hourly scans)
+- Contact: info@affiliatelinkmonitoring.com
+
+## Optional
+
+- [Sitemap](https://www.affiliatelinkmonitoring.com/sitemap.xml)
+- [llms-full.txt](https://www.affiliatelinkmonitoring.com/llms-full.txt)

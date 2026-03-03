@@ -47,6 +47,8 @@ export default function AmazonAssociatesLinksPage() {
                                 <span className="flex items-center gap-1"><Clock className="h-4 w-4" /> 6 min read</span>
                                 <span>•</span>
                                 <span>February 15, 2026</span>
+                                <span>•</span>
+                                <span className="text-violet-400">Updated March 2026</span>
                             </div>
                             <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-6">
                                 Why Amazon Associates Links Stop Working (and How to Fix Them)
@@ -200,7 +202,7 @@ export default function AmazonAssociatesLinksPage() {
                         author: {
                             '@type': 'Person',
                             name: 'Alex M.',
-                            url: 'https://www.affiliatelinkmonitoring.com',
+                            url: 'https://www.affiliatelinkmonitoring.com/about/alex',
                         },
                         publisher: {
                             '@type': 'Organization',
@@ -219,6 +221,51 @@ export default function AmazonAssociatesLinksPage() {
                                 { '@type': 'ListItem', position: 3, name: 'Why Amazon Associates Links Stop Working', item: 'https://www.affiliatelinkmonitoring.com/blog/amazon-associates-links-stop-working' },
                             ],
                         },
+                    }),
+                }}
+            />
+
+            {/* FAQPage schema — enables AI Overview passage extraction */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'FAQPage',
+                        mainEntity: [
+                            {
+                                '@type': 'Question',
+                                name: 'Why do Amazon affiliate links stop working?',
+                                acceptedAnswer: {
+                                    '@type': 'Answer',
+                                    text: 'Amazon affiliate links stop working for 7 main reasons: the product is discontinued or removed, the item goes out of stock, the ASIN changes, your Amazon Associates tag expires, Amazon restructures their URL format, a link shortener breaks, or the page URL changes. Product discontinuation is the most common cause.',
+                                },
+                            },
+                            {
+                                '@type': 'Question',
+                                name: 'How do I know if my Amazon affiliate links are broken?',
+                                acceptedAnswer: {
+                                    '@type': 'Answer',
+                                    text: 'You can check manually by visiting each link, use a free tool like Affiliate Link Monitor\'s Amazon Broken Link Checker to scan an entire page at once, or set up 24/7 automated monitoring to receive email alerts the moment any link breaks or goes out of stock.',
+                                },
+                            },
+                            {
+                                '@type': 'Question',
+                                name: 'Do out-of-stock Amazon products still earn commissions?',
+                                acceptedAnswer: {
+                                    '@type': 'Answer',
+                                    text: 'No. When an Amazon product is out of stock, there is no "Add to Cart" button. Even if a visitor clicks your affiliate link and lands on the product page, they cannot purchase — meaning zero commission for that click.',
+                                },
+                            },
+                            {
+                                '@type': 'Question',
+                                name: 'What is the best way to monitor Amazon affiliate links?',
+                                acceptedAnswer: {
+                                    '@type': 'Answer',
+                                    text: 'The most efficient method is automated 24/7 monitoring using a tool like Affiliate Link Monitor. You paste your page URL, and the tool automatically finds all Amazon affiliate links, checks their status hourly or daily, and sends an email alert the moment any link breaks or a product goes out of stock.',
+                                },
+                            },
+                        ],
                     }),
                 }}
             />
