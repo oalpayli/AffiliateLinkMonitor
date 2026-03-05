@@ -6,16 +6,47 @@ import { Check, ShieldCheck } from 'lucide-react';
 const BASE_URL = 'https://www.affiliatelinkmonitoring.com';
 
 export const metadata: Metadata = {
-    title: 'Pricing — Affiliate Link Monitor | Free & Pro Plans',
+    title: 'Pricing — Free & Pro Plans',
     description: 'Start free with 10 monitors. Upgrade to Pro for $12/month with hourly scans, bulk import, and priority support. No credit card required. 14-day money-back guarantee.',
     alternates: {
         canonical: `${BASE_URL}/pricing`,
     },
     openGraph: {
-        title: 'Pricing — Affiliate Link Monitor | Free & Pro Plans',
+        title: 'Pricing — Free & Pro Plans',
         description: 'Start free with 10 monitors. Upgrade to Pro for $12/month. No credit card required.',
         url: `${BASE_URL}/pricing`,
     },
+};
+
+const pricingSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Affiliate Link Monitor',
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
+    url: `${BASE_URL}/pricing`,
+    offers: [
+        {
+            '@type': 'Offer',
+            name: 'Free Plan',
+            price: '0',
+            priceCurrency: 'USD',
+            description: '10 monitors, daily or weekly scans, email alerts. No credit card required.',
+        },
+        {
+            '@type': 'Offer',
+            name: 'Pro Plan',
+            price: '12',
+            priceCurrency: 'USD',
+            priceSpecification: {
+                '@type': 'UnitPriceSpecification',
+                price: '12',
+                priceCurrency: 'USD',
+                unitCode: 'MON',
+            },
+            description: '60 monitors, hourly scans, bulk import, priority support. 14-day money-back guarantee.',
+        },
+    ],
 };
 
 export default async function PricingPage() {
@@ -23,6 +54,7 @@ export default async function PricingPage() {
 
     return (
         <div className="min-h-screen bg-[#020617] text-white pt-32 pb-20">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingSchema) }} />
             {/* Background Effects */}
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-violet-600/20 rounded-[100%] blur-[120px] opacity-50" />

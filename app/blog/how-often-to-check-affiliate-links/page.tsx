@@ -28,37 +28,6 @@ export const metadata: Metadata = {
     },
 };
 
-const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-        {
-            '@type': 'Question',
-            name: 'How often should I check my affiliate links?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'The ideal frequency depends on your traffic: hourly monitoring for sites with 10,000+ monthly visitors, daily monitoring for 1,000–10,000 visitors, and weekly for under 1,000 visitors. High-traffic pages lose more money per hour of downtime, so more frequent monitoring is always better for high-value pages.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'Is checking affiliate links weekly enough?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Weekly is a reasonable minimum for low-traffic sites (under 1,000 monthly visitors). However, for any page earning meaningful commissions, daily monitoring is strongly recommended. A popular product can go out of stock and return within 48 hours — weekly checking would miss the entire event.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'What is the easiest way to automate affiliate link monitoring?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'The easiest method is to use a dedicated affiliate link monitoring tool like Affiliate Link Monitor. You paste your page URL, and the tool automatically finds all affiliate links, monitors them on your chosen schedule (hourly, daily, or weekly), and sends you an email alert the moment any link breaks or a product goes out of stock. No manual checking required.',
-            },
-        },
-    ],
-};
-
 const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -81,13 +50,19 @@ const articleSchema = {
         '@type': 'WebPage',
         '@id': `${BASE_URL}/blog/how-often-to-check-affiliate-links`,
     },
+    url: `${BASE_URL}/blog/how-often-to-check-affiliate-links`,
+    image: {
+        '@type': 'ImageObject',
+        url: `${BASE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+    },
 };
 
 export default function HowOftenCheckAffiliate() {
     return (
         <div className="min-h-screen bg-[#020617] text-white font-sans">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-indigo-600/10 rounded-[100%] blur-[120px] opacity-50" />
@@ -163,6 +138,16 @@ export default function HowOftenCheckAffiliate() {
                                 </table>
                             </div>
                             <p className="text-slate-500 text-xs">Assumes 2% affiliate conversion rate and $3.50 average commission per sale. The actual loss per broken link depends heavily on which specific link is broken and its individual traffic share.</p>
+
+                            <div className="mt-4 p-4 bg-violet-500/10 border border-violet-500/20 rounded-xl">
+                                <p className="text-sm text-slate-300">
+                                    Calculate your own potential losses with the{' '}
+                                    <Link href="/tools/revenue-loss-calculator" className="text-violet-400 hover:text-violet-300 underline font-medium">
+                                        Free Revenue Loss Calculator
+                                    </Link>
+                                    {' '}— enter your traffic and commission data to see what broken links are costing you.
+                                </p>
+                            </div>
 
                             <h2 className="text-2xl font-bold pt-4">Frequency Recommendations by Site Type</h2>
 
@@ -242,6 +227,25 @@ export default function HowOftenCheckAffiliate() {
                                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold rounded-xl transition-all"
                                 >
                                     Start Free Monitoring <ArrowRight className="h-4 w-4" />
+                                </Link>
+                            </div>
+                        </div>
+
+                        {/* Related Articles */}
+                        <div className="mt-12 pt-8 border-t border-slate-800">
+                            <h3 className="text-lg font-semibold text-white mb-4">Related Articles</h3>
+                            <div className="grid gap-4 sm:grid-cols-3">
+                                <Link href="/blog/amazon-associates-links-stop-working" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">Why Amazon Associates Links Stop Working</p>
+                                    <p className="text-xs text-slate-500 mt-1">Amazon · 6 min read</p>
+                                </Link>
+                                <Link href="/blog/amazon-products-out-of-stock-affiliate-guide" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">Amazon Products Out of Stock: A Complete Guide</p>
+                                    <p className="text-xs text-slate-500 mt-1">Amazon · 6 min read</p>
+                                </Link>
+                                <Link href="/blog/best-affiliate-link-monitoring-tools" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">Best Affiliate Link Monitoring Tools 2026</p>
+                                    <p className="text-xs text-slate-500 mt-1">Tool Comparison · 10 min read</p>
                                 </Link>
                             </div>
                         </div>

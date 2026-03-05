@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowRight, Calendar, Clock } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: 'Affiliate Marketing Blog — Tips, Guides & Link Monitoring Insights',
+    title: 'Affiliate Marketing Blog — Tips & Guides',
     description: 'Expert tips for affiliate marketers. Learn how to fix broken Amazon links, protect your commissions, and grow your affiliate income.',
     alternates: {
         canonical: 'https://www.affiliatelinkmonitoring.com/blog',
@@ -11,6 +11,15 @@ export const metadata: Metadata = {
     openGraph: {
         url: 'https://www.affiliatelinkmonitoring.com/blog',
     },
+};
+
+const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.affiliatelinkmonitoring.com' },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.affiliatelinkmonitoring.com/blog' },
+    ],
 };
 
 const blogPosts = [
@@ -75,6 +84,7 @@ const blogPosts = [
 export default function BlogIndexPage() {
     return (
         <div className="min-h-screen bg-[#020617] text-white font-sans">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-violet-600/15 rounded-[100%] blur-[120px] opacity-50" />
             </div>

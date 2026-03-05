@@ -16,12 +16,12 @@ export const metadata: Metadata = {
         'scan affiliate links',
     ],
     alternates: {
-        canonical: 'https://affiliatelinkmonitoring.com/tools/link-health-scanner',
+        canonical: 'https://www.affiliatelinkmonitoring.com/tools/link-health-scanner',
     },
     openGraph: {
         title: 'Free Affiliate Link Health Scanner',
         description: 'Scan any webpage for broken links, 404 errors, and out-of-stock products. Free & instant.',
-        url: 'https://affiliatelinkmonitoring.com/tools/link-health-scanner',
+        url: 'https://www.affiliatelinkmonitoring.com/tools/link-health-scanner',
     },
 };
 

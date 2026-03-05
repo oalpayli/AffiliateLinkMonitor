@@ -30,45 +30,6 @@ export const metadata: Metadata = {
     },
 };
 
-const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-        {
-            '@type': 'Question',
-            name: 'Does cloaking affiliate links hurt SEO?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Not inherently, if done correctly. Google does not penalize affiliate link cloaking itself — as long as you use the rel="sponsored" or rel="nofollow" attribute on your affiliate links. What Google does penalize is using cloaking to show different content to Googlebot vs. users. Properly implemented link cloaking with correct rel attributes is SEO-safe.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'Should affiliate links be nofollow or sponsored?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Google recommends using rel="sponsored" for affiliate links and paid placements. The rel="nofollow" tag also works and is still widely accepted. Both prevent passing PageRank to the affiliate merchant, which is the main concern. As of September 2019, Google treats nofollow as a "hint" rather than a directive, but sponsored is the more precise attribute for affiliate links.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'What is affiliate link cloaking?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Affiliate link cloaking means redirecting a long, ugly affiliate URL through a clean, branded URL on your own domain — for example, replacing "https://www.amazon.com/dp/B09XYZ123?tag=yourtag-20" with "https://yoursite.com/recommends/my-product". Tools like Pretty Links, ThirstyAffiliates, and Lasso do this automatically. The final destination is still the affiliate merchant.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'Does link cloaking break affiliate tracking?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'No, if your cloaking tool is set up correctly. The redirect preserves your affiliate tracking tag — the user ends up on the merchant\'s site with your affiliate code intact. However, if your cloaking plugin breaks or the redirect fails, your tracking can be lost. This is why monitoring your cloaked links is as important as monitoring raw affiliate links.',
-            },
-        },
-    ],
-};
-
 const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -91,13 +52,19 @@ const articleSchema = {
         '@type': 'WebPage',
         '@id': `${BASE_URL}/blog/does-cloaking-affiliate-links-affect-seo`,
     },
+    url: `${BASE_URL}/blog/does-cloaking-affiliate-links-affect-seo`,
+    image: {
+        '@type': 'ImageObject',
+        url: `${BASE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+    },
 };
 
 export default function CloakingAffiliateSEOPage() {
     return (
         <div className="min-h-screen bg-[#020617] text-white font-sans">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-emerald-600/10 rounded-[100%] blur-[120px] opacity-50" />
@@ -277,6 +244,25 @@ export default function CloakingAffiliateSEOPage() {
                                         </Link>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* Related Articles */}
+                        <div className="mt-12 pt-8 border-t border-slate-800">
+                            <h3 className="text-lg font-semibold text-white mb-4">Related Articles</h3>
+                            <div className="grid gap-4 sm:grid-cols-3">
+                                <Link href="/blog/how-often-to-check-affiliate-links" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">How Often Should You Check Your Affiliate Links?</p>
+                                    <p className="text-xs text-slate-500 mt-1">Strategy · 5 min read</p>
+                                </Link>
+                                <Link href="/blog/best-affiliate-link-monitoring-tools" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">Best Affiliate Link Monitoring Tools 2026</p>
+                                    <p className="text-xs text-slate-500 mt-1">Tool Comparison · 10 min read</p>
+                                </Link>
+                                <Link href="/blog/amazon-associates-links-stop-working" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">Why Amazon Associates Links Stop Working</p>
+                                    <p className="text-xs text-slate-500 mt-1">Amazon · 6 min read</p>
+                                </Link>
                             </div>
                         </div>
 

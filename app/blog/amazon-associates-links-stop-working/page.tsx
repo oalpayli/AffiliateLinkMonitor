@@ -26,9 +26,43 @@ export const metadata: Metadata = {
     },
 };
 
+const BASE_URL = 'https://www.affiliatelinkmonitoring.com';
+
+const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: 'Why Amazon Associates Links Stop Working (and How to Fix Them)',
+    description: 'The top 7 reasons your Amazon affiliate links break and practical solutions to fix broken Amazon Associates links and protect your commissions.',
+    datePublished: '2026-02-15',
+    dateModified: '2026-03-05',
+    author: {
+        '@type': 'Person',
+        name: 'Alex Miller',
+        url: `${BASE_URL}/about/alex`,
+        sameAs: 'https://www.linkedin.com/in/alex-miller-affiliatemarketing',
+    },
+    publisher: {
+        '@type': 'Organization',
+        '@id': `${BASE_URL}/#organization`,
+        name: 'Affiliate Link Monitor',
+    },
+    mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': `${BASE_URL}/blog/amazon-associates-links-stop-working`,
+    },
+    url: `${BASE_URL}/blog/amazon-associates-links-stop-working`,
+    image: {
+        '@type': 'ImageObject',
+        url: `${BASE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+    },
+};
+
 export default function AmazonAssociatesLinksPage() {
     return (
         <div className="min-h-screen bg-[#020617] text-white font-sans">
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-violet-600/10 rounded-[100%] blur-[120px] opacity-50" />
             </div>
@@ -73,6 +107,24 @@ export default function AmazonAssociatesLinksPage() {
                             <h2 className="text-2xl font-bold pt-4">The 7 Most Common Reasons Amazon Links Break</h2>
 
                             <div className="space-y-6">
+
+                                {/* SiteStripe Image Phase-out — top AI-cited cause in 2024 */}
+                                <div className="p-6 bg-slate-900/50 border border-amber-500/20 rounded-xl">
+                                    <h3 className="text-lg font-bold mb-2 flex items-start gap-3">
+                                        <span className="bg-amber-500/20 text-amber-400 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0">!</span>
+                                        SiteStripe Image Links Were Discontinued (2023/2024)
+                                    </h3>
+                                    <p className="text-slate-400 text-sm mb-3 ml-11">
+                                        <strong className="text-amber-300">This is a 2024-specific issue affecting thousands of affiliates.</strong> In late 2023 and early 2024, Amazon officially discontinued the &ldquo;Image&rdquo; and &ldquo;Text+Image&rdquo; options from the SiteStripe toolbar. If your older content uses the old HTML image embed code from SiteStripe, those links and images now appear as broken — they display a placeholder box or return errors on product pages. This is not a bug; Amazon permanently removed this feature.
+                                    </p>
+                                    <div className="ml-11 p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+                                        <p className="text-sm text-amber-200 flex items-start gap-2">
+                                            <CheckCircle2 className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                                            <span><strong>Fix:</strong> Replace all SiteStripe image embeds with either the Amazon PA-API (requires developer access) or a third-party WordPress plugin like AAWP or Lasso that pulls product images through authorized API calls. For text links, regenerate via SiteStripe using the standard &ldquo;Text&rdquo; option — those still work.</span>
+                                        </p>
+                                    </div>
+                                </div>
+
                                 {[
                                     {
                                         num: 1,
@@ -84,37 +136,37 @@ export default function AmazonAssociatesLinksPage() {
                                         num: 2,
                                         title: "Product Goes Out of Stock",
                                         content: "Even if the product page still exists, out-of-stock items don't earn commissions. Amazon shows a \"Currently unavailable\" message but there's no buy button — meaning zero earnings from that click.",
-                                        fix: "Use a tool that specifically detects out-of-stock status, not just 404 errors."
+                                        fix: "Use a tool that specifically detects out-of-stock status, not just 404 errors. Most general broken link checkers miss this entirely."
                                     },
                                     {
                                         num: 3,
                                         title: "ASIN Changes or Variations",
-                                        content: "Amazon sometimes changes ASINs (Amazon Standard Identification Numbers) when products are updated. Your old ASIN link becomes a dead end.",
-                                        fix: "Link to canonical product pages when possible and monitor for ASIN changes."
+                                        content: "Amazon sometimes changes ASINs (Amazon Standard Identification Numbers) when products are updated or replaced with a new version. Your old ASIN link becomes a dead end — often showing the 'dog of Amazon' page with no useful redirect.",
+                                        fix: "Link to canonical product pages when possible. Use monitoring to catch ASIN changes within hours so you can find the replacement ASIN."
                                     },
                                     {
                                         num: 4,
-                                        title: "Your Associate Tag Expired",
-                                        content: "Amazon Associates has a policy: if your account doesn't generate a qualifying sale within 180 days of signup, your account may be closed. Your links then contain an invalid tag.",
-                                        fix: "Verify your Associates account is active and make at least 3 qualifying sales in your first 180 days."
+                                        title: "Your Associate Tag Expired or Was Suspended",
+                                        content: "Amazon Associates has a policy: if your account doesn't generate a qualifying sale within 180 days of signup, your account may be closed. Your links then contain an invalid tag. Amazon's Link Checker tool (Tools > Link Checker in Associates Central) can verify if your tracking ID is still active.",
+                                        fix: "Verify your Associates account is active. Make at least 3 qualifying sales in your first 180 days. Reapply if suspended."
                                     },
                                     {
                                         num: 5,
-                                        title: "Amazon Changed URL Structure",
-                                        content: "Amazon occasionally restructures their URLs. Links using old formats may redirect properly in most cases, but some edge cases result in broken links.",
-                                        fix: "Use the standard /dp/ASIN format which is the most stable Amazon URL structure."
+                                        title: "SiteStripe Short Link Glitches (amzn.to)",
+                                        content: "Occasionally, the SiteStripe URL shortener (amzn.to links) fails to correctly embed your tracking ID, or the shortened URL stops resolving after Amazon updates their systems. If your link looks like amzn.to/example but leads to an error, your tracking ID may not be correctly embedded.",
+                                        fix: "Generate the full standard link instead of the shortened version. Full links (/dp/ASIN?tag=yourid-20) are more stable than amzn.to shortlinks."
                                     },
                                     {
                                         num: 6,
-                                        title: "Link Shortener Issues",
-                                        content: "If you use link shorteners (like bit.ly or your own redirects), those services can go down or your redirect can break, making the Amazon link unreachable.",
-                                        fix: "Minimize redirect chains. If you use shorteners, monitor the shortener URLs too."
+                                        title: "OneLink / Localization Issues for International Traffic",
+                                        content: "If you have international visitors, a standard US Amazon link might appear 'broken' to visitors in the UK, Germany, or Turkey if that specific product doesn't exist in their local store. The page may show an error or redirect to an irrelevant page rather than the equivalent local product.",
+                                        fix: "Enable Amazon OneLink in your Associates Central dashboard. OneLink automatically redirects international visitors to their local Amazon storefront when selling the same or equivalent product."
                                     },
                                     {
                                         num: 7,
-                                        title: "HTTP/HTTPS Migration Issues",
-                                        content: "If your website migrated from HTTP to HTTPS (which most should), internal links to your own pages might have broken, including pages containing your Amazon links.",
-                                        fix: "Run a full site scan after any major website migration to catch broken internal links."
+                                        title: "In-App Browser Limitations (Instagram, TikTok)",
+                                        content: "When users click your affiliate links from Instagram Stories, TikTok videos, or Twitter posts, they land in the app's built-in browser — not Safari or Chrome. These in-app browsers often don't have Amazon login cookies saved, making the purchase experience feel broken or frustrating. Users abandon before buying.",
+                                        fix: "Use deep linking tools like Geniuslink or URLgenius that force Amazon links to open in the Amazon app (where users are already logged in), bypassing the in-app browser problem entirely."
                                     },
                                 ].map((item) => (
                                     <div key={item.num} className="p-6 bg-slate-900/50 border border-slate-800 rounded-xl">
@@ -169,6 +221,25 @@ export default function AmazonAssociatesLinksPage() {
                             <p className="text-slate-400 leading-relaxed">
                                 Tools like <Link href="/" className="text-violet-400 hover:text-violet-300 underline">Affiliate Link Monitor</Link> let you paste your blog post URL and automatically monitor every Amazon link on that page. When a product gets removed, goes out of stock, or a link breaks for any reason, you get an email alert so you can fix it before losing significant revenue.
                             </p>
+                        </div>
+
+                        {/* Related Articles */}
+                        <div className="mt-12 pt-8 border-t border-slate-800">
+                            <h3 className="text-lg font-semibold text-white mb-4">Related Articles</h3>
+                            <div className="grid gap-4 sm:grid-cols-3">
+                                <Link href="/blog/amazon-products-out-of-stock-affiliate-guide" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">Amazon Products Out of Stock: A Complete Guide for Affiliates</p>
+                                    <p className="text-xs text-slate-500 mt-1">Amazon · 6 min read</p>
+                                </Link>
+                                <Link href="/blog/how-often-to-check-affiliate-links" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">How Often Should You Check Your Affiliate Links?</p>
+                                    <p className="text-xs text-slate-500 mt-1">Strategy · 5 min read</p>
+                                </Link>
+                                <Link href="/blog/best-affiliate-link-monitoring-tools" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">Best Affiliate Link Monitoring Tools 2026</p>
+                                    <p className="text-xs text-slate-500 mt-1">Tool Comparison · 10 min read</p>
+                                </Link>
+                            </div>
                         </div>
 
                         {/* CTA */}

@@ -15,12 +15,12 @@ export const metadata: Metadata = {
         'linktree affiliate link checker',
     ],
     alternates: {
-        canonical: 'https://affiliatelinkmonitoring.com/check-linktree-links',
+        canonical: 'https://www.affiliatelinkmonitoring.com/check-linktree-links',
     },
     openGraph: {
         title: 'Check Linktree Links — Free Linktree Link Checker Tool',
         description: 'Free tool to verify every link in your Linktree profile works. Detect broken URLs and dead links.',
-        url: 'https://affiliatelinkmonitoring.com/check-linktree-links',
+        url: 'https://www.affiliatelinkmonitoring.com/check-linktree-links',
     },
 };
 
@@ -68,30 +68,38 @@ const config = {
     ],
     jsonLd: {
         '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: [
+        '@graph': [
             {
-                '@type': 'Question',
-                name: 'Does Linktree hurt my affiliate commissions?',
-                acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'Linktree itself doesn\'t hurt commissions, but broken links on your Linktree definitely do. Regular monitoring ensures every link leads to a working page.',
+                '@type': 'WebPage',
+                '@id': 'https://www.affiliatelinkmonitoring.com/check-linktree-links#webpage',
+                url: 'https://www.affiliatelinkmonitoring.com/check-linktree-links',
+                name: 'Check Linktree Links — Free Linktree Link Checker Tool',
+                description: 'Free Linktree link checker. Verify every link in your Linktree profile works. Detect broken URLs and dead links.',
+                isPartOf: { '@id': 'https://www.affiliatelinkmonitoring.com/#website' },
+                publisher: { '@id': 'https://www.affiliatelinkmonitoring.com/#organization' },
+                inLanguage: 'en-US',
+                breadcrumb: {
+                    '@type': 'BreadcrumbList',
+                    itemListElement: [
+                        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.affiliatelinkmonitoring.com' },
+                        { '@type': 'ListItem', position: 2, name: 'Check Linktree Links', item: 'https://www.affiliatelinkmonitoring.com/check-linktree-links' },
+                    ],
                 },
             },
             {
-                '@type': 'Question',
-                name: 'How do I check if my Linktree links work?',
-                acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'Paste your Linktree URL into our scanner and we\'ll check every link automatically.',
-                },
-            },
-            {
-                '@type': 'Question',
-                name: 'Is the Linktree link checker free?',
-                acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'Yes! Scan your Linktree for free without creating an account. For ongoing monitoring, sign up for our free plan with 10 monitors.',
+                '@type': 'WebApplication',
+                '@id': 'https://www.affiliatelinkmonitoring.com/check-linktree-links#tool',
+                name: 'Linktree Link Checker',
+                url: 'https://www.affiliatelinkmonitoring.com/check-linktree-links',
+                applicationCategory: 'BusinessApplication',
+                operatingSystem: 'Any',
+                description: 'Free tool to verify every link in your Linktree profile. Detect broken URLs and dead pages instantly.',
+                isPartOf: { '@id': 'https://www.affiliatelinkmonitoring.com/#app' },
+                offers: {
+                    '@type': 'Offer',
+                    price: '0',
+                    priceCurrency: 'USD',
+                    availability: 'https://schema.org/InStock',
                 },
             },
         ],

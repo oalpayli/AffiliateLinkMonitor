@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, AlertTriangle, CheckCircle2, Clock, TrendingDown } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, Clock, TrendingDown } from 'lucide-react';
 
 const BASE_URL = 'https://www.affiliatelinkmonitoring.com';
 
@@ -28,45 +28,6 @@ export const metadata: Metadata = {
     },
 };
 
-const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-        {
-            '@type': 'Question',
-            name: 'Do I earn commissions when Amazon products are out of stock?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'No. When an Amazon product is out of stock, the "Add to Cart" button is disabled. Visitors cannot complete a purchase, which means zero commission for that click — even if your affiliate link brought them there. This is why out-of-stock detection is as important as broken link detection for affiliate marketers.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'What is the difference between "Out of Stock" and "Currently Unavailable" on Amazon?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: '"Out of Stock" means the product exists and may return — the listing is temporary unavailable. "Currently Unavailable" typically means the product has been discontinued or the seller has stopped selling it, and it is unlikely to return. Both result in zero commissions. The key difference is that out-of-stock items usually recover within days to weeks, while "Currently Unavailable" items often need to be replaced with an alternative.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'How long do Amazon products stay out of stock?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'It varies widely. High-demand items during peak seasons (like Black Friday) may go out of stock for a few hours or days. Slower-moving inventory can be out of stock for weeks. Discontinued products may never return. On average, temporary out-of-stock situations resolve within 1–30 days, but there is no guarantee.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'How can I protect my commissions when Amazon products go out of stock?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'The best approach is automated monitoring. Set up tools like Affiliate Link Monitor to detect when your Amazon links go out of stock or become unavailable. When you receive an alert, quickly find an alternative product with a similar price and description, and update your affiliate link before losing significant commissions.',
-            },
-        },
-    ],
-};
-
 const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -89,13 +50,19 @@ const articleSchema = {
         '@type': 'WebPage',
         '@id': `${BASE_URL}/blog/amazon-products-out-of-stock-affiliate-guide`,
     },
+    url: `${BASE_URL}/blog/amazon-products-out-of-stock-affiliate-guide`,
+    image: {
+        '@type': 'ImageObject',
+        url: `${BASE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+    },
 };
 
 export default function AmazonOutOfStockPage() {
     return (
         <div className="min-h-screen bg-[#020617] text-white font-sans">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-amber-600/10 rounded-[100%] blur-[120px] opacity-50" />
@@ -199,6 +166,9 @@ export default function AmazonOutOfStockPage() {
                                         <p className="text-slate-500 text-xs mt-1">200 clicks × 2.5% conversion × $3.50 commission</p>
                                     </div>
                                     <p className="text-slate-500">A popular product page with 10,000 monthly visitors and a $25 average commission could lose $500+ per month from a single out-of-stock item.</p>
+                                    <Link href="/tools/revenue-loss-calculator" className="inline-flex items-center gap-1.5 mt-3 text-sm text-violet-400 hover:text-violet-300 underline font-medium">
+                                        Calculate your own revenue loss →
+                                    </Link>
                                 </div>
                             </div>
 
@@ -246,6 +216,25 @@ export default function AmazonOutOfStockPage() {
                                         </Link>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* Related Articles */}
+                        <div className="mt-12 pt-8 border-t border-slate-800">
+                            <h3 className="text-lg font-semibold text-white mb-4">Related Articles</h3>
+                            <div className="grid gap-4 sm:grid-cols-3">
+                                <Link href="/blog/amazon-associates-links-stop-working" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">Why Amazon Associates Links Stop Working</p>
+                                    <p className="text-xs text-slate-500 mt-1">Amazon · 6 min read</p>
+                                </Link>
+                                <Link href="/blog/how-often-to-check-affiliate-links" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">How Often Should You Check Your Affiliate Links?</p>
+                                    <p className="text-xs text-slate-500 mt-1">Strategy · 5 min read</p>
+                                </Link>
+                                <Link href="/blog/best-affiliate-link-monitoring-tools" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">Best Affiliate Link Monitoring Tools 2026</p>
+                                    <p className="text-xs text-slate-500 mt-1">Tool Comparison · 10 min read</p>
+                                </Link>
                             </div>
                         </div>
 

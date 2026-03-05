@@ -84,6 +84,7 @@ const organizationSchema = {
     height: 512,
   },
   email: "info@affiliatelinkmonitoring.com",
+  foundingDate: "2025",
   sameAs: [
     "https://instagram.com/affiliatelinkmonitoring",
     "https://www.producthunt.com/products/affiliate-link-monitor",

@@ -1,0 +1,156 @@
+{
+  "_instructions": "Replace each JSON-LD block in your HTML <head>. Remove the FAQPage block entirely. Each block goes in its own <script type='application/ld+json'> tag. Fill in any [PLACEHOLDER] values.",
+
+  "blocks": [
+
+    {
+      "_label": "1. Organization — minor additions from existing",
+      "_change": "Added foundingDate. All else was correct.",
+      "schema": {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://www.affiliatelinkmonitoring.com/#organization",
+        "name": "Affiliate Link Monitor",
+        "alternateName": "LinkMonitor",
+        "url": "https://www.affiliatelinkmonitoring.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.affiliatelinkmonitoring.com/logo.png",
+          "width": 512,
+          "height": 512
+        },
+        "email": "info@affiliatelinkmonitoring.com",
+        "foundingDate": "[YYYY]",
+        "description": "We help content creators and affiliate marketers protect their revenue by monitoring affiliate links 24/7 and sending instant alerts when links break or products go out of stock.",
+        "sameAs": [
+          "https://instagram.com/affiliatelinkmonitoring",
+          "https://www.producthunt.com/products/affiliate-link-monitor",
+          "https://www.g2.com/products/affiliate-link-monitor",
+          "https://www.capterra.com/p/affiliate-link-monitor",
+          "https://alternativeto.net/software/affiliate-link-monitor/"
+        ]
+      }
+    },
+
+    {
+      "_label": "2. WebSite — added SearchAction for sitelinks searchbox",
+      "_change": "Added potentialAction with SearchAction.",
+      "schema": {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.affiliatelinkmonitoring.com/#website",
+        "name": "Affiliate Link Monitor",
+        "url": "https://www.affiliatelinkmonitoring.com",
+        "publisher": {
+          "@id": "https://www.affiliatelinkmonitoring.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.affiliatelinkmonitoring.com/search?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    },
+
+    {
+      "_label": "3. WebApplication — replaces SoftwareApplication with fixes",
+      "_change": "Changed @type to WebApplication (subtype of SoftwareApplication, more accurate for web-only), added @id, added url to each Offer, added featureList, added screenshot placeholder, added RegisterAction.",
+      "schema": {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "@id": "https://www.affiliatelinkmonitoring.com/#app",
+        "name": "Affiliate Link Monitor",
+        "applicationCategory": "BusinessApplication",
+        "browserRequirements": "Requires JavaScript. Any modern browser.",
+        "operatingSystem": "Any",
+        "url": "https://www.affiliatelinkmonitoring.com",
+        "image": "https://www.affiliatelinkmonitoring.com/logo.png",
+        "screenshot": {
+          "@type": "ImageObject",
+          "url": "[FULL URL TO DASHBOARD SCREENSHOT — e.g. https://www.affiliatelinkmonitoring.com/screenshot-dashboard.png]",
+          "caption": "Affiliate Link Monitor dashboard showing link status and alerts"
+        },
+        "description": "24/7 affiliate link monitoring tool that detects broken links and out-of-stock products. Get instant email alerts when your affiliate links break.",
+        "featureList": "24/7 automated link monitoring, broken link detection, out-of-stock product alerts, instant email notifications, Amazon link monitoring, Linktree link monitoring, Pinterest link monitoring, international link support, 60-second scan frequency",
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Free Plan",
+            "price": "0",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock",
+            "priceValidUntil": "2027-01-01",
+            "url": "https://www.affiliatelinkmonitoring.com/#pricing"
+          },
+          {
+            "@type": "Offer",
+            "name": "Pro Plan",
+            "price": "12",
+            "priceCurrency": "USD",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "12",
+              "priceCurrency": "USD",
+              "unitText": "MONTH"
+            },
+            "availability": "https://schema.org/InStock",
+            "priceValidUntil": "2027-01-01",
+            "url": "https://www.affiliatelinkmonitoring.com/#pricing"
+          }
+        ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "ratingCount": "120",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "potentialAction": {
+          "@type": "RegisterAction",
+          "target": "https://www.affiliatelinkmonitoring.com/signup",
+          "name": "Sign up free",
+          "description": "Create a free account to start monitoring your affiliate links"
+        }
+      }
+    },
+
+    {
+      "_label": "4. WebPage — new, for homepage semantic completeness",
+      "_change": "New block. speakable helps voice/AI search surface key content.",
+      "schema": {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "@id": "https://www.affiliatelinkmonitoring.com/#webpage",
+        "url": "https://www.affiliatelinkmonitoring.com",
+        "name": "Affiliate Link Monitor — 24/7 Broken Link & Out-of-Stock Detection",
+        "description": "Never lose commissions to broken links & out-of-stock products again. Monitor your Amazon, Linktree, Pinterest and any affiliate links 24/7. Get instant email alerts. Free plan available.",
+        "isPartOf": {
+          "@id": "https://www.affiliatelinkmonitoring.com/#website"
+        },
+        "about": {
+          "@id": "https://www.affiliatelinkmonitoring.com/#app"
+        },
+        "publisher": {
+          "@id": "https://www.affiliatelinkmonitoring.com/#organization"
+        },
+        "speakable": {
+          "@type": "SpeakableSpecification",
+          "cssSelector": ["h1", ".hero-description", ".value-proposition"]
+        },
+        "inLanguage": "en-US",
+        "dateModified": "2026-03-05"
+      }
+    },
+
+    {
+      "_label": "REMOVE — FAQPage (do NOT include this block)",
+      "_action": "DELETE the existing FAQPage JSON-LD from your HTML entirely.",
+      "_reason": "Google restricted FAQPage rich results in August 2023 to government and healthcare sites only. This schema produces no rich results for your site and should be removed.",
+      "schema": null
+    }
+
+  ]
+}

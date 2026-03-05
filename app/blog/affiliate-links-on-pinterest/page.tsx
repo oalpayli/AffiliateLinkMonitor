@@ -28,53 +28,6 @@ export const metadata: Metadata = {
     },
 };
 
-const faqSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-        {
-            '@type': 'Question',
-            name: 'Can you use affiliate links on Pinterest?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Yes, Pinterest allows affiliate links directly in pins as of 2024. You can add affiliate URLs to the destination link field of any pin. However, you must disclose the affiliate relationship in the pin description using hashtags like #ad or #affiliate, and you must comply with both Pinterest\'s community guidelines and your affiliate program\'s terms.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'Does Pinterest allow Amazon affiliate links?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Yes. Amazon Associates links can be used on Pinterest, but you must add a clear disclosure in the pin description (e.g., "#ad" or "This pin contains affiliate links"). Amazon\'s Operating Agreement also requires disclosure on any platform where you share affiliate links, including social media.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'Do I need to disclose affiliate links on Pinterest?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'Yes, disclosure is required by both US law (FTC guidelines) and Pinterest\'s own community guidelines. You must clearly indicate that a pin contains affiliate links. Common methods include adding #ad, #affiliate, or "This pin contains affiliate links" in the pin description.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'What happens when a Pinterest affiliate link breaks?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'When a Pinterest affiliate link breaks — because a product is discontinued, a URL changes, or a domain expires — every click on that pin is wasted. Pinterest pins have long lifespans (months or years), so a broken link can silently drain commissions for a very long time unless you actively monitor them.',
-            },
-        },
-        {
-            '@type': 'Question',
-            name: 'How do I check if my Pinterest affiliate links are working?',
-            acceptedAnswer: {
-                '@type': 'Answer',
-                text: 'You can manually check each pin by clicking through, or use Affiliate Link Monitor\'s Pinterest Link Monitor to automatically check all your Pinterest destination URLs. Set up ongoing monitoring to receive email alerts when any pin link breaks or goes out of stock.',
-            },
-        },
-    ],
-};
-
 const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -97,6 +50,13 @@ const articleSchema = {
         '@type': 'WebPage',
         '@id': `${BASE_URL}/blog/affiliate-links-on-pinterest`,
     },
+    url: `${BASE_URL}/blog/affiliate-links-on-pinterest`,
+    image: {
+        '@type': 'ImageObject',
+        url: `${BASE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+    },
     breadcrumb: {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -111,7 +71,6 @@ export default function PinterestAffiliatePage() {
     return (
         <div className="min-h-screen bg-[#020617] text-white font-sans">
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-red-600/10 rounded-[100%] blur-[120px] opacity-50" />
@@ -308,6 +267,25 @@ export default function PinterestAffiliatePage() {
                                         <p className="text-slate-400 text-sm mt-3 leading-relaxed">{item.a}</p>
                                     </details>
                                 ))}
+                            </div>
+                        </div>
+
+                        {/* Related Articles */}
+                        <div className="mt-12 pt-8 border-t border-slate-800">
+                            <h3 className="text-lg font-semibold text-white mb-4">Related Articles</h3>
+                            <div className="grid gap-4 sm:grid-cols-3">
+                                <Link href="/blog/does-linktree-hurt-affiliate-commissions" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">Does Linktree Hurt Your Affiliate Commissions?</p>
+                                    <p className="text-xs text-slate-500 mt-1">Linktree · 5 min read</p>
+                                </Link>
+                                <Link href="/blog/how-often-to-check-affiliate-links" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">How Often Should You Check Your Affiliate Links?</p>
+                                    <p className="text-xs text-slate-500 mt-1">Strategy · 5 min read</p>
+                                </Link>
+                                <Link href="/blog/best-affiliate-link-monitoring-tools" className="p-4 bg-slate-900/50 border border-slate-800 rounded-xl hover:border-violet-500/30 transition-colors group">
+                                    <p className="text-sm font-medium text-white group-hover:text-violet-400 transition-colors">Best Affiliate Link Monitoring Tools 2026</p>
+                                    <p className="text-xs text-slate-500 mt-1">Tool Comparison · 10 min read</p>
+                                </Link>
                             </div>
                         </div>
 

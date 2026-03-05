@@ -15,12 +15,12 @@ export const metadata: Metadata = {
         'cheaper amz watcher alternative',
     ],
     alternates: {
-        canonical: 'https://affiliatelinkmonitoring.com/alternative/amz-watcher',
+        canonical: 'https://www.affiliatelinkmonitoring.com/alternative/amz-watcher',
     },
     openGraph: {
         title: 'AMZ Watcher Alternative — Free Amazon Link Monitoring',
         description: 'Free affiliate link monitoring with out-of-stock detection. No complex credit system.',
-        url: 'https://affiliatelinkmonitoring.com/alternative/amz-watcher',
+        url: 'https://www.affiliatelinkmonitoring.com/alternative/amz-watcher',
     },
 };
 

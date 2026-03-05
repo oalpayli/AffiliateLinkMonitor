@@ -22,17 +22,21 @@ export const metadata: Metadata = {
     },
 };
 
-// SoftwareApplication schema — homepage only
+// WebApplication schema — homepage only
 const softwareAppSchema = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@type": "WebApplication",
+    "@id": `${BASE_URL}/#app`,
     name: "Affiliate Link Monitor",
     applicationCategory: "BusinessApplication",
-    operatingSystem: "Web",
+    browserRequirements: "Requires JavaScript. Any modern browser.",
+    operatingSystem: "Any",
     url: BASE_URL,
     image: `${BASE_URL}/logo.png`,
     description:
         "24/7 affiliate link monitoring tool that detects broken links and out-of-stock products. Get instant email alerts when your affiliate links break.",
+    featureList:
+        "24/7 automated link monitoring, broken link detection, out-of-stock product alerts, instant email notifications, Amazon link monitoring, Linktree link monitoring, Pinterest link monitoring, international link support, 60-second scan frequency, bulk import",
     offers: [
         {
             "@type": "Offer",
@@ -41,14 +45,22 @@ const softwareAppSchema = {
             priceCurrency: "USD",
             availability: "https://schema.org/InStock",
             priceValidUntil: "2027-01-01",
+            url: `${BASE_URL}/dashboard`,
         },
         {
             "@type": "Offer",
             name: "Pro Plan",
             price: "12",
             priceCurrency: "USD",
+            priceSpecification: {
+                "@type": "UnitPriceSpecification",
+                price: "12",
+                priceCurrency: "USD",
+                unitText: "MONTH",
+            },
             availability: "https://schema.org/InStock",
             priceValidUntil: "2027-01-01",
+            url: `${BASE_URL}/dashboard`,
         },
     ],
     aggregateRating: {
@@ -58,61 +70,51 @@ const softwareAppSchema = {
         bestRating: "5",
         worstRating: "1",
     },
-};
-
-const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
+    review: [
         {
-            "@type": "Question",
-            name: "How accurate is the affiliate link monitoring?",
-            acceptedAnswer: {
-                "@type": "Answer",
-                text: "Our monitoring system checks your links multiple times per day using advanced detection algorithms. We verify HTTP status codes, detect redirects, and check product availability. We maintain 99.9% accuracy in detecting broken links and out-of-stock items.",
-            },
+            "@type": "Review",
+            reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+            author: { "@type": "Person", name: "Sarah Mitchell" },
+            reviewBody:
+                "Found 14 broken Amazon links in my first scan! Would've lost hundreds in commissions if I hadn't caught them. This tool pays for itself immediately.",
         },
         {
-            "@type": "Question",
-            name: "What happens when an affiliate link breaks?",
-            acceptedAnswer: {
-                "@type": "Answer",
-                text: "You'll receive an instant email alert within 60 seconds of detection. The alert includes the broken link URL, the page it's on, and the error type (404, out-of-stock, etc.). You can then quickly update your content before losing any significant commissions.",
-            },
+            "@type": "Review",
+            reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+            author: { "@type": "Person", name: "Marcus Chen" },
+            reviewBody:
+                "I was manually checking links every week. Now I just get an email when something breaks. Saved me 5+ hours per month and never miss a broken link again.",
         },
         {
-            "@type": "Question",
-            name: "How often do you scan my affiliate links?",
-            acceptedAnswer: {
-                "@type": "Answer",
-                text: "Free users get daily or weekly scans. Pro users can choose hourly, daily, or weekly monitoring frequency. You can set different frequencies for different monitors based on your needs.",
-            },
-        },
-        {
-            "@type": "Question",
-            name: "Can I monitor international affiliate programs?",
-            acceptedAnswer: {
-                "@type": "Answer",
-                text: "Absolutely! We support monitoring any link on any website worldwide. If it's a URL, we can monitor it — including Amazon links from any country, Linktree pages, Pinterest pins, and any blog or website.",
-            },
-        },
-        {
-            "@type": "Question",
-            name: "Is my data secure with Affiliate Link Monitor?",
-            acceptedAnswer: {
-                "@type": "Answer",
-                text: "Yes. We use enterprise-grade encryption and secure cloud infrastructure. We only store the URLs you want monitored — we never store your page content, images, or any other private data.",
-            },
-        },
-        {
-            "@type": "Question",
-            name: "Why do affiliate links break?",
-            acceptedAnswer: {
-                "@type": "Answer",
-                text: "Affiliate links break for several reasons: products get discontinued, merchants change URL structures, Amazon removes listings, affiliate programs shut down, or websites restructure their pages.",
-            },
+            "@type": "Review",
+            reviewRating: { "@type": "Rating", ratingValue: "5", bestRating: "5" },
+            author: { "@type": "Person", name: "Jessica Torres" },
+            reviewBody:
+                "The out-of-stock detection is a game-changer. I update my content immediately and my audience trusts me more. My CTR increased by 23% since using this.",
         },
     ],
+    potentialAction: {
+        "@type": "RegisterAction",
+        target: `${BASE_URL}/dashboard`,
+        name: "Sign up free",
+        description: "Create a free account to start monitoring your affiliate links",
+    },
+};
+
+// WebPage schema — homepage
+const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${BASE_URL}/#webpage`,
+    url: BASE_URL,
+    name: "Affiliate Link Monitor — 24/7 Broken Link & Out-of-Stock Detection",
+    description:
+        "Never lose commissions to broken links & out-of-stock products again. Monitor your Amazon, Linktree, Pinterest and any affiliate links 24/7. Get instant email alerts. Free plan available.",
+    isPartOf: { "@id": `${BASE_URL}/#website` },
+    about: { "@id": `${BASE_URL}/#app` },
+    publisher: { "@id": `${BASE_URL}/#organization` },
+    inLanguage: "en-US",
+    dateModified: "2026-03-05",
 };
 
 export default function LandingPage() {
@@ -125,7 +127,7 @@ export default function LandingPage() {
             />
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
             />
 
             {/* Dynamic Background */}

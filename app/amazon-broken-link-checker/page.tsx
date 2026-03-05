@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import PlatformCheckerPage from '@/components/PlatformCheckerPage';
 
 export const metadata: Metadata = {
-    title: 'Amazon Broken Link Checker — Find Dead Affiliate Links Instantly',
+    title: 'Amazon Broken Link Checker — Find Dead Affiliate Links',
     description:
         'Free Amazon affiliate link checker. Scan your pages for broken Amazon links, out-of-stock products, and 404 errors. Get instant alerts when links break. No signup required.',
     keywords: [
@@ -15,12 +15,12 @@ export const metadata: Metadata = {
         'amazon product link checker',
     ],
     alternates: {
-        canonical: 'https://affiliatelinkmonitoring.com/amazon-broken-link-checker',
+        canonical: 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker',
     },
     openGraph: {
         title: 'Amazon Broken Link Checker — Find Dead Affiliate Links Instantly',
         description: 'Free tool to scan your pages for broken Amazon affiliate links and out-of-stock products. Get instant alerts.',
-        url: 'https://affiliatelinkmonitoring.com/amazon-broken-link-checker',
+        url: 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker',
     },
 };
 
@@ -68,38 +68,38 @@ const config = {
     ],
     jsonLd: {
         '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: [
+        '@graph': [
             {
-                '@type': 'Question',
-                name: 'Why do my Amazon affiliate links stop working?',
-                acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'Amazon links break for many reasons: products get discontinued, sellers remove listings, ASINs become invalid, or Amazon restructures their URLs. About 15% of Amazon affiliate links become broken within 6 months.',
+                '@type': 'WebPage',
+                '@id': 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker#webpage',
+                url: 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker',
+                name: 'Amazon Broken Link Checker — Find Dead Affiliate Links Instantly',
+                description: 'Free Amazon affiliate link checker. Scan your pages for broken Amazon links, out-of-stock products, and 404 errors.',
+                isPartOf: { '@id': 'https://www.affiliatelinkmonitoring.com/#website' },
+                publisher: { '@id': 'https://www.affiliatelinkmonitoring.com/#organization' },
+                inLanguage: 'en-US',
+                breadcrumb: {
+                    '@type': 'BreadcrumbList',
+                    itemListElement: [
+                        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.affiliatelinkmonitoring.com' },
+                        { '@type': 'ListItem', position: 2, name: 'Amazon Broken Link Checker', item: 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker' },
+                    ],
                 },
             },
             {
-                '@type': 'Question',
-                name: 'How often should I check my Amazon affiliate links?',
-                acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'We recommend at least daily checks for high-traffic pages. Amazon product availability can change multiple times per day.',
-                },
-            },
-            {
-                '@type': 'Question',
-                name: 'Do you detect out-of-stock Amazon products?',
-                acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'Yes. Beyond simple broken link detection, we check if Amazon products are currently in stock and alert you so you can recommend alternatives.',
-                },
-            },
-            {
-                '@type': 'Question',
-                name: 'Is the Amazon link checker free?',
-                acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'Yes! You can scan any page for free right now without signing up. For ongoing monitoring, our free plan includes 10 monitors with daily scans.',
+                '@type': 'WebApplication',
+                '@id': 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker#tool',
+                name: 'Amazon Broken Link Checker',
+                url: 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker',
+                applicationCategory: 'BusinessApplication',
+                operatingSystem: 'Any',
+                description: 'Free tool to detect broken Amazon affiliate links and out-of-stock products. Scan any page URL instantly.',
+                isPartOf: { '@id': 'https://www.affiliatelinkmonitoring.com/#app' },
+                offers: {
+                    '@type': 'Offer',
+                    price: '0',
+                    priceCurrency: 'USD',
+                    availability: 'https://schema.org/InStock',
                 },
             },
         ],

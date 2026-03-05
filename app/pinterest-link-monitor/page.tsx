@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import PlatformCheckerPage from '@/components/PlatformCheckerPage';
 
 export const metadata: Metadata = {
-    title: 'Pinterest Link Monitor — Check Your Pin Links for Errors',
+    title: 'Pinterest Link Monitor — Check Your Pin Links',
     description:
         'Free Pinterest link checker tool. Verify that your Pinterest pin destination URLs still work. Detect broken links, redirects, and dead pages. No signup required.',
     keywords: [
@@ -15,12 +15,12 @@ export const metadata: Metadata = {
         'pinterest url checker',
     ],
     alternates: {
-        canonical: 'https://affiliatelinkmonitoring.com/pinterest-link-monitor',
+        canonical: 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor',
     },
     openGraph: {
-        title: 'Pinterest Link Monitor — Check Your Pin Links for Errors',
+        title: 'Pinterest Link Monitor — Check Your Pin Links',
         description: 'Free tool to verify your Pinterest pin destination URLs. Detect broken links and dead pages instantly.',
-        url: 'https://affiliatelinkmonitoring.com/pinterest-link-monitor',
+        url: 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor',
     },
 };
 
@@ -68,30 +68,38 @@ const config = {
     ],
     jsonLd: {
         '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: [
+        '@graph': [
             {
-                '@type': 'Question',
-                name: 'Why should I monitor my Pinterest links?',
-                acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'Pinterest pins can drive traffic for months or years. Monitoring ensures your pins always lead to working pages so you never waste that valuable traffic.',
+                '@type': 'WebPage',
+                '@id': 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor#webpage',
+                url: 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor',
+                name: 'Pinterest Link Monitor — Check Your Pin Links for Errors',
+                description: 'Free Pinterest link checker tool. Verify that your Pinterest pin destination URLs still work.',
+                isPartOf: { '@id': 'https://www.affiliatelinkmonitoring.com/#website' },
+                publisher: { '@id': 'https://www.affiliatelinkmonitoring.com/#organization' },
+                inLanguage: 'en-US',
+                breadcrumb: {
+                    '@type': 'BreadcrumbList',
+                    itemListElement: [
+                        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.affiliatelinkmonitoring.com' },
+                        { '@type': 'ListItem', position: 2, name: 'Pinterest Link Monitor', item: 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor' },
+                    ],
                 },
             },
             {
-                '@type': 'Question',
-                name: 'Can Pinterest shadowban me for broken links?',
-                acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'While not officially confirmed, broken links can reduce your pin distribution. Keeping links healthy helps maintain pin performance.',
-                },
-            },
-            {
-                '@type': 'Question',
-                name: 'Is the Pinterest link checker free?',
-                acceptedAnswer: {
-                    '@type': 'Answer',
-                    text: 'Yes! Scan any Pinterest URL for free right now. For ongoing monitoring, our free plan includes 10 monitors.',
+                '@type': 'WebApplication',
+                '@id': 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor#tool',
+                name: 'Pinterest Link Monitor',
+                url: 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor',
+                applicationCategory: 'BusinessApplication',
+                operatingSystem: 'Any',
+                description: 'Free tool to verify Pinterest pin destination URLs. Detect broken links and dead pages instantly.',
+                isPartOf: { '@id': 'https://www.affiliatelinkmonitoring.com/#app' },
+                offers: {
+                    '@type': 'Offer',
+                    price: '0',
+                    priceCurrency: 'USD',
+                    availability: 'https://schema.org/InStock',
                 },
             },
         ],

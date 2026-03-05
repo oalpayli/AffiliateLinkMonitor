@@ -15,12 +15,12 @@ export const metadata: Metadata = {
         'affiliate link plugin alternative',
     ],
     alternates: {
-        canonical: 'https://affiliatelinkmonitoring.com/alternative/lasso',
+        canonical: 'https://www.affiliatelinkmonitoring.com/alternative/lasso',
     },
     openGraph: {
         title: 'Lasso Alternative — Free Affiliate Link Monitoring Without WordPress',
         description: 'Free link monitoring that works with any platform. No WordPress required.',
-        url: 'https://affiliatelinkmonitoring.com/alternative/lasso',
+        url: 'https://www.affiliatelinkmonitoring.com/alternative/lasso',
     },
 };
 
