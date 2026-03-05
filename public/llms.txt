@@ -36,6 +36,11 @@ Core capabilities:
 
 - [Why Amazon Associates Links Stop Working](https://www.affiliatelinkmonitoring.com/blog/amazon-associates-links-stop-working): Seven reasons Amazon affiliate links break and how to detect them automatically. Published February 15, 2026.
 - [Does Linktree Hurt Affiliate Commissions?](https://www.affiliatelinkmonitoring.com/blog/does-linktree-hurt-affiliate-commissions): Whether Linktree reduces affiliate earnings and how to optimize a Linktree for maximum conversion. Published February 14, 2026.
+- [Can You Use Affiliate Links on Pinterest?](https://www.affiliatelinkmonitoring.com/blog/affiliate-links-on-pinterest): Pinterest's official 2026 affiliate link policy, FTC disclosure requirements, and how to protect Pinterest affiliate income. Published March 5, 2026.
+- [Amazon Products Out of Stock: A Guide for Affiliates](https://www.affiliatelinkmonitoring.com/blog/amazon-products-out-of-stock-affiliate-guide): The difference between out-of-stock and currently unavailable, commission impact, and how to find replacement ASINs. Published March 5, 2026.
+- [How Often Should You Check Your Affiliate Links?](https://www.affiliatelinkmonitoring.com/blog/how-often-to-check-affiliate-links): Optimal monitoring frequency by traffic tier — hourly for 10k+ visitors, daily for 1k–10k, weekly minimum. Published March 5, 2026.
+- [Does Cloaking Affiliate Links Affect SEO?](https://www.affiliatelinkmonitoring.com/blog/does-cloaking-affiliate-links-affect-seo): Google's official position on link cloaking, rel=sponsored vs nofollow, and when cloaking can hurt SEO. Published March 5, 2026.
+- [Best Affiliate Link Monitoring Tools 2026](https://www.affiliatelinkmonitoring.com/blog/best-affiliate-link-monitoring-tools): Honest comparison of AMZ Watcher, Pageradar, ThirstyAffiliates, Lasso, and Affiliate Link Monitor with pricing and recommendations. Published March 5, 2026.
 
 ## About
 

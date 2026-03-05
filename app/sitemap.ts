@@ -62,8 +62,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Author / About pages
     const aboutPages: MetadataRoute.Sitemap = [
         {
+            url: `${BASE_URL}/about`,
+            lastModified: new Date('2026-03-05'),
+        },
+        {
             url: `${BASE_URL}/about/alex`,
-            lastModified: new Date('2026-03-03'),
+            lastModified: new Date('2026-03-05'),
         },
     ];
 
@@ -83,15 +87,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const blogPages: MetadataRoute.Sitemap = [
         {
             url: `${BASE_URL}/blog`,
-            lastModified: new Date('2026-02-15'),
+            lastModified: new Date('2026-03-05'),
         },
         {
             url: `${BASE_URL}/blog/amazon-associates-links-stop-working`,
-            lastModified: new Date('2026-02-15'),
+            lastModified: new Date('2026-03-05'),
         },
         {
             url: `${BASE_URL}/blog/does-linktree-hurt-affiliate-commissions`,
-            lastModified: new Date('2026-02-15'),
+            lastModified: new Date('2026-03-05'),
+        },
+        {
+            url: `${BASE_URL}/blog/affiliate-links-on-pinterest`,
+            lastModified: new Date('2026-03-05'),
+        },
+        {
+            url: `${BASE_URL}/blog/amazon-products-out-of-stock-affiliate-guide`,
+            lastModified: new Date('2026-03-05'),
+        },
+        {
+            url: `${BASE_URL}/blog/how-often-to-check-affiliate-links`,
+            lastModified: new Date('2026-03-05'),
+        },
+        {
+            url: `${BASE_URL}/blog/does-cloaking-affiliate-links-affect-seo`,
+            lastModified: new Date('2026-03-05'),
+        },
+        {
+            url: `${BASE_URL}/blog/best-affiliate-link-monitoring-tools`,
+            lastModified: new Date('2026-03-05'),
         },
     ];
 

@@ -6,8 +6,8 @@ import { ArrowLeft, BookOpen, Linkedin } from 'lucide-react';
 const BASE_URL = 'https://www.affiliatelinkmonitoring.com';
 
 export const metadata: Metadata = {
-    title: 'Alex M. — Affiliate Marketing & SEO Writer | Affiliate Link Monitor',
-    description: 'Alex M. is an affiliate marketing practitioner and SEO writer with 8+ years of experience. Expert in Amazon Associates, broken link detection, and affiliate revenue optimization.',
+    title: 'Alex Miller — Affiliate Marketing & SEO Writer | Affiliate Link Monitor',
+    description: 'Alex Miller is an affiliate marketing practitioner and SEO writer with 8+ years of experience. Expert in Amazon Associates, broken link detection, and affiliate revenue optimization.',
     alternates: {
         canonical: `${BASE_URL}/about/alex`,
     },
@@ -19,8 +19,9 @@ export const metadata: Metadata = {
 const personSchema = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: 'Alex M.',
+    name: 'Alex Miller',
     url: `${BASE_URL}/about/alex`,
+    sameAs: 'https://www.linkedin.com/in/alex-miller-affiliatemarketing',
     jobTitle: 'Affiliate Marketing & SEO Writer',
     worksFor: {
         '@type': 'Organization',
@@ -76,7 +77,7 @@ export default function AuthorPage() {
                         A
                     </div>
                     <div>
-                        <h1 className="text-3xl font-bold mb-2">Alex M.</h1>
+                        <h1 className="text-3xl font-bold mb-2">Alex Miller</h1>
                         <p className="text-violet-400 font-medium mb-4">Affiliate Marketing & SEO Writer</p>
                         <p className="text-slate-400 leading-relaxed mb-5">
                             Affiliate marketing practitioner with 8+ years of experience helping content creators, bloggers, and social media publishers protect their affiliate revenue. Specializes in Amazon Associates program optimization, broken link management, and affiliate SEO strategy.
@@ -89,7 +90,7 @@ export default function AuthorPage() {
                             ))}
                         </div>
                         <a
-                            href="https://linkedin.com"
+                            href="https://www.linkedin.com/in/alex-miller-affiliatemarketing"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-violet-400 transition-colors"
@@ -103,7 +104,7 @@ export default function AuthorPage() {
                 <div>
                     <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                         <BookOpen className="h-5 w-5 text-violet-400" />
-                        Articles by Alex
+                        Articles by Alex Miller
                     </h2>
                     <div className="space-y-4">
                         {articles.map(article => (

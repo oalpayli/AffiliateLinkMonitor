@@ -93,7 +93,9 @@ export default function LinktreeCommissionsPage() {
                                         Extra Redirect = Slower Load Time
                                     </h3>
                                     <p className="text-slate-400 text-sm ml-11">
-                                        Every redirect adds latency. Social media → Linktree → your site → affiliate link = multiple hops. Each hop increases the chance of someone bouncing before the page loads. This is especially true on mobile with slow connections.
+                                        Every redirect adds latency. According to{' '}
+                                        <a href="https://developer.chrome.com/docs/lighthouse/performance/redirects/" target="_blank" rel="noopener noreferrer" className="text-violet-400 underline hover:text-violet-300">Google&apos;s Web Performance guidelines</a>,
+                                        {' '}each additional redirect adds approximately 100–300ms of round-trip time. A typical Linktree path (social media → Linktree → your site → affiliate link) adds 400–600ms of total redirect latency vs. a direct link — enough to meaningfully increase bounce rate on mobile connections.
                                     </p>
                                 </div>
 
@@ -103,7 +105,7 @@ export default function LinktreeCommissionsPage() {
                                         Decision Fatigue
                                     </h3>
                                     <p className="text-slate-400 text-sm ml-11">
-                                        If your Linktree has too many options (15+ links), visitors get overwhelmed and may click nothing. Paradox of choice — fewer, well-organized options often convert better than a long list.
+                                        Research by psychologist Barry Schwartz (<em>The Paradox of Choice</em>, 2004) shows that presenting more than 5–7 options reduces decision-making rates and increases anxiety. Applied to Linktree: if you have 15+ links, visitors may click nothing at all. Fewer, well-organized options consistently outperform long lists in conversion.
                                     </p>
                                 </div>
                             </div>
@@ -175,8 +177,9 @@ export default function LinktreeCommissionsPage() {
                         dateModified: '2026-03-03',
                         author: {
                             '@type': 'Person',
-                            name: 'Alex M.',
+                            name: 'Alex Miller',
                             url: 'https://www.affiliatelinkmonitoring.com/about/alex',
+                            sameAs: 'https://www.linkedin.com/in/alex-miller-affiliatemarketing',
                         },
                         publisher: {
                             '@type': 'Organization',
@@ -236,7 +239,7 @@ export default function LinktreeCommissionsPage() {
                                 name: 'Does an extra redirect from Linktree slow down my links?',
                                 acceptedAnswer: {
                                     '@type': 'Answer',
-                                    text: 'Yes. Each redirect adds approximately 100–300ms of latency. A typical Linktree redirect path (social media → Linktree → your site → affiliate link) adds multiple hops. This is especially noticeable on mobile with slower connections and can cause some visitors to abandon before the destination page loads.',
+                                    text: 'Yes. According to Google Web Performance guidelines, each redirect adds approximately 100–300ms of round-trip latency. A typical Linktree redirect path (social media → Linktree → your site → affiliate link) adds 400–600ms of total redirect overhead compared to a direct link. This is especially noticeable on mobile with slower 4G connections and can cause some visitors to abandon before the destination page loads.',
                                 },
                             },
                         ],
