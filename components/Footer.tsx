@@ -65,7 +65,7 @@ export default function Footer() {
                             <li><Link href="/about" className="hover:text-purple-400 transition-colors py-1 block">About</Link></li>
                             <li><Link href="/about/alex" className="hover:text-purple-400 transition-colors py-1 block">Alex Miller</Link></li>
                             <li><Link href="/support" className="hover:text-purple-400 transition-colors py-1 block">Support</Link></li>
-                            <li><Link href="/blog/best-affiliate-link-monitoring-tools" className="hover:text-purple-400 transition-colors py-1 block">Comparisons</Link></li>
+                            <li><Link href="/blog/best-affiliate-link-monitoring-tools" className="hover:text-purple-400 transition-colors py-1 block">Best Tools Compared</Link></li>
                             <li><Link href="/privacy" className="hover:text-purple-400 transition-colors py-1 block">Privacy Policy</Link></li>
                             <li><Link href="/terms" className="hover:text-purple-400 transition-colors py-1 block">Terms of Service</Link></li>
                         </ul>
