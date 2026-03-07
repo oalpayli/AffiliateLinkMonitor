@@ -58,6 +58,15 @@ export default function Navbar() {
                         Tools
                     </Link>
                     <Link
+                        href="/monitor"
+                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/monitor') || pathname.startsWith('/monitor/')
+                            ? 'bg-slate-800 text-white shadow-sm'
+                            : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                            }`}
+                    >
+                        Monitor
+                    </Link>
+                    <Link
                         href="/pricing"
                         className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/pricing')
                             ? 'bg-slate-800 text-white shadow-sm'
@@ -65,15 +74,6 @@ export default function Navbar() {
                             }`}
                     >
                         Pricing
-                    </Link>
-                    <Link
-                        href="/#how-it-works"
-                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/#how-it-works')
-                            ? 'bg-slate-800 text-white shadow-sm'
-                            : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
-                            }`}
-                    >
-                        How It Works
                     </Link>
                     {user && (
                         <Link

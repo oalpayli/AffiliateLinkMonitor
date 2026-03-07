@@ -321,6 +321,59 @@ export default function LandingPage() {
                 {/* FAQ */}
                 <FAQ />
 
+                {/* Platform + Audience strip */}
+                <section className="py-16 border-t border-white/5">
+                    <div className="container mx-auto px-4 max-w-5xl">
+                        <div className="grid md:grid-cols-2 gap-12">
+                            <div>
+                                <h2 className="text-lg font-semibold text-white mb-6">Monitor by Platform</h2>
+                                <div className="flex flex-wrap gap-3">
+                                    {[
+                                        { label: 'Amazon', href: '/monitor/amazon-affiliate-links' },
+                                        { label: 'Pinterest', href: '/monitor/pinterest-affiliate-links' },
+                                        { label: 'Linktree', href: '/monitor/linktree-links' },
+                                        { label: 'ShareASale', href: '/monitor/shareasale-links' },
+                                        { label: 'CJ Affiliate', href: '/monitor/cj-affiliate-links' },
+                                        { label: 'AWIN', href: '/monitor/awin-links' },
+                                        { label: 'Rakuten', href: '/monitor/rakuten-links' },
+                                        { label: 'Impact', href: '/monitor/impact-links' },
+                                        { label: 'ClickBank', href: '/monitor/clickbank-links' },
+                                    ].map((p) => (
+                                        <Link key={p.href} href={p.href} className="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-sm text-slate-400 hover:text-white hover:border-violet-500/30 transition-all">
+                                            {p.label}
+                                        </Link>
+                                    ))}
+                                    <Link href="/monitor" className="px-3 py-1.5 rounded-lg text-sm text-violet-400 hover:text-violet-300 transition-colors">
+                                        All platforms →
+                                    </Link>
+                                </div>
+                            </div>
+                            <div>
+                                <h2 className="text-lg font-semibold text-white mb-6">Built For</h2>
+                                <div className="flex flex-wrap gap-3">
+                                    {[
+                                        { label: 'Bloggers', href: '/for/bloggers' },
+                                        { label: 'Amazon Associates', href: '/for/amazon-associates' },
+                                        { label: 'Pinterest Creators', href: '/for/pinterest-creators' },
+                                        { label: 'Instagram Creators', href: '/for/instagram-creators' },
+                                        { label: 'YouTube Creators', href: '/for/youtube-creators' },
+                                        { label: 'TikTok Creators', href: '/for/tiktok-creators' },
+                                        { label: 'Niche Sites', href: '/for/niche-sites' },
+                                        { label: 'Agencies', href: '/for/affiliate-agencies' },
+                                    ].map((a) => (
+                                        <Link key={a.href} href={a.href} className="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-sm text-slate-400 hover:text-white hover:border-violet-500/30 transition-all">
+                                            {a.label}
+                                        </Link>
+                                    ))}
+                                    <Link href="/for" className="px-3 py-1.5 rounded-lg text-sm text-violet-400 hover:text-violet-300 transition-colors">
+                                        All use cases →
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 {/* Pricing */}
                 <section className="py-24 relative bg-slate-950/50">
                     <div className="container mx-auto px-4 max-w-5xl">
