@@ -15,12 +15,12 @@ export const metadata: Metadata = {
         'linktree affiliate link checker',
     ],
     alternates: {
-        canonical: 'https://www.affiliatelinkmonitoring.com/check-linktree-links',
+        canonical: 'https://www.affiliatelinkmonitoring.com/tools/linktree-link-checker',
     },
     openGraph: {
         title: 'Check Linktree Links — Free Linktree Link Checker Tool',
         description: 'Free tool to verify every link in your Linktree profile works. Detect broken URLs and dead links.',
-        url: 'https://www.affiliatelinkmonitoring.com/check-linktree-links',
+        url: 'https://www.affiliatelinkmonitoring.com/tools/linktree-link-checker',
     },
 };
 
@@ -71,8 +71,8 @@ const config = {
         '@graph': [
             {
                 '@type': 'WebPage',
-                '@id': 'https://www.affiliatelinkmonitoring.com/check-linktree-links#webpage',
-                url: 'https://www.affiliatelinkmonitoring.com/check-linktree-links',
+                '@id': 'https://www.affiliatelinkmonitoring.com/tools/linktree-link-checker#webpage',
+                url: 'https://www.affiliatelinkmonitoring.com/tools/linktree-link-checker',
                 name: 'Check Linktree Links — Free Linktree Link Checker Tool',
                 description: 'Free Linktree link checker. Verify every link in your Linktree profile works. Detect broken URLs and dead links.',
                 isPartOf: { '@id': 'https://www.affiliatelinkmonitoring.com/#website' },
@@ -82,15 +82,15 @@ const config = {
                     '@type': 'BreadcrumbList',
                     itemListElement: [
                         { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.affiliatelinkmonitoring.com' },
-                        { '@type': 'ListItem', position: 2, name: 'Check Linktree Links', item: 'https://www.affiliatelinkmonitoring.com/check-linktree-links' },
+                        { '@type': 'ListItem', position: 2, name: 'Check Linktree Links', item: 'https://www.affiliatelinkmonitoring.com/tools/linktree-link-checker' },
                     ],
                 },
             },
             {
                 '@type': 'WebApplication',
-                '@id': 'https://www.affiliatelinkmonitoring.com/check-linktree-links#tool',
+                '@id': 'https://www.affiliatelinkmonitoring.com/tools/linktree-link-checker#tool',
                 name: 'Linktree Link Checker',
-                url: 'https://www.affiliatelinkmonitoring.com/check-linktree-links',
+                url: 'https://www.affiliatelinkmonitoring.com/tools/linktree-link-checker',
                 applicationCategory: 'BusinessApplication',
                 operatingSystem: 'Any',
                 description: 'Free tool to verify every link in your Linktree profile. Detect broken URLs and dead pages instantly.',

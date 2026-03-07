@@ -15,12 +15,12 @@ export const metadata: Metadata = {
         'pinterest url checker',
     ],
     alternates: {
-        canonical: 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor',
+        canonical: 'https://www.affiliatelinkmonitoring.com/tools/pinterest-link-monitor',
     },
     openGraph: {
         title: 'Pinterest Link Monitor — Check Your Pin Links',
         description: 'Free tool to verify your Pinterest pin destination URLs. Detect broken links and dead pages instantly.',
-        url: 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor',
+        url: 'https://www.affiliatelinkmonitoring.com/tools/pinterest-link-monitor',
     },
 };
 
@@ -71,8 +71,8 @@ const config = {
         '@graph': [
             {
                 '@type': 'WebPage',
-                '@id': 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor#webpage',
-                url: 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor',
+                '@id': 'https://www.affiliatelinkmonitoring.com/tools/pinterest-link-monitor#webpage',
+                url: 'https://www.affiliatelinkmonitoring.com/tools/pinterest-link-monitor',
                 name: 'Pinterest Link Monitor — Check Your Pin Links for Errors',
                 description: 'Free Pinterest link checker tool. Verify that your Pinterest pin destination URLs still work.',
                 isPartOf: { '@id': 'https://www.affiliatelinkmonitoring.com/#website' },
@@ -82,15 +82,15 @@ const config = {
                     '@type': 'BreadcrumbList',
                     itemListElement: [
                         { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.affiliatelinkmonitoring.com' },
-                        { '@type': 'ListItem', position: 2, name: 'Pinterest Link Monitor', item: 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor' },
+                        { '@type': 'ListItem', position: 2, name: 'Pinterest Link Monitor', item: 'https://www.affiliatelinkmonitoring.com/tools/pinterest-link-monitor' },
                     ],
                 },
             },
             {
                 '@type': 'WebApplication',
-                '@id': 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor#tool',
+                '@id': 'https://www.affiliatelinkmonitoring.com/tools/pinterest-link-monitor#tool',
                 name: 'Pinterest Link Monitor',
-                url: 'https://www.affiliatelinkmonitoring.com/pinterest-link-monitor',
+                url: 'https://www.affiliatelinkmonitoring.com/tools/pinterest-link-monitor',
                 applicationCategory: 'BusinessApplication',
                 operatingSystem: 'Any',
                 description: 'Free tool to verify Pinterest pin destination URLs. Detect broken links and dead pages instantly.',

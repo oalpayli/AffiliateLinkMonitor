@@ -12,6 +12,21 @@ const nextConfig: NextConfig = {
         destination: 'https://www.affiliatelinkmonitoring.com/:path*',
         permanent: true, // 308
       },
+      {
+        source: '/amazon-broken-link-checker',
+        destination: '/tools/amazon-broken-link-checker',
+        permanent: true,
+      },
+      {
+        source: '/check-linktree-links',
+        destination: '/tools/linktree-link-checker',
+        permanent: true,
+      },
+      {
+        source: '/pinterest-link-monitor',
+        destination: '/tools/pinterest-link-monitor',
+        permanent: true,
+      },
     ];
   },
 

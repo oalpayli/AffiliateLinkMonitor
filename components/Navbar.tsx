@@ -40,6 +40,24 @@ export default function Navbar() {
                         </Link>
                     )}
                     <Link
+                        href="/blog"
+                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/blog') || pathname.startsWith('/blog/')
+                            ? 'bg-slate-800 text-white shadow-sm'
+                            : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                            }`}
+                    >
+                        Blog
+                    </Link>
+                    <Link
+                        href="/tools"
+                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/tools') || pathname.startsWith('/tools/')
+                            ? 'bg-slate-800 text-white shadow-sm'
+                            : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                            }`}
+                    >
+                        Tools
+                    </Link>
+                    <Link
                         href="/pricing"
                         className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/pricing')
                             ? 'bg-slate-800 text-white shadow-sm'
@@ -49,13 +67,13 @@ export default function Navbar() {
                         Pricing
                     </Link>
                     <Link
-                        href="/support"
-                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/support')
+                        href="/#how-it-works"
+                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${isActive('/#how-it-works')
                             ? 'bg-slate-800 text-white shadow-sm'
                             : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
                             }`}
                     >
-                        Support
+                        How It Works
                     </Link>
                     {user && (
                         <Link

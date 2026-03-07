@@ -25,20 +25,10 @@ export default function Footer() {
                     <div>
                         <h3 className="font-semibold text-white mb-4">Product</h3>
                         <ul className="space-y-3 text-sm text-slate-400">
-                            <li><Link href="/dashboard" className="hover:text-emerald-400 transition-colors py-2 block">Dashboard</Link></li>
                             <li><Link href="/pricing" className="hover:text-emerald-400 transition-colors py-2 block">Pricing</Link></li>
-                            <li><Link href="/manual" className="hover:text-emerald-400 transition-colors py-2 block">User Manual</Link></li>
-                            <li><Link href="/tools/link-health-scanner" className="hover:text-emerald-400 transition-colors py-2 block">Free Link Scanner</Link></li>
-                        </ul>
-                    </div>
-
-                    {/* Link Checkers */}
-                    <div>
-                        <h3 className="font-semibold text-white mb-4">Link Checkers</h3>
-                        <ul className="space-y-3 text-sm text-slate-400">
-                            <li><Link href="/amazon-broken-link-checker" className="hover:text-violet-400 transition-colors py-2 block">Amazon Checker</Link></li>
-                            <li><Link href="/pinterest-link-monitor" className="hover:text-violet-400 transition-colors py-2 block">Pinterest Monitor</Link></li>
-                            <li><Link href="/check-linktree-links" className="hover:text-violet-400 transition-colors py-2 block">Linktree Checker</Link></li>
+                            <li><Link href="/tools" className="hover:text-emerald-400 transition-colors py-2 block">Free Tools</Link></li>
+                            <li><Link href="/#how-it-works" className="hover:text-emerald-400 transition-colors py-2 block">How It Works</Link></li>
+                            <li><span className="text-slate-600 block py-2 cursor-not-allowed">Changelog (coming soon)</span></li>
                         </ul>
                     </div>
 
@@ -46,20 +36,33 @@ export default function Footer() {
                     <div>
                         <h3 className="font-semibold text-white mb-4">Resources</h3>
                         <ul className="space-y-3 text-sm text-slate-400">
-                            <li><Link href="/blog" className="hover:text-blue-400 transition-colors py-2 block">Blog</Link></li>
-                            <li><Link href="/alternative/amz-watcher" className="hover:text-blue-400 transition-colors py-2 block">vs AMZ Watcher</Link></li>
-                            <li><Link href="/alternative/lasso" className="hover:text-blue-400 transition-colors py-2 block">vs Lasso</Link></li>
-                            <li><Link href="/support" className="hover:text-blue-400 transition-colors py-2 block">Support</Link></li>
+                            <li><Link href="/blog" className="hover:text-violet-400 transition-colors py-2 block">Blog</Link></li>
+                            <li><Link href="/tools/amazon-broken-link-checker" className="hover:text-violet-400 transition-colors py-2 block">Amazon Checker</Link></li>
+                            <li><Link href="/tools/linktree-link-checker" className="hover:text-violet-400 transition-colors py-2 block">Linktree Checker</Link></li>
+                            <li><Link href="/tools/revenue-loss-calculator" className="hover:text-violet-400 transition-colors py-2 block">Revenue Calculator</Link></li>
                         </ul>
                     </div>
 
-                    {/* Legal */}
+                    {/* Use Cases */}
                     <div>
-                        <h3 className="font-semibold text-white mb-4">Legal</h3>
+                        <h3 className="font-semibold text-white mb-4">Use Cases</h3>
                         <ul className="space-y-3 text-sm text-slate-400">
-                            <li><Link href="/privacy" className="hover:text-purple-400 transition-colors py-2 block">Privacy Policy</Link></li>
-                            <li><Link href="/terms" className="hover:text-purple-400 transition-colors py-2 block">Terms of Service</Link></li>
-                            <li><a href="mailto:info@affiliatelinkmonitoring.com" className="hover:text-purple-400 transition-colors py-2 block">Contact</a></li>
+                            <li><Link href="/for/bloggers" className="hover:text-blue-400 transition-colors py-2 block">For Bloggers</Link></li>
+                            <li><Link href="/for/pinterest-creators" className="hover:text-blue-400 transition-colors py-2 block">For Pinterest</Link></li>
+                            <li><Link href="/for/amazon-associates" className="hover:text-blue-400 transition-colors py-2 block">For Amazon Assoc.</Link></li>
+                            <li><Link href="/for/affiliate-agencies" className="hover:text-blue-400 transition-colors py-2 block">For Agencies</Link></li>
+                        </ul>
+                    </div>
+
+                    {/* Company */}
+                    <div>
+                        <h3 className="font-semibold text-white mb-4">Company</h3>
+                        <ul className="space-y-3 text-sm text-slate-400">
+                            <li><Link href="/about" className="hover:text-purple-400 transition-colors py-2 block">About</Link></li>
+                            <li><Link href="/about/alex" className="hover:text-purple-400 transition-colors py-2 block">Alex Miller</Link></li>
+                            <li><Link href="/support" className="hover:text-purple-400 transition-colors py-2 block">Support</Link></li>
+                            <li><Link href="/privacy" className="hover:text-purple-400 transition-colors py-1 block">Privacy Policy</Link></li>
+                            <li><Link href="/terms" className="hover:text-purple-400 transition-colors py-1 block">Terms of Service</Link></li>
                         </ul>
                     </div>
                 </div>

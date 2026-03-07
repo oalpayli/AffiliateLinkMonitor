@@ -58,8 +58,8 @@ export default function SupportPage() {
                         <MessageSquare className="h-10 w-10 text-blue-400" />
                         Support Center
                     </h1>
-                    <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-                        Have a question or need assistance? Our team is here to help.
+                    <p className="text-slate-400 text-lg max-w-2xl mx-auto mb-6">
+                        Have a question or need assistance? Our team is here to help. Or check out our <a href="/manual" className="text-blue-400 hover:text-blue-300 underline">User Manual</a> for quick answers.
                     </p>
                 </div>
             </div>

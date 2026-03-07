@@ -15,12 +15,12 @@ export const metadata: Metadata = {
         'amazon product link checker',
     ],
     alternates: {
-        canonical: 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker',
+        canonical: 'https://www.affiliatelinkmonitoring.com/tools/amazon-broken-link-checker',
     },
     openGraph: {
         title: 'Amazon Broken Link Checker — Find Dead Affiliate Links Instantly',
         description: 'Free tool to scan your pages for broken Amazon affiliate links and out-of-stock products. Get instant alerts.',
-        url: 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker',
+        url: 'https://www.affiliatelinkmonitoring.com/tools/amazon-broken-link-checker',
     },
 };
 
@@ -71,8 +71,8 @@ const config = {
         '@graph': [
             {
                 '@type': 'WebPage',
-                '@id': 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker#webpage',
-                url: 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker',
+                '@id': 'https://www.affiliatelinkmonitoring.com/tools/amazon-broken-link-checker#webpage',
+                url: 'https://www.affiliatelinkmonitoring.com/tools/amazon-broken-link-checker',
                 name: 'Amazon Broken Link Checker — Find Dead Affiliate Links Instantly',
                 description: 'Free Amazon affiliate link checker. Scan your pages for broken Amazon links, out-of-stock products, and 404 errors.',
                 isPartOf: { '@id': 'https://www.affiliatelinkmonitoring.com/#website' },
@@ -82,15 +82,15 @@ const config = {
                     '@type': 'BreadcrumbList',
                     itemListElement: [
                         { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.affiliatelinkmonitoring.com' },
-                        { '@type': 'ListItem', position: 2, name: 'Amazon Broken Link Checker', item: 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker' },
+                        { '@type': 'ListItem', position: 2, name: 'Amazon Broken Link Checker', item: 'https://www.affiliatelinkmonitoring.com/tools/amazon-broken-link-checker' },
                     ],
                 },
             },
             {
                 '@type': 'WebApplication',
-                '@id': 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker#tool',
+                '@id': 'https://www.affiliatelinkmonitoring.com/tools/amazon-broken-link-checker#tool',
                 name: 'Amazon Broken Link Checker',
-                url: 'https://www.affiliatelinkmonitoring.com/amazon-broken-link-checker',
+                url: 'https://www.affiliatelinkmonitoring.com/tools/amazon-broken-link-checker',
                 applicationCategory: 'BusinessApplication',
                 operatingSystem: 'Any',
                 description: 'Free tool to detect broken Amazon affiliate links and out-of-stock products. Scan any page URL instantly.',

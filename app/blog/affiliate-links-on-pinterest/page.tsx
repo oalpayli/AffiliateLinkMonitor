@@ -230,10 +230,10 @@ export default function PinterestAffiliatePage() {
                                     <div>
                                         <p className="font-semibold text-white mb-2">Protect Your Pinterest Affiliate Links</p>
                                         <p className="text-sm text-slate-300 mb-3">
-                                            Use <Link href="/pinterest-link-monitor" className="text-violet-400 hover:text-violet-300 underline">Affiliate Link Monitor&apos;s Pinterest Link Monitor</Link> to automatically check the destination URLs of your Pinterest pins. Get an email alert the moment any pin link breaks, a product goes out of stock, or a URL changes.
+                                            Use <Link href="/tools/pinterest-link-monitor" className="text-violet-400 hover:text-violet-300 underline">Affiliate Link Monitor&apos;s Pinterest Link Monitor</Link> to automatically check the destination URLs of your Pinterest pins. Get an email alert the moment any pin link breaks, a product goes out of stock, or a URL changes.
                                         </p>
                                         <Link
-                                            href="/pinterest-link-monitor"
+                                            href="/tools/pinterest-link-monitor"
                                             className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold rounded-xl transition-all"
                                         >
                                             Start Monitoring Pinterest Links <ArrowRight className="h-4 w-4" />
@@ -293,7 +293,7 @@ export default function PinterestAffiliatePage() {
                             <h3 className="text-2xl font-bold mb-4">Monitor your Pinterest affiliate links automatically</h3>
                             <p className="text-slate-400 mb-6">Get instant email alerts when any Pinterest pin destination link breaks or goes out of stock.</p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                <Link href="/pinterest-link-monitor" className="inline-flex items-center justify-center gap-2 btn-primary px-8 py-3 rounded-xl font-semibold">
+                                <Link href="/tools/pinterest-link-monitor" className="inline-flex items-center justify-center gap-2 btn-primary px-8 py-3 rounded-xl font-semibold">
                                     Start Free Monitoring <ArrowRight className="h-4 w-4" />
                                 </Link>
                                 <Link href="/dashboard" className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-semibold bg-slate-800 text-slate-200 hover:bg-slate-700 transition-all">

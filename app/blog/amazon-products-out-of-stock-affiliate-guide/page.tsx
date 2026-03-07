@@ -209,7 +209,7 @@ export default function AmazonOutOfStockPage() {
                                             Unlike generic broken link checkers that only catch 404 errors, Affiliate Link Monitor specifically detects when Amazon products go out of stock or become &quot;Currently Unavailable&quot; — even when the page still loads correctly.
                                         </p>
                                         <Link
-                                            href="/amazon-broken-link-checker"
+                                            href="/tools/amazon-broken-link-checker"
                                             className="inline-flex items-center gap-2 px-5 py-2.5 bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold rounded-xl transition-all"
                                         >
                                             Try the Free Amazon Checker <ArrowRight className="h-4 w-4" />
@@ -245,7 +245,7 @@ export default function AmazonOutOfStockPage() {
                                 <Link href="/dashboard" className="inline-flex items-center justify-center gap-2 btn-primary px-8 py-3 rounded-xl font-semibold">
                                     Start Monitoring Free <ArrowRight className="h-4 w-4" />
                                 </Link>
-                                <Link href="/amazon-broken-link-checker" className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-semibold bg-slate-800 text-slate-200 hover:bg-slate-700 transition-all">
+                                <Link href="/tools/amazon-broken-link-checker" className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-semibold bg-slate-800 text-slate-200 hover:bg-slate-700 transition-all">
                                     Free Amazon Link Check
                                 </Link>
                             </div>

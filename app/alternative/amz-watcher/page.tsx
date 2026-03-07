@@ -153,7 +153,7 @@ export default function AmzWatcherAlternativePage() {
                                 <ArrowRight className="h-5 w-5" />
                             </Link>
                             <Link
-                                href="/amazon-broken-link-checker"
+                                href="/tools/amazon-broken-link-checker"
                                 className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-semibold text-lg bg-slate-800 text-slate-200 hover:bg-slate-700 transition-all"
                             >
                                 Try Amazon Link Checker

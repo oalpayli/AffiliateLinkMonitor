@@ -273,7 +273,7 @@ export default function CloakingAffiliateSEOPage() {
                                 <Link href="/dashboard" className="inline-flex items-center justify-center gap-2 btn-primary px-8 py-3 rounded-xl font-semibold">
                                     Start Free Monitoring <ArrowRight className="h-4 w-4" />
                                 </Link>
-                                <Link href="/amazon-broken-link-checker" className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-semibold bg-slate-800 text-slate-200 hover:bg-slate-700 transition-all">
+                                <Link href="/tools/amazon-broken-link-checker" className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-semibold bg-slate-800 text-slate-200 hover:bg-slate-700 transition-all">
                                     Try Free Checker
                                 </Link>
                             </div>

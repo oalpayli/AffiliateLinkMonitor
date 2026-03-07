@@ -34,15 +34,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Programmatic SEO pages (Platform Checkers)
     const platformPages: MetadataRoute.Sitemap = [
         {
-            url: `${BASE_URL}/amazon-broken-link-checker`,
+            url: `${BASE_URL}/tools/amazon-broken-link-checker`,
             lastModified: new Date('2026-02-15'),
         },
         {
-            url: `${BASE_URL}/pinterest-link-monitor`,
+            url: `${BASE_URL}/tools/pinterest-link-monitor`,
             lastModified: new Date('2026-02-15'),
         },
         {
-            url: `${BASE_URL}/check-linktree-links`,
+            url: `${BASE_URL}/tools/linktree-link-checker`,
             lastModified: new Date('2026-02-15'),
         },
     ];

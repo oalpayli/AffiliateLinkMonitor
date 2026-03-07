@@ -197,7 +197,7 @@ export default function LinktreeCommissionsPage() {
                                     <div>
                                         <p className="font-semibold text-white mb-2">Our Recommendation</p>
                                         <p className="text-sm text-slate-300">
-                                            Use <Link href="/check-linktree-links" className="text-violet-400 hover:text-violet-300 underline">our free Linktree checker</Link> to scan your Linktree right now. Then set up daily monitoring so you get an email alert the moment any link breaks. It takes 30 seconds and it&apos;s free.
+                                            Use <Link href="/tools/linktree-link-checker" className="text-violet-400 hover:text-violet-300 underline">our free Linktree checker</Link> to scan your Linktree right now. Then set up daily monitoring so you get an email alert the moment any link breaks. It takes 30 seconds and it&apos;s free.
                                         </p>
                                     </div>
                                 </div>
@@ -228,7 +228,7 @@ export default function LinktreeCommissionsPage() {
                             <h3 className="text-2xl font-bold mb-4">Check your Linktree links right now — free</h3>
                             <p className="text-slate-400 mb-6">See if any of your Linktree links are broken in 10 seconds.</p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                <Link href="/check-linktree-links" className="inline-flex items-center justify-center gap-2 btn-primary px-8 py-3 rounded-xl font-semibold">
+                                <Link href="/tools/linktree-link-checker" className="inline-flex items-center justify-center gap-2 btn-primary px-8 py-3 rounded-xl font-semibold">
                                     Check Linktree Now <ArrowRight className="h-4 w-4" />
                                 </Link>
                                 <Link href="/dashboard" className="inline-flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-semibold bg-slate-800 text-slate-200 hover:bg-slate-700 transition-all">
