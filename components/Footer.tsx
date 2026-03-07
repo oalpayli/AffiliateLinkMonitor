@@ -80,12 +80,6 @@ export default function Footer() {
                             { label: 'Amazon', href: '/monitor/amazon-affiliate-links' },
                             { label: 'Pinterest', href: '/monitor/pinterest-affiliate-links' },
                             { label: 'Linktree', href: '/monitor/linktree-links' },
-                            { label: 'ShareASale', href: '/monitor/shareasale-links' },
-                            { label: 'CJ Affiliate', href: '/monitor/cj-affiliate-links' },
-                            { label: 'AWIN', href: '/monitor/awin-links' },
-                            { label: 'Rakuten', href: '/monitor/rakuten-links' },
-                            { label: 'Impact', href: '/monitor/impact-links' },
-                            { label: 'ClickBank', href: '/monitor/clickbank-links' },
                         ].map((p) => (
                             <Link key={p.href} href={p.href} className="text-xs text-slate-600 hover:text-slate-400 transition-colors">
                                 {p.label}

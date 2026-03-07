@@ -3,13 +3,13 @@ import Link from 'next/link';
 import { ArrowRight, Shield } from 'lucide-react';
 
 export const metadata: Metadata = {
-    title: 'Affiliate Link Monitor by Platform — Amazon, ShareASale, CJ, AWIN & More',
-    description: 'Automated 24/7 affiliate link monitoring for every major platform. Amazon, ShareASale, CJ Affiliate, AWIN, Rakuten, Impact, ClickBank, Pinterest, and Linktree. Free plan available.',
-    keywords: ['affiliate link monitor by platform', 'amazon affiliate link monitor', 'shareasale link monitor', 'awin affiliate monitoring'],
+    title: 'Affiliate Link Monitor by Platform — Amazon, Pinterest & Linktree',
+    description: 'Automated 24/7 affiliate link monitoring for Amazon, Pinterest, and Linktree. Get instant email alerts when links break, products go out of stock, or tracking fails. Free plan available.',
+    keywords: ['affiliate link monitor by platform', 'amazon affiliate link monitor', 'pinterest link monitor', 'linktree link monitor'],
     alternates: { canonical: 'https://www.affiliatelinkmonitoring.com/monitor' },
     openGraph: {
         title: 'Affiliate Link Monitor by Platform',
-        description: 'Automated broken link detection for Amazon, ShareASale, CJ, AWIN, Rakuten, Impact, ClickBank, Pinterest, and Linktree.',
+        description: 'Automated broken link detection for Amazon, Pinterest, and Linktree.',
         url: 'https://www.affiliatelinkmonitoring.com/monitor',
     },
 };
@@ -42,48 +42,6 @@ const platforms = [
         name: 'Linktree',
         slug: 'linktree-links',
         description: 'Watch every affiliate link in your bio link profile. One broken link costs you traffic from every social platform.',
-        badge: null,
-        badgeColor: '',
-    },
-    {
-        name: 'ShareASale',
-        slug: 'shareasale-links',
-        description: 'Alert when merchants leave the network, products are removed, or programs are deactivated.',
-        badge: null,
-        badgeColor: '',
-    },
-    {
-        name: 'CJ Affiliate',
-        slug: 'cj-affiliate-links',
-        description: 'Monitor Commission Junction deep links and detect when advertiser relationships end or pages 404.',
-        badge: null,
-        badgeColor: '',
-    },
-    {
-        name: 'AWIN',
-        slug: 'awin-links',
-        description: 'Track AWIN publisher links across all regions and alert when advertiser programs pause or close.',
-        badge: null,
-        badgeColor: '',
-    },
-    {
-        name: 'Impact',
-        slug: 'impact-links',
-        description: 'Monitor impact.com brand partner links and catch when promotion pages expire or products are removed.',
-        badge: null,
-        badgeColor: '',
-    },
-    {
-        name: 'Rakuten',
-        slug: 'rakuten-links',
-        description: 'Detect broken Rakuten Advertising deep links and alerts when advertiser programs change.',
-        badge: null,
-        badgeColor: '',
-    },
-    {
-        name: 'ClickBank',
-        slug: 'clickbank-links',
-        description: 'Monitor ClickBank hoplinks and get alerted when vendors remove products or change sales page URLs.',
         badge: null,
         badgeColor: '',
     },

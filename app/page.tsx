@@ -332,12 +332,6 @@ export default function LandingPage() {
                                         { label: 'Amazon', href: '/monitor/amazon-affiliate-links' },
                                         { label: 'Pinterest', href: '/monitor/pinterest-affiliate-links' },
                                         { label: 'Linktree', href: '/monitor/linktree-links' },
-                                        { label: 'ShareASale', href: '/monitor/shareasale-links' },
-                                        { label: 'CJ Affiliate', href: '/monitor/cj-affiliate-links' },
-                                        { label: 'AWIN', href: '/monitor/awin-links' },
-                                        { label: 'Rakuten', href: '/monitor/rakuten-links' },
-                                        { label: 'Impact', href: '/monitor/impact-links' },
-                                        { label: 'ClickBank', href: '/monitor/clickbank-links' },
                                     ].map((p) => (
                                         <Link key={p.href} href={p.href} className="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-sm text-slate-400 hover:text-white hover:border-violet-500/30 transition-all">
                                             {p.label}
