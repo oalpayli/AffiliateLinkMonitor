@@ -9,6 +9,14 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
     {
+        slug: 'amazon-associates-account-suspended-links',
+        title: 'Amazon Associates Account Suspended: What Happens to Your Affiliate Links?',
+        excerpt: 'Your links still work after suspension — but your tag is dead. Here\'s exactly what happens to your commissions, why Amazon suspends accounts without warning, and how to catch it before weeks of revenue disappear.',
+        date: '2026-03-09',
+        readTime: '8 min read',
+        category: 'Amazon Associates',
+    },
+    {
         slug: 'best-affiliate-link-monitoring-tools',
         title: 'Best Affiliate Link Monitoring Tools 2026 (Honest Comparison)',
         excerpt: 'We compare AMZ Watcher, Pageradar, ThirstyAffiliates, Lasso, and Affiliate Link Monitor — with honest pros, cons, and a clear recommendation for your situation.',
