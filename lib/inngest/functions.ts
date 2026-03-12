@@ -95,3 +95,38 @@ export const checkMonitor = inngest.createFunction(
         return { status: "success", linksFound: result.links.length };
     }
 );
+
+// 3. Upgrade Follow-Up Email (48 hours after limit reached)
+export const upgradeFollowUp = inngest.createFunction(
+    { id: "upgrade-follow-up-email" },
+    { event: "upgrade/follow-up" },
+    async ({ event, step }) => {
+        const { userId, email } = event.data;
+
+        // Wait 48 hours before sending
+        await step.sleep("wait-48h", "48h");
+
+        // Check if user is still on free plan (they may have upgraded)
+        const stillFree = await step.run("check-subscription", async () => {
+            const subscription = await prisma.userSubscription.findFirst({
+                where: {
+                    userId,
+                    dodoStatus: { in: ['active', 'trialing'] }
+                }
+            });
+            return !subscription;
+        });
+
+        if (!stillFree) {
+            return { status: "skipped", reason: "user already upgraded" };
+        }
+
+        // Send the follow-up email
+        await step.run("send-follow-up", async () => {
+            const { sendUpgradeFollowUpEmail } = await import("@/lib/email");
+            await sendUpgradeFollowUpEmail(email);
+        });
+
+        return { status: "sent", email };
+    }
+);

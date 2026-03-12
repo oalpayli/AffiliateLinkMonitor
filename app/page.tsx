@@ -10,6 +10,7 @@ import Team from '@/components/Team';
 import ServiceAreas from '@/components/ServiceAreas';
 import LeadMagnet from '@/components/LeadMagnet';
 import HomeScanBox from '@/components/HomeScanBox';
+import TrackableLink from '@/components/TrackableLink';
 
 const BASE_URL = "https://www.affiliatelinkmonitoring.com";
 
@@ -471,12 +472,15 @@ function PricingCard({ tier, price, period, features, cta, href, highlighted }: 
                     </li>
                 ))}
             </ul>
-            <Link
+            <TrackableLink
                 href={href}
+                ctaLocation={`pricing_${tier.toLowerCase()}`}
+                ctaText={cta}
+                pageName="homepage"
                 className={`block text-center px-6 py-3 rounded-xl font-semibold transition-all ${highlighted ? 'bg-white text-slate-950 hover:bg-slate-200' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'}`}
             >
                 {cta}
-            </Link>
+            </TrackableLink>
         </div>
     );
 }

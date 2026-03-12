@@ -3,6 +3,10 @@ import { requireAuth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { checkSubscription } from '@/lib/subscription';
 import { MAX_FREE_MONITORS, MAX_PRO_MONITORS } from '@/lib/constants';
+import {
+    sendUpgradeLimitApproachingEmail,
+    sendUpgradeLimitReachedEmail
+} from '@/lib/email';
 
 export async function POST(request: Request) {
     try {
@@ -11,7 +15,10 @@ export async function POST(request: Request) {
         console.log('[API] POST /api/monitors - User:', userId);
 
         const body = await request.json();
-        const { url, urls, frequency = 'daily', alertEmail } = body;
+        const { url, urls, frequency = 'daily', alertEmail: requestAlertEmail } = body;
+
+        // Auto-set alertEmail to user's email if not explicitly provided
+        const alertEmail = requestAlertEmail || user.email;
 
         let urlsToProcess: string[] = [];
 
@@ -95,6 +102,57 @@ export async function POST(request: Request) {
             console.error('[API] Failed to trigger initial scan:', error);
         });
         console.log(`[API] Queued initial scan for ${events.length} monitors`);
+
+        // ─── Upgrade Email Triggers (non-blocking) ───
+        if (!isPro) {
+            const newCount = currentCount + newUrls.length;
+            const crossedApproaching = currentCount < 8 && newCount >= 8 && newCount < limit;
+            const crossedLimit = newCount >= limit;
+
+            if (crossedLimit || crossedApproaching) {
+                // Count broken links from past scans for personalization
+                (async () => {
+                    try {
+                        const brokenLinksFound = await prisma.link.count({
+                            where: {
+                                scan: {
+                                    monitor: { userId }
+                                },
+                                status: 'broken'
+                            }
+                        });
+
+                        const emailData = {
+                            monitorCount: newCount,
+                            monitorLimit: limit,
+                            brokenLinksFound,
+                        };
+
+                        if (crossedLimit) {
+                            // Limit reached — send Email 2
+                            await sendUpgradeLimitReachedEmail(user.email!, emailData);
+                            console.log(`[API] Sent limit-reached email to ${user.email}`);
+
+                            // Schedule 48h follow-up via Inngest
+                            await inngest.send({
+                                name: 'upgrade/follow-up',
+                                data: {
+                                    userId,
+                                    email: user.email,
+                                },
+                            });
+                            console.log(`[API] Scheduled 48h follow-up for ${user.email}`);
+                        } else if (crossedApproaching) {
+                            // Approaching limit — send Email 1
+                            await sendUpgradeLimitApproachingEmail(user.email!, emailData);
+                            console.log(`[API] Sent limit-approaching email to ${user.email}`);
+                        }
+                    } catch (emailError) {
+                        console.error('[API] Failed to send upgrade email:', emailError);
+                    }
+                })();
+            }
+        }
 
         return NextResponse.json(createdMonitors, { status: 201 });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
