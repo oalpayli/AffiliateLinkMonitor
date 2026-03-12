@@ -15,7 +15,10 @@ export async function POST(request: Request) {
         console.log('[API] POST /api/monitors - User:', userId);
 
         const body = await request.json();
-        const { url, urls, frequency = 'daily', alertEmail } = body;
+        const { url, urls, frequency = 'daily', alertEmail: requestAlertEmail } = body;
+
+        // Auto-set alertEmail to user's email if not explicitly provided
+        const alertEmail = requestAlertEmail || user.email;
 
         let urlsToProcess: string[] = [];
 

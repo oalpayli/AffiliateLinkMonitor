@@ -19,7 +19,6 @@ interface Monitor {
 export default function MonitorList() {
     const [monitors, setMonitors] = useState<Monitor[]>([]);
     const [newUrl, setNewUrl] = useState('');
-    const [alertEmail, setAlertEmail] = useState('');
     const [frequency, setFrequency] = useState('daily');
     const [isLoading, setIsLoading] = useState(true);
     const [isRunningCron, setIsRunningCron] = useState(false);
@@ -35,8 +34,6 @@ export default function MonitorList() {
 
     useEffect(() => {
         fetchMonitors();
-        const defaultEmail = localStorage.getItem('default_alert_email');
-        if (defaultEmail) setAlertEmail(defaultEmail);
     }, []);
 
     const fetchMonitors = async () => {
@@ -79,7 +76,7 @@ export default function MonitorList() {
             const res = await fetch('/api/monitors', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ urls: rawUrls, frequency, alertEmail })
+                body: JSON.stringify({ urls: rawUrls, frequency })
             });
 
             // Check if response is JSON before parsing
