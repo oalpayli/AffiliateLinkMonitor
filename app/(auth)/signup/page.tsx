@@ -107,12 +107,23 @@ export default function SignupPage() {
                 <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800 rounded-2xl p-8 shadow-2xl">
                     <div className="text-center mb-8">
                         <h1 className="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-                            Create Account
+                            Start Monitoring 10 Links Free
                         </h1>
-                        <p className="text-slate-400">Start monitoring your affiliate links</p>
+                        <p className="text-slate-400">No credit card required. Set up in 30 seconds.</p>
                     </div>
 
                     <form onSubmit={handleSignup} className="space-y-5">
+                        {/* Google Sign-In — lowest friction, shown first */}
+                        <GoogleSignInButton />
+
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t border-slate-800" />
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-slate-900 px-2 text-slate-400">Or sign up with email</span>
+                            </div>
+                        </div>
                         {/* Email Input */}
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
@@ -203,20 +214,11 @@ export default function SignupPage() {
                                     Creating account...
                                 </>
                             ) : (
-                                'Create Account'
+                                'Start Free Monitoring'
                             )}
                         </button>
 
-                        <div className="relative">
-                            <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t border-slate-800" />
-                            </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-slate-900 px-2 text-slate-400">Or continue with</span>
-                            </div>
-                        </div>
 
-                        <GoogleSignInButton />
                     </form>
 
                     {/* Login Link */}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowRight, Zap, AlertCircle, CheckCircle2, XCircle, Loader2 } from 'lucide-react';
+import { ArrowRight, Zap, AlertCircle, CheckCircle2, XCircle, Loader2, Lock, Mail } from 'lucide-react';
 import { usePostHog } from 'posthog-js/react';
 import Link from 'next/link';
 import UpgradeDialog from '@/components/UpgradeDialog';
@@ -29,6 +29,40 @@ export default function HomeScanBox() {
     const [upgradeMessage, setUpgradeMessage] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [scanStartTime, setScanStartTime] = useState<number>(0);
+    const [wasExampleScan, setWasExampleScan] = useState(false);
+
+    // Email capture state (Gated Results)
+    const [captureEmail, setCaptureEmail] = useState('');
+    const [emailSubmitted, setEmailSubmitted] = useState(false);
+    const [emailSubmitting, setEmailSubmitting] = useState(false);
+
+    const handleEmailCapture = async () => {
+        if (!captureEmail.trim() || !captureEmail.includes('@')) return;
+
+        setEmailSubmitting(true);
+        try {
+            posthog?.identify(captureEmail, {
+                email: captureEmail,
+                source: 'homepage_scan',
+                broken_links: scanResult?.brokenLinks || 0,
+                oos_links: scanResult?.oosLinks || 0,
+                scanned_url: scanResult?.url || scanUrl,
+            });
+            posthog?.capture('scan_email_captured', {
+                page_name: 'homepage',
+                broken_links: scanResult?.brokenLinks || 0,
+                oos_links: scanResult?.oosLinks || 0,
+            });
+            setEmailSubmitted(true);
+            posthog?.capture('scan_results_unlocked', {
+                page_name: 'homepage',
+            });
+        } catch {
+            // Silently fail — PostHog will retry
+        } finally {
+            setEmailSubmitting(false);
+        }
+    };
 
     const handleScan = async () => {
         if (!scanUrl.trim()) return;
@@ -44,6 +78,8 @@ export default function HomeScanBox() {
         setIsScanning(true);
         setError('');
         setScanResult(null);
+        setEmailSubmitted(false);
+        setCaptureEmail('');
 
         try {
             const res = await fetch('/api/scan', {
@@ -169,6 +205,7 @@ export default function HomeScanBox() {
                             onClick={() => {
                                 const exampleUrl = 'https://www.amazon.com/dp/B0BSHF7WHW';
                                 setScanUrl(exampleUrl);
+                                setWasExampleScan(true);
                                 posthog?.capture('try_example_clicked', { page: 'landing' });
                                 setTimeout(() => {
                                     if (!isScanning) {
@@ -194,12 +231,12 @@ export default function HomeScanBox() {
                 )}
             </div>
 
-            {/* Scan Result Modal */}
+            {/* Scan Result Modal — Gated */}
             {scanResult && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onClick={() => setScanResult(null)}>
                     <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-8 relative shadow-2xl shadow-violet-500/20" onClick={(e) => e.stopPropagation()}>
                         <button
-                            onClick={() => setScanResult(null)}
+                            onClick={() => { setScanResult(null); setWasExampleScan(false); }}
                             className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
                         >
                             <XCircle className="h-6 w-6" />
@@ -213,65 +250,161 @@ export default function HomeScanBox() {
                             <p className="text-sm text-slate-400 break-all">{scanResult.url}</p>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-4 mb-8">
+                        {/* Summary Stats — Always Visible */}
+                        <div className="grid grid-cols-3 gap-4 mb-6">
                             <div className="p-4 bg-slate-950/50 rounded-xl border border-slate-800">
                                 <div className="text-3xl font-bold text-white mb-1">{scanResult.totalLinks}</div>
                                 <div className="text-sm text-slate-400">Total Links</div>
-                            </div>
-                            <div className="p-4 bg-yellow-500/10 rounded-xl border border-yellow-500/20">
-                                <div className="text-3xl font-bold text-yellow-400 mb-1">{scanResult.oosLinks}</div>
-                                <div className="text-sm text-yellow-200">Out of Stock</div>
-                            </div>
-                            <div className="p-4 bg-slate-950/50 rounded-xl border border-slate-800">
-                                <div className="text-3xl font-bold text-violet-400 mb-1">{scanResult.affiliateLinks}</div>
-                                <div className="text-sm text-slate-400">Affiliate Links</div>
                             </div>
                             <div className="p-4 bg-red-500/10 rounded-xl border border-red-500/20">
                                 <div className="text-3xl font-bold text-red-400 mb-1">{scanResult.brokenLinks}</div>
                                 <div className="text-sm text-red-200">Broken Links</div>
                             </div>
+                            <div className="p-4 bg-yellow-500/10 rounded-xl border border-yellow-500/20">
+                                <div className="text-3xl font-bold text-yellow-400 mb-1">{scanResult.oosLinks}</div>
+                                <div className="text-sm text-yellow-200">Out of Stock</div>
+                            </div>
                         </div>
 
-                        {scanResult.brokenLinks > 0 && (
-                            <div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
-                                <p className="text-red-200 text-sm flex items-start gap-2">
-                                    <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
-                                    <span><strong>{scanResult.brokenLinks} broken links found!</strong> These links are dead ends.</span>
+                        {/* Revenue Loss Warning */}
+                        {(scanResult.brokenLinks > 0 || scanResult.oosLinks > 0) && (
+                            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
+                                <p className="text-sm text-red-200 text-center">
+                                    ⚠️ <strong className="text-red-100">{scanResult.brokenLinks + scanResult.oosLinks} problematic link{scanResult.brokenLinks + scanResult.oosLinks !== 1 ? 's' : ''}</strong> could be costing you
+                                    <strong className="text-red-100"> ~${(scanResult.brokenLinks + scanResult.oosLinks) * 15}/month</strong> in missed commissions.
                                 </p>
                             </div>
                         )}
 
-                        {scanResult.oosLinks > 0 && (
-                            <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                                <p className="text-yellow-200 text-sm flex items-start gap-2">
-                                    <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
-                                    <span><strong>{scanResult.oosLinks} products out of stock!</strong> Your visitors can&apos;t buy these.</span>
+                        {/* GATED SECTION: Email capture or full results */}
+                        {!emailSubmitted ? (
+                            /* Phase 1: Email Gate */
+                            <div className="space-y-4">
+                                <div className="p-4 bg-violet-500/10 border border-violet-500/20 rounded-xl text-center">
+                                    <Mail className="h-8 w-8 text-violet-400 mx-auto mb-3" />
+                                    <p className="text-sm text-slate-300 font-medium mb-1">
+                                        {scanResult.brokenLinks > 0
+                                            ? `Get the full breakdown of your ${scanResult.brokenLinks} broken link${scanResult.brokenLinks !== 1 ? 's' : ''} + automatic monitoring alerts.`
+                                            : 'Get notified instantly if any of these links break in the future.'}
+                                    </p>
+                                    <p className="text-xs text-slate-500 mb-4">
+                                        Enter your email to unlock full results and start free monitoring.
+                                    </p>
+                                    <div className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
+                                        <input
+                                            type="email"
+                                            placeholder="you@email.com"
+                                            value={captureEmail}
+                                            onChange={(e) => setCaptureEmail(e.target.value)}
+                                            onKeyDown={(e) => e.key === 'Enter' && handleEmailCapture()}
+                                            className="flex-1 px-4 py-3 bg-slate-950/50 border border-slate-800 rounded-xl text-white placeholder:text-slate-600 focus:outline-none focus:border-violet-500/50 transition-all text-sm"
+                                        />
+                                        <button
+                                            onClick={handleEmailCapture}
+                                            disabled={emailSubmitting || !captureEmail.trim()}
+                                            className="btn-primary px-6 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap text-sm"
+                                        >
+                                            {emailSubmitting ? (
+                                                <Loader2 className="h-4 w-4 animate-spin" />
+                                            ) : (
+                                                <>
+                                                    Unlock Results
+                                                    <ArrowRight className="h-4 w-4" />
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+                                    <p className="text-xs text-slate-500 mt-3 flex items-center justify-center gap-1">
+                                        <Lock className="h-3 w-3" />
+                                        No spam. Only broken link alerts. Unsubscribe anytime.
+                                    </p>
+                                </div>
+
+                                <div className="text-center">
+                                    <Link
+                                        href="/dashboard"
+                                        onClick={() => posthog?.capture('cta_clicked', {
+                                            cta_location: 'scan_results_gated',
+                                            cta_text: 'Skip — Start Monitoring Free',
+                                            page_name: 'homepage'
+                                        })}
+                                        className="text-sm text-slate-500 hover:text-violet-400 transition-colors"
+                                    >
+                                        Skip — Start Monitoring Free →
+                                    </Link>
+                                </div>
+                            </div>
+                        ) : (
+                            /* Phase 2: Full Results Unlocked */
+                            <div className="space-y-4">
+                                <div className="flex items-center justify-center gap-2 text-emerald-400 mb-2">
+                                    <CheckCircle2 className="h-5 w-5" />
+                                    <span className="font-semibold">Results unlocked!</span>
+                                </div>
+
+                                {/* Detailed Stats */}
+                                <div className="grid grid-cols-2 gap-3 mb-4">
+                                    <div className="p-3 bg-slate-950/50 rounded-xl border border-slate-800 text-center">
+                                        <div className="text-2xl font-bold text-violet-400">{scanResult.affiliateLinks}</div>
+                                        <div className="text-xs text-slate-400">Affiliate Links</div>
+                                    </div>
+                                    <div className="p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20 text-center">
+                                        <div className="text-2xl font-bold text-emerald-400">{scanResult.totalLinks - scanResult.brokenLinks}</div>
+                                        <div className="text-xs text-emerald-200">Healthy Links</div>
+                                    </div>
+                                </div>
+
+                                <p className="text-sm text-slate-400 text-center">
+                                    We&apos;ll email you at <strong className="text-slate-300">{captureEmail}</strong> when any of these links break.
                                 </p>
+
+                                {/* Post-Example CTA (Aksiyon 2) */}
+                                {wasExampleScan && (
+                                    <div className="p-4 bg-gradient-to-r from-violet-500/10 to-indigo-500/10 border border-violet-500/20 rounded-xl text-center">
+                                        <p className="text-sm text-white font-medium mb-2">
+                                            👆 That was just an example.
+                                        </p>
+                                        <p className="text-xs text-slate-400 mb-3">
+                                            Your real links could be costing you $200+/month right now. Paste your blog URL above and find out.
+                                        </p>
+                                        <button
+                                            onClick={() => {
+                                                setScanResult(null);
+                                                setScanUrl('');
+                                                setWasExampleScan(false);
+                                                posthog?.capture('post_example_cta_clicked', { page_name: 'homepage' });
+                                            }}
+                                            className="text-sm text-violet-400 hover:text-violet-300 font-semibold transition-colors"
+                                        >
+                                            Scan your own site now →
+                                        </button>
+                                    </div>
+                                )}
+
+                                <div className="flex flex-col sm:flex-row gap-3">
+                                    <Link
+                                        href="/dashboard"
+                                        onClick={() => posthog?.capture('cta_clicked', {
+                                            cta_location: 'scan_results_unlocked',
+                                            cta_text: 'Start Monitoring Free',
+                                            has_broken_links: scanResult.brokenLinks > 0,
+                                            broken_links_count: scanResult.brokenLinks,
+                                            page_name: 'homepage'
+                                        })}
+                                        className="flex-1 px-6 py-3 btn-primary rounded-xl font-semibold transition-all text-center flex items-center justify-center gap-2"
+                                    >
+                                        Start Monitoring Free
+                                        <ArrowRight className="h-5 w-5" />
+                                    </Link>
+                                    <button
+                                        onClick={() => { setScanResult(null); setWasExampleScan(false); }}
+                                        className="px-6 py-3 bg-slate-800 text-slate-300 rounded-xl font-medium hover:bg-slate-700 transition-all"
+                                    >
+                                        Close
+                                    </button>
+                                </div>
                             </div>
                         )}
-
-                        <div className="flex flex-col sm:flex-row gap-3">
-                            <Link
-                                href="/dashboard"
-                                onClick={() => posthog?.capture('cta_clicked', {
-                                    cta_location: 'scan_results',
-                                    cta_text: 'Start Monitoring Free',
-                                    has_broken_links: scanResult.brokenLinks > 0,
-                                    broken_links_count: scanResult.brokenLinks,
-                                    page: 'landing'
-                                })}
-                                className="flex-1 px-6 py-3 btn-primary rounded-xl font-semibold transition-all text-center flex items-center justify-center gap-2"
-                            >
-                                Start Monitoring Free
-                                <ArrowRight className="h-5 w-5" />
-                            </Link>
-                            <button
-                                onClick={() => setScanResult(null)}
-                                className="px-6 py-3 bg-slate-800 text-slate-300 rounded-xl font-medium hover:bg-slate-700 transition-all"
-                            >
-                                Close
-                            </button>
-                        </div>
                     </div>
                 </div>
             )}
