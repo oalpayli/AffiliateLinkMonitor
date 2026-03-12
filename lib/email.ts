@@ -243,3 +243,288 @@ ${message}
         console.log('==========================================================\n');
     }
 }
+
+// ═══════════════════════════════════════════════════════
+// UPGRADE EMAILS — Triggered by monitor limit events
+// ═══════════════════════════════════════════════════════
+
+export interface UpgradeEmailData {
+    monitorCount: number;
+    monitorLimit: number;
+    brokenLinksFound?: number;
+}
+
+async function sendEmailViaSMTP(to: string, subject: string, html: string, text: string) {
+    if (process.env.SMTP_HOST && process.env.SMTP_USER) {
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: Number(process.env.SMTP_PORT) || 587,
+            secure: false,
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
+            },
+        });
+
+        const senderEmail = process.env.SMTP_FROM_EMAIL || 'info@affiliatelinkmonitoring.com';
+
+        await transporter.sendMail({
+            from: `"Affiliate Link Monitoring" <${senderEmail}>`,
+            to,
+            subject,
+            text,
+            html,
+        });
+        console.log(`📧 Upgrade email sent to ${to}: ${subject}`);
+    } else {
+        console.log('\n================ UPGRADE EMAIL SIMULATION ================');
+        console.log(`To: ${to}`);
+        console.log(`Subject: ${subject}`);
+        console.log('Body:');
+        console.log(text);
+        console.log('==========================================================\n');
+    }
+}
+
+function upgradeEmailWrapper(content: string) {
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    return `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f3f4f6; padding: 40px 20px;">
+        <tr>
+            <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 24px; text-align: center;">
+                            <h1 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: 600;">Affiliate Link Monitor</h1>
+                        </td>
+                    </tr>
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding: 32px 30px;">
+                            ${content}
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f9fafb; padding: 20px 30px; border-top: 1px solid #e5e7eb;">
+                            <p style="margin: 0 0 8px; color: #9ca3af; font-size: 12px; text-align: center;">
+                                Sent by <strong>Affiliate Link Monitoring</strong>
+                            </p>
+                            <p style="margin: 0; color: #9ca3af; font-size: 12px; text-align: center;">
+                                <a href="${appUrl}/settings" style="color: #667eea; text-decoration: none;">Manage notifications</a> •
+                                <a href="${appUrl}/support" style="color: #667eea; text-decoration: none;">Get support</a>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>`;
+}
+
+/**
+ * Email 1: Sent when user reaches 8/10 monitors (limit approaching)
+ */
+export async function sendUpgradeLimitApproachingEmail(to: string, data: UpgradeEmailData) {
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const slotsLeft = data.monitorLimit - data.monitorCount;
+
+    const subject = `You're almost at capacity — ${slotsLeft} monitor slot${slotsLeft !== 1 ? 's' : ''} left`;
+
+    const html = upgradeEmailWrapper(`
+        <p style="margin: 0 0 16px; color: #374151; font-size: 16px; line-height: 1.6;">
+            You're using <strong>${data.monitorCount} out of ${data.monitorLimit}</strong> free monitors. That means you've got room for just <strong>${slotsLeft} more link${slotsLeft !== 1 ? 's' : ''}</strong> before you're maxed out.
+        </p>
+
+        <!-- Progress Bar -->
+        <div style="background-color: #e5e7eb; border-radius: 8px; height: 12px; margin: 20px 0; overflow: hidden;">
+            <div style="background: linear-gradient(90deg, #f59e0b, #ef4444); height: 12px; width: ${(data.monitorCount / data.monitorLimit) * 100}%; border-radius: 8px;"></div>
+        </div>
+        <p style="margin: 0 0 20px; color: #9ca3af; font-size: 13px; text-align: right;">${data.monitorCount}/${data.monitorLimit} monitors used</p>
+
+        <div style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin: 20px 0;">
+            <p style="margin: 0; color: #991b1b; font-size: 14px; line-height: 1.6;">
+                Every link you can't monitor is a link that could break without you knowing — and that's commissions slipping through the cracks.
+            </p>
+        </div>
+
+        <div style="text-align: center; margin: 28px 0;">
+            <a href="${appUrl}/pricing" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px;">
+                Upgrade to Pro ($12/mo) →
+            </a>
+        </div>
+
+        <p style="margin: 0; color: #9ca3af; font-size: 13px; text-align: center;">
+            Pro pays for itself the moment we catch a single broken link you would've missed.
+        </p>
+
+        <p style="margin: 20px 0 0; color: #9ca3af; font-size: 12px; text-align: center;">
+            🛡️ 14-day money-back guarantee. Zero risk.
+        </p>
+    `);
+
+    const text = `You're using ${data.monitorCount} out of ${data.monitorLimit} free monitors. Only ${slotsLeft} slot${slotsLeft !== 1 ? 's' : ''} left.
+
+Every link you can't monitor is a link that could break without you knowing — and that's commissions slipping through the cracks.
+
+Upgrade to Pro ($12/mo) for 60 monitors: ${appUrl}/pricing
+
+Pro pays for itself the moment we catch a single broken link you would've missed.
+
+14-day money-back guarantee. Zero risk.
+
+— Affiliate Link Monitoring`;
+
+    await sendEmailViaSMTP(to, subject, html, text);
+}
+
+/**
+ * Email 2: Sent when user hits 10/10 monitors (limit reached)
+ */
+export async function sendUpgradeLimitReachedEmail(to: string, data: UpgradeEmailData) {
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const brokenLinks = data.brokenLinksFound || 0;
+    const estimatedSavings = brokenLinks * 15;
+
+    const subject = '🚨 All monitor slots full — your other links are unprotected';
+
+    const statsBlock = brokenLinks > 0 ? `
+        <div style="background-color: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 16px; margin: 20px 0;">
+            <p style="margin: 0 0 8px; color: #065f46; font-size: 14px; font-weight: 600;">Here's what you've accomplished so far:</p>
+            <p style="margin: 0; color: #065f46; font-size: 14px; line-height: 1.6;">
+                ✅ <strong>${brokenLinks} broken link${brokenLinks !== 1 ? 's' : ''}</strong> caught before they cost you<br/>
+                ✅ <strong>~$${estimatedSavings}/mo</strong> in commissions protected
+            </p>
+        </div>
+        <p style="margin: 0 0 20px; color: #374151; font-size: 15px; line-height: 1.6;">
+            But how many more broken links are hiding on pages you're <strong>NOT</strong> monitoring?
+        </p>
+    ` : '';
+
+    const html = upgradeEmailWrapper(`
+        <p style="margin: 0 0 16px; color: #374151; font-size: 16px; line-height: 1.6;">
+            You just hit your <strong>${data.monitorLimit}-monitor limit</strong>. That means every other affiliate link on your site is running <strong style="color: #dc2626;">without a safety net</strong>.
+        </p>
+
+        <!-- Full Progress Bar -->
+        <div style="background-color: #e5e7eb; border-radius: 8px; height: 12px; margin: 20px 0; overflow: hidden;">
+            <div style="background: linear-gradient(90deg, #ef4444, #dc2626); height: 12px; width: 100%; border-radius: 8px;"></div>
+        </div>
+        <p style="margin: 0 0 20px; color: #ef4444; font-size: 13px; text-align: right; font-weight: 600;">${data.monitorLimit}/${data.monitorLimit} — FULL</p>
+
+        ${statsBlock}
+
+        <div style="background-color: #f5f3ff; border: 1px solid #c4b5fd; border-radius: 8px; padding: 20px; margin: 20px 0;">
+            <p style="margin: 0 0 12px; color: #4c1d95; font-size: 15px; font-weight: 600;">With Pro you get:</p>
+            <p style="margin: 0; color: #5b21b6; font-size: 14px; line-height: 2;">
+                📊 <strong>60 monitors</strong> (6× more coverage)<br/>
+                ⚡ <strong>Hourly scans</strong> (catch breaks 24× faster)<br/>
+                📦 <strong>Bulk import</strong> (add 50 links in one click)
+            </p>
+        </div>
+
+        <div style="text-align: center; margin: 28px 0;">
+            <a href="${appUrl}/pricing" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px;">
+                Start Pro — 14-day money-back guarantee →
+            </a>
+        </div>
+    `);
+
+    const text = `You just hit your ${data.monitorLimit}-monitor limit. Every other affiliate link on your site is running without a safety net.
+
+${brokenLinks > 0 ? `So far we've caught ${brokenLinks} broken link${brokenLinks !== 1 ? 's' : ''} — saving ~$${estimatedSavings}/mo in commissions.
+
+But how many more broken links are hiding on pages you're NOT monitoring?
+
+` : ''}With Pro you get:
+- 60 monitors (6x more coverage)
+- Hourly scans (catch breaks 24x faster)
+- Bulk import (add 50 links in one click)
+
+Upgrade now: ${appUrl}/pricing
+14-day money-back guarantee.
+
+— Affiliate Link Monitoring`;
+
+    await sendEmailViaSMTP(to, subject, html, text);
+}
+
+/**
+ * Email 3: Follow-up 48 hours after limit reached (if still not upgraded)
+ */
+export async function sendUpgradeFollowUpEmail(to: string) {
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+
+    const subject = 'Quick math: Is $12/mo worth protecting your commissions?';
+
+    const html = upgradeEmailWrapper(`
+        <p style="margin: 0 0 20px; color: #374151; font-size: 16px; line-height: 1.6;">
+            Let's do some quick math:
+        </p>
+
+        <div style="background-color: #f9fafb; border-radius: 8px; padding: 20px; margin: 20px 0;">
+            <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td style="padding: 8px 0; color: #374151; font-size: 14px;">Average affiliate commission per sale:</td>
+                    <td style="padding: 8px 0; color: #111827; font-size: 14px; font-weight: 700; text-align: right;">$8–$15</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px 0; color: #374151; font-size: 14px; border-top: 1px solid #e5e7eb;">Links that break within 6 months:</td>
+                    <td style="padding: 8px 0; color: #dc2626; font-size: 14px; font-weight: 700; text-align: right; border-top: 1px solid #e5e7eb;">~15%</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px 0; color: #374151; font-size: 14px; border-top: 1px solid #e5e7eb;">Your unmonitored links right now:</td>
+                    <td style="padding: 8px 0; color: #dc2626; font-size: 14px; font-weight: 700; text-align: right; border-top: 1px solid #e5e7eb;">dozens (maybe hundreds)</td>
+                </tr>
+            </table>
+        </div>
+
+        <p style="margin: 0 0 20px; color: #374151; font-size: 15px; line-height: 1.6;">
+            Even <strong>one</strong> missed sale per month means you're losing more than the $12/mo Pro plan costs.
+        </p>
+
+        <div style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin: 20px 0;">
+            <p style="margin: 0; color: #991b1b; font-size: 14px; line-height: 1.6;">
+                We catch broken links within <strong>60 seconds</strong>. Without monitoring, they can stay broken for <strong>weeks</strong>.
+            </p>
+        </div>
+
+        <div style="text-align: center; margin: 28px 0;">
+            <a href="${appUrl}/pricing" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px;">
+                Protect your commissions →
+            </a>
+        </div>
+
+        <p style="margin: 20px 0 0; color: #6b7280; font-size: 13px; line-height: 1.6; text-align: center;">
+            Still not sure? Reply to this email and we'll personally review your account to show you exactly how much you could be losing.
+        </p>
+    `);
+
+    const text = `Let's do some quick math:
+
+- Average affiliate commission per sale: $8–$15
+- Links that break within 6 months: ~15%
+- Your unmonitored links right now: dozens (maybe hundreds)
+
+Even ONE missed sale per month means you're losing more than the $12/mo Pro plan costs.
+
+We catch broken links within 60 seconds. Without monitoring, they can stay broken for weeks.
+
+Upgrade now: ${appUrl}/pricing
+
+Still not sure? Reply to this email and we'll personally review your account to show you exactly how much you could be losing.
+
+— Affiliate Link Monitoring`;
+
+    await sendEmailViaSMTP(to, subject, html, text);
+}
