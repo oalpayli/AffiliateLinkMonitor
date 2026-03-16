@@ -29,7 +29,7 @@ const config = {
     slug: 'amazon-broken-link-checker',
     headline: 'Find Broken Amazon Affiliate Links Before You Lose Money',
     subheadline:
-        'Paste any page URL and we\'ll instantly check every Amazon link for 404 errors, removed products, and out-of-stock items.',
+        'Paste any Amazon product link to check its status instantly, or paste a blog post URL to scan all its Amazon links at once.',
     description:
         'Amazon frequently removes products, changes URLs, and updates stock status without warning. A single broken Amazon link can cost you dozens of missed commissions every month. Our tool catches these issues before your visitors do.',
     exampleUrl: 'https://www.amazon.com/dp/B0BSHF7WHW',

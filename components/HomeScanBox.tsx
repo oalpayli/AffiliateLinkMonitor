@@ -158,7 +158,7 @@ export default function HomeScanBox() {
                     <div className="flex flex-col sm:flex-row gap-2">
                         <input
                             type="url"
-                            placeholder="https://yourblog.com/article"
+                            placeholder="https://amzn.to/xyz OR https://yourblog.com/article"
                             value={scanUrl}
                             onFocus={() => posthog?.capture('scan_input_focused', { page: 'landing' })}
                             onChange={(e) => {

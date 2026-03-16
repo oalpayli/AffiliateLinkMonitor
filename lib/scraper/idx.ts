@@ -87,6 +87,21 @@ export function isAffiliateLink(href: string): boolean {
 import { scrapeDynamicContent } from './browser.ts';
 
 export async function scrapeAffiliateLinks(url: string): Promise<ScraperResult> {
+  // If the input URL is already a direct affiliate link, skip the full page scrape entirely.
+  // The core purpose is to monitor these links directly, not scrape their sub-links (which causes bot detection on Amazon).
+  if (isAffiliateLink(url)) {
+    console.log(`[Scraper] URL is a direct affiliate link, skipping page scrape: ${url}`);
+    return {
+      url,
+      totalLinks: 1,
+      affiliateLinks: [{
+        href: url,
+        text: 'Direct Link',
+        status: 'unchecked'
+      }]
+    };
+  }
+
   // Strategy: Try Fast Scraper (Axios) -> Fallback to Slow Scraper (Puppeteer)
   let links: Array<{ href: string; text: string }> = [];
 

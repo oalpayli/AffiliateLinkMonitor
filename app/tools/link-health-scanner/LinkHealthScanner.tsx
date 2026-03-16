@@ -104,7 +104,7 @@ export default function LinkHealthScanner() {
                         </h1>
 
                         <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
-                            Paste any page URL and get an instant health report for every link. Find broken links, 404 errors, and out-of-stock products in seconds.
+                            Paste a direct affiliate link to check its health and stock status, or paste a blog post to scan all its links at once. Find 404s and out-of-stock products instantly.
                         </p>
 
                         {/* Scanner */}
@@ -113,7 +113,7 @@ export default function LinkHealthScanner() {
                                 <div className="flex flex-col sm:flex-row gap-2">
                                     <input
                                         type="url"
-                                        placeholder="https://yourblog.com/article"
+                                        placeholder="https://amzn.to/xyz OR https://yourblog.com/article"
                                         value={scanUrl}
                                         onChange={(e) => setScanUrl(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && handleScan()}

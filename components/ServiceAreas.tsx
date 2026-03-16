@@ -39,7 +39,7 @@ export default function ServiceAreas() {
                             Works With Any Link, Anywhere
                         </h2>
                         <p className="text-slate-400 text-lg mb-8 leading-relaxed">
-                            Paste any URL and we'll scan every outbound link on that page.
+                            Paste any blog post to scan its outbound links, or paste a direct Amazon/affiliate link to monitor it directly.
                             If a link returns a 404 or an Amazon product goes out of stock, you'll know instantly.
                         </p>
 
@@ -81,7 +81,7 @@ export default function ServiceAreas() {
                         </div>
                         <div className="mt-6 pt-5 border-t border-slate-800 text-center">
                             <p className="text-sm text-slate-500">
-                                + any page with standard HTML links
+                                + direct monitoring for individual affiliate product URLs
                             </p>
                         </div>
                     </div>
