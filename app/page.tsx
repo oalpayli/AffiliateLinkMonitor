@@ -143,6 +143,20 @@ export default function LandingPage() {
                 <section className="min-h-screen flex flex-col justify-center pt-20 pb-32 relative">
                     <div className="container mx-auto px-4 md:px-6 z-20">
                         <div className="max-w-4xl mx-auto text-center relative z-20">
+                            
+                            {/* Product Hunt Badge */}
+                            <div className="flex justify-center mb-8">
+                                <a href="https://www.producthunt.com/products/affiliate-link-monitoring?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-affiliate-link-monitoring" target="_blank" rel="noopener noreferrer">
+                                    <img 
+                                        src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1101161&theme=neutral&t=1773817426324" 
+                                        alt="Affiliate Link Monitor - The 24/7 automated broken affiliate link monitor. | Product Hunt" 
+                                        width="250" 
+                                        height="54" 
+                                        className="w-[250px] h-[54px]"
+                                    />
+                                </a>
+                            </div>
+
                             <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.1]">
                                 24/7 Affiliate Link Monitoring <br className="hidden md:block" />
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">for Content Creators Worldwide</span>
