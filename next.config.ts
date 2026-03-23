@@ -55,6 +55,7 @@ const nextConfig: NextConfig = {
               "font-src 'self'",
               "connect-src 'self' https://sentry.io https://*.sentry.io https://us.i.posthog.com https://us-assets.i.posthog.com",
               "frame-ancestors 'none'",
+              "worker-src 'self' blob:",
             ].join('; '),
           },
         ],
