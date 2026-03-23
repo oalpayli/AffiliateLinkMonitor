@@ -78,7 +78,7 @@ export default function ServiceAreas() {
                             ))}
                         </div>
                         <div className="mt-6 pt-5 border-t border-slate-800 text-center">
-                            <p className="text-sm text-slate-500">
+                            <p className="text-sm text-slate-400">
                                 + direct monitoring for individual affiliate product URLs
                             </p>
                         </div>

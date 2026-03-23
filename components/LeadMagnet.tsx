@@ -72,7 +72,7 @@ export default function LeadMagnet() {
                                     </Link>
                                 )}
 
-                                <p className="text-xs text-slate-500 mt-2 sm:mt-0 sm:self-center">
+                                <p className="text-xs text-slate-400 mt-2 sm:mt-0 sm:self-center">
                                     {user ? "*Click to download instantly." : "*Create free account to download."}
                                 </p>
                             </div>

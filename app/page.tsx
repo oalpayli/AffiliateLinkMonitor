@@ -468,7 +468,7 @@ function PricingCard({ tier, price, period, features, cta, href, highlighted }: 
     return (
         <div className={`p-8 rounded-2xl border relative ${highlighted ? 'bg-gradient-to-b from-violet-500/10 to-slate-900/50 border-violet-500/50' : 'bg-slate-900/50 border-slate-800'}`}>
             {highlighted && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-violet-500 text-white text-sm font-semibold rounded-full">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-violet-700 text-white text-sm font-semibold rounded-full">
                     Most Popular
                 </div>
             )}
@@ -478,7 +478,7 @@ function PricingCard({ tier, price, period, features, cta, href, highlighted }: 
                     <span className="text-5xl font-bold">{price}</span>
                     <span className="text-slate-400">/{period.split(' ')[0]}</span>
                 </div>
-                <p className="text-sm text-slate-500">{period.split(' ')[1] || ''}</p>
+                <p className="text-sm text-slate-400">{period.split(' ')[1] || ''}</p>
             </div>
             <ul className="space-y-3 mb-8">
                 {features.map((feature, i) => (

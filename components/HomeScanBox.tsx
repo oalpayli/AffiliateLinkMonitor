@@ -220,7 +220,7 @@ export default function HomeScanBox() {
                             Try with example link
                         </button>
                         <span className="text-slate-600 text-xs">•</span>
-                        <span className="text-xs text-slate-500">No signup required</span>
+                        <span className="text-xs text-slate-400">No signup required</span>
                     </div>
                 </div>
                 {error && (
