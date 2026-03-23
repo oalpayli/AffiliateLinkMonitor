@@ -1,5 +1,3 @@
-'use client';
-
 import { Globe, CheckCircle2, Link2, ShoppingCart, AlertTriangle, Search } from 'lucide-react';
 
 const CAPABILITIES = [

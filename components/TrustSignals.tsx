@@ -1,5 +1,3 @@
-'use client';
-
 import { Users, Globe, Star, Shield } from 'lucide-react';
 
 export default function TrustSignals() {
