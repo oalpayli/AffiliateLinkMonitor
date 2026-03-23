@@ -4,7 +4,7 @@ import PlatformCheckerPage from '@/components/PlatformCheckerPage';
 export const metadata: Metadata = {
     title: 'Amazon Broken Link Checker — Find Dead Affiliate Links',
     description:
-        'Free Amazon affiliate link checker. Scan your pages for broken Amazon links, out-of-stock products, and 404 errors. Get instant alerts when links break. No signup required.',
+        'Free Amazon affiliate link checker. Scan your pages for broken Amazon links, out-of-stock products, and 404 errors. Get instant alerts when links break.',
     keywords: [
         'amazon broken link checker',
         'amazon affiliate link checker',

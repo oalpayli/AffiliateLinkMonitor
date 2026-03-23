@@ -82,7 +82,7 @@ const jsonLd = {
                 'Adjustable sliders for traffic, conversion rate, and commission',
                 'Broken link percentage estimation',
                 'Monthly and annual loss projections',
-                'No signup required',
+                'Free to use — no credit card required',
             ],
             creator: {
                 '@id': 'https://www.affiliatelinkmonitoring.com/#organization',

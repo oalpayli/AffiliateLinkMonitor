@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Loader2, CheckCircle2, XCircle, AlertCircle, Zap, Search, Lock, Shield, Clock, BarChart3 } from 'lucide-react';
+import { ArrowRight, Loader2, CheckCircle2, XCircle, AlertCircle, Zap, Search, Shield, Clock, BarChart3 } from 'lucide-react';
 import { usePostHog } from 'posthog-js/react';
 import UpgradeDialog from '@/components/UpgradeDialog';
+import SignupModal from '@/components/SignupModal';
 
 interface LinkResult {
     href: string;
@@ -24,7 +25,10 @@ export default function LinkHealthScanner() {
     const [upgradeMessage, setUpgradeMessage] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    const MAX_VISIBLE = 3; // Show only 3 results for free
+    // Signup gate state
+    const [showSignupModal, setShowSignupModal] = useState(false);
+    const [signupCompleted, setSignupCompleted] = useState(false);
+
 
     const handleScan = async () => {
         if (!scanUrl.trim()) return;
@@ -61,11 +65,7 @@ export default function LinkHealthScanner() {
             const data = await res.json();
             setScannedUrl(data.url || scanUrl);
             setLinks(data.links || []);
-
-            posthog?.capture('health_scanner_completed', {
-                total_links: data.links?.length || 0,
-                page: 'link-health-scanner',
-            });
+            setShowSignupModal(true);
         } catch {
             setError('Scan failed. Please enter a valid URL.');
         } finally {
@@ -93,7 +93,7 @@ export default function LinkHealthScanner() {
                     <div className="container mx-auto px-4 max-w-4xl text-center">
                         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-sm font-medium mb-8">
                             <Search className="h-4 w-4" />
-                            100% Free Tool — No Signup Required
+                            Free Link Health Check
                         </div>
 
                         <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-[1.1]">
@@ -163,8 +163,23 @@ export default function LinkHealthScanner() {
                     </div>
                 </section>
 
-                {/* Results */}
-                {links.length > 0 && (
+                {/* Signup Gate */}
+                <SignupModal
+                    isOpen={showSignupModal}
+                    onClose={() => setShowSignupModal(false)}
+                    onSuccess={() => {
+                        setShowSignupModal(false);
+                        setSignupCompleted(true);
+                        posthog?.capture('health_scanner_completed', {
+                            total_links: links.length,
+                            page: 'link-health-scanner',
+                        });
+                    }}
+                    scanContext="link-health-scanner"
+                />
+
+                {/* Results — only after signup */}
+                {links.length > 0 && signupCompleted && (
                     <section className="pb-16">
                         <div className="container mx-auto px-4 max-w-3xl">
                             <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-8 backdrop-blur-sm">
@@ -197,10 +212,10 @@ export default function LinkHealthScanner() {
                                     </div>
                                 </div>
 
-                                {/* Link List (Limited) */}
+                                {/* Full Link List */}
                                 <h3 className="text-lg font-semibold mb-4">Link Details</h3>
                                 <div className="space-y-2 mb-4">
-                                    {links.slice(0, MAX_VISIBLE).map((link, i) => (
+                                    {links.map((link, i) => (
                                         <div key={i} className="flex items-center gap-3 p-3 bg-slate-950/50 rounded-lg border border-slate-800">
                                             {link.status === 'broken' ? (
                                                 <XCircle className="h-5 w-5 text-red-400 flex-shrink-0" />
@@ -214,37 +229,6 @@ export default function LinkHealthScanner() {
                                         </div>
                                     ))}
                                 </div>
-
-                                {/* Blurred / Locked Results */}
-                                {totalLinks > MAX_VISIBLE && (
-                                    <div className="relative">
-                                        <div className="space-y-2 opacity-20 blur-sm pointer-events-none">
-                                            {links.slice(MAX_VISIBLE, MAX_VISIBLE + 3).map((link, i) => (
-                                                <div key={i} className="flex items-center gap-3 p-3 bg-slate-950/50 rounded-lg border border-slate-800">
-                                                    <CheckCircle2 className="h-5 w-5 text-slate-400 flex-shrink-0" />
-                                                    <span className="text-sm text-slate-300 truncate">{link.href}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                            <Lock className="h-8 w-8 text-violet-400 mb-3" />
-                                            <p className="text-white font-semibold mb-1">
-                                                +{totalLinks - MAX_VISIBLE} more links found
-                                            </p>
-                                            <p className="text-slate-400 text-sm mb-4">
-                                                Sign up free to see the full report & get daily monitoring
-                                            </p>
-                                            <Link
-                                                href="/signup"
-                                                onClick={() => posthog?.capture('health_scanner_signup_cta', { total_links: totalLinks })}
-                                                className="btn-primary px-6 py-2.5 rounded-xl font-semibold text-sm flex items-center gap-2"
-                                            >
-                                                Unlock Full Report — Free
-                                                <ArrowRight className="h-4 w-4" />
-                                            </Link>
-                                        </div>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </section>
@@ -261,7 +245,7 @@ export default function LinkHealthScanner() {
                                 { icon: <Shield className="h-6 w-6 text-emerald-400" />, title: "Protect Revenue", desc: "Every broken link is lost commission money" },
                                 { icon: <BarChart3 className="h-6 w-6 text-violet-400" />, title: "Health Score", desc: "Get an instant overall link health percentage" },
                                 { icon: <Clock className="h-6 w-6 text-indigo-400" />, title: "Takes 10 Seconds", desc: "Paste URL, click scan, see results instantly" },
-                                { icon: <Zap className="h-6 w-6 text-yellow-400" />, title: "100% Free", desc: "No signup needed for instant scans" },
+                                { icon: <Zap className="h-6 w-6 text-yellow-400" />, title: "100% Free", desc: "Instant scans with full results" },
                             ].map((f, i) => (
                                 <div key={i} className="p-6 rounded-2xl bg-slate-900/50 border border-slate-800 hover:border-emerald-500/30 transition-all">
                                     <div className="mb-4 p-2 bg-slate-950/50 rounded-lg w-fit border border-slate-800">{f.icon}</div>

@@ -4,7 +4,7 @@ import LinkHealthScanner from './LinkHealthScanner';
 export const metadata: Metadata = {
     title: 'Free Affiliate Link Health Scanner — Check Any Page Instantly',
     description:
-        'Free online tool to scan any webpage for broken affiliate links, 404 errors, and out-of-stock products. Get a full link health report in seconds. No signup required.',
+        'Free online tool to scan any webpage for broken affiliate links, 404 errors, and out-of-stock products. Get a full link health report in seconds.',
     keywords: [
         'affiliate link health scanner',
         'free link checker',

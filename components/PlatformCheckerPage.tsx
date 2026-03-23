@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Activity, Loader2, CheckCircle2, XCircle, AlertCircle, Zap, Shield, Clock, Mail, Lock } from 'lucide-react';
+import { ArrowRight, Activity, Loader2, CheckCircle2, XCircle, AlertCircle, Zap, Shield, Clock, Mail } from 'lucide-react';
 import { usePostHog } from 'posthog-js/react';
 import UpgradeDialog from '@/components/UpgradeDialog';
+import SignupModal from '@/components/SignupModal';
 
 interface PlatformFAQ {
     question: string;
@@ -48,36 +49,11 @@ export default function PlatformCheckerPage({ config }: { config: PlatformConfig
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-    // Email capture state
-    const [captureEmail, setCaptureEmail] = useState('');
-    const [emailSubmitted, setEmailSubmitted] = useState(false);
-    const [emailSubmitting, setEmailSubmitting] = useState(false);
+    // Signup gate state
+    const [showSignupModal, setShowSignupModal] = useState(false);
+    const [signupCompleted, setSignupCompleted] = useState(false);
 
-    const handleEmailCapture = async () => {
-        if (!captureEmail.trim() || !captureEmail.includes('@')) return;
 
-        setEmailSubmitting(true);
-        try {
-            posthog?.identify(captureEmail, {
-                email: captureEmail,
-                source: `tool_scan_${config.slug}`,
-                broken_links: scanResult?.brokenLinks || 0,
-                oos_links: scanResult?.oosLinks || 0,
-                scanned_url: scanResult?.url || scanUrl,
-            });
-            posthog?.capture('scan_email_captured', {
-                platform: config.slug,
-                email: captureEmail,
-                broken_links: scanResult?.brokenLinks || 0,
-                oos_links: scanResult?.oosLinks || 0,
-            });
-            setEmailSubmitted(true);
-        } catch {
-            // Silently fail — PostHog will retry
-        } finally {
-            setEmailSubmitting(false);
-        }
-    };
 
     const handleScan = async () => {
         if (!scanUrl.trim()) return;
@@ -123,6 +99,7 @@ export default function PlatformCheckerPage({ config }: { config: PlatformConfig
             ).length || 0;
 
             setScanResult({ url: data.url, totalLinks, affiliateLinks, brokenLinks, oosLinks, links: data.links || [] });
+            setShowSignupModal(true);
 
             posthog?.capture('platform_scan_completed', {
                 platform: config.slug,
@@ -205,8 +182,6 @@ export default function PlatformCheckerPage({ config }: { config: PlatformConfig
                                         <Zap className="h-3.5 w-3.5" />
                                         {config.exampleLabel}
                                     </button>
-                                    <span className="text-slate-600 text-xs">•</span>
-                                    <span className="text-xs text-slate-500">No signup required</span>
                                 </div>
                             </div>
 
@@ -220,8 +195,19 @@ export default function PlatformCheckerPage({ config }: { config: PlatformConfig
                     </div>
                 </section>
 
-                {/* Scan Result */}
-                {scanResult && (
+                {/* Signup Gate */}
+                <SignupModal
+                    isOpen={showSignupModal}
+                    onClose={() => setShowSignupModal(false)}
+                    onSuccess={() => {
+                        setShowSignupModal(false);
+                        setSignupCompleted(true);
+                    }}
+                    scanContext={config.slug}
+                />
+
+                {/* Scan Result — only after signup */}
+                {scanResult && signupCompleted && (
                     <section className="pb-16">
                         <div className="container mx-auto px-4 max-w-2xl">
                             <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-8 backdrop-blur-sm">
@@ -250,7 +236,6 @@ export default function PlatformCheckerPage({ config }: { config: PlatformConfig
                                     </div>
                                 </div>
 
-                                {/* Revenue loss warning */}
                                 {(scanResult.brokenLinks > 0 || scanResult.oosLinks > 0) && (
                                     <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
                                         <p className="text-sm text-red-200 text-center">
@@ -260,58 +245,15 @@ export default function PlatformCheckerPage({ config }: { config: PlatformConfig
                                     </div>
                                 )}
 
-                                {/* Email capture */}
-                                {!emailSubmitted ? (
-                                    <div className="space-y-3">
-                                        <p className="text-sm text-slate-300 text-center font-medium">
-                                            {scanResult.brokenLinks > 0
-                                                ? `We\'ll watch these ${scanResult.brokenLinks} broken link${scanResult.brokenLinks !== 1 ? 's' : ''} — get alerted when they\'re fixable.`
-                                                : 'All clear! Get an email if any of these links break in the future.'}
-                                        </p>
-                                        <div className="flex flex-col sm:flex-row gap-2">
-                                            <input
-                                                type="email"
-                                                placeholder="you@email.com"
-                                                value={captureEmail}
-                                                onChange={(e) => setCaptureEmail(e.target.value)}
-                                                onKeyDown={(e) => e.key === 'Enter' && handleEmailCapture()}
-                                                className="flex-1 px-4 py-3 bg-slate-950/50 border border-slate-800 rounded-xl text-white placeholder:text-slate-600 focus:outline-none focus:border-violet-500/50 transition-all text-sm"
-                                            />
-                                            <button
-                                                onClick={handleEmailCapture}
-                                                disabled={emailSubmitting || !captureEmail.trim()}
-                                                className="btn-primary px-6 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap text-sm"
-                                            >
-                                                {emailSubmitting ? (
-                                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                                ) : (
-                                                    <>
-                                                        Watch My Links
-                                                        <ArrowRight className="h-4 w-4" />
-                                                    </>
-                                                )}
-                                            </button>
-                                        </div>
-                                        <p className="text-xs text-slate-500 text-center flex items-center justify-center gap-1">
-                                            <Lock className="h-3 w-3" />
-                                            No spam. Only broken link alerts. Unsubscribe anytime.
-                                        </p>
-                                    </div>
-                                ) : (
-                                    <div className="text-center space-y-3">
-                                        <div className="flex items-center justify-center gap-2 text-emerald-400">
-                                            <CheckCircle2 className="h-5 w-5" />
-                                            <span className="font-semibold">You&apos;re all set!</span>
-                                        </div>
-                                        <p className="text-sm text-slate-400">We&apos;ll email you at <strong className="text-slate-300">{captureEmail}</strong> when any of these links break.</p>
-                                        <Link
-                                            href="/dashboard"
-                                            className="inline-flex items-center gap-2 text-sm text-violet-400 hover:text-violet-300 transition-colors font-medium"
-                                        >
-                                            Or set up full monitoring now →
-                                        </Link>
-                                    </div>
-                                )}
+                                <div className="text-center">
+                                    <Link
+                                        href="/dashboard"
+                                        className="inline-flex items-center gap-2 btn-primary px-8 py-3 rounded-xl font-semibold transition-all"
+                                    >
+                                        Start Monitoring Free
+                                        <ArrowRight className="h-5 w-5" />
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </section>

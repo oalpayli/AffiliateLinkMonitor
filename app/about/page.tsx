@@ -56,7 +56,7 @@ const values = [
     {
         icon: <Target className="h-6 w-6 text-emerald-400" />,
         title: 'Honest, Useful Tools',
-        desc: 'We build tools we would use ourselves. Our free Amazon Broken Link Checker and Linktree checker require no signup because the value should be immediate — no friction.',
+        desc: 'We build tools we would use ourselves. Our free Amazon Broken Link Checker and Linktree checker deliver immediate value — scan any page and get results in seconds.',
     },
     {
         icon: <Zap className="h-6 w-6 text-yellow-400" />,

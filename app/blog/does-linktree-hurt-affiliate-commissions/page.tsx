@@ -307,7 +307,7 @@ export default function LinktreeCommissionsPage() {
                                 name: 'How can I check if my Linktree links are broken?',
                                 acceptedAnswer: {
                                     '@type': 'Answer',
-                                    text: 'Use Affiliate Link Monitor\'s free Linktree Link Checker to scan your entire Linktree instantly — no signup required. For ongoing protection, set up automated monitoring to receive email alerts whenever a Linktree link breaks or goes out of stock.',
+                                    text: 'Use Affiliate Link Monitor\'s free Linktree Link Checker to scan your entire Linktree instantly. For ongoing protection, set up automated monitoring to receive email alerts whenever a Linktree link breaks or goes out of stock.',
                                 },
                             },
                             {

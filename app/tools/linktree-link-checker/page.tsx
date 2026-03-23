@@ -4,7 +4,7 @@ import PlatformCheckerPage from '@/components/PlatformCheckerPage';
 export const metadata: Metadata = {
     title: 'Check Linktree Links — Free Linktree Link Checker Tool',
     description:
-        'Free Linktree link checker. Verify every link in your Linktree profile works. Detect broken URLs, expired pages, and dead links. No signup required.',
+        'Free Linktree link checker. Verify every link in your Linktree profile works. Detect broken URLs, expired pages, and dead links.',
     keywords: [
         'check linktree links',
         'linktree link checker',

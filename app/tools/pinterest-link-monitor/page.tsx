@@ -4,7 +4,7 @@ import PlatformCheckerPage from '@/components/PlatformCheckerPage';
 export const metadata: Metadata = {
     title: 'Pinterest Link Monitor — Check Your Pin Links',
     description:
-        'Free Pinterest link checker tool. Verify that your Pinterest pin destination URLs still work. Detect broken links, redirects, and dead pages. No signup required.',
+        'Free Pinterest link checker tool. Verify that your Pinterest pin destination URLs still work. Detect broken links, redirects, and dead pages.',
     keywords: [
         'pinterest link monitor',
         'pinterest link checker',
