@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowRight, Zap, AlertCircle, CheckCircle2, XCircle, Loader2 } from 'lucide-react';
 import { usePostHog } from 'posthog-js/react';
 import Link from 'next/link';
 import UpgradeDialog from '@/components/UpgradeDialog';
-import SignupModal from '@/components/SignupModal';
+import SignupModal, { getPendingScanResults } from '@/components/SignupModal';
 
 interface ScanResult {
     url: string;
@@ -36,7 +36,14 @@ export default function HomeScanBox() {
     const [showSignupModal, setShowSignupModal] = useState(false);
     const [signupCompleted, setSignupCompleted] = useState(false);
 
-
+    // Restore scan results after OAuth redirect
+    useEffect(() => {
+        const pending = getPendingScanResults();
+        if (pending && pending.source === 'homepage') {
+            setScanResult(pending.result as ScanResult);
+            setSignupCompleted(true); // User already signed up via OAuth
+        }
+    }, []);
 
     const handleScan = async () => {
         if (!scanUrl.trim()) return;
@@ -211,6 +218,7 @@ export default function HomeScanBox() {
                     setSignupCompleted(true);
                 }}
                 scanContext="homepage"
+                pendingScanData={{ source: 'homepage', result: scanResult }}
             />
 
             {/* Scan Result Modal — only shows after signup */}

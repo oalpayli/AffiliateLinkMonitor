@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Activity, Loader2, CheckCircle2, XCircle, AlertCircle, Zap, Shield, Clock, Mail } from 'lucide-react';
 import { usePostHog } from 'posthog-js/react';
 import UpgradeDialog from '@/components/UpgradeDialog';
-import SignupModal from '@/components/SignupModal';
+import SignupModal, { getPendingScanResults } from '@/components/SignupModal';
 
 interface PlatformFAQ {
     question: string;
@@ -53,6 +53,14 @@ export default function PlatformCheckerPage({ config }: { config: PlatformConfig
     const [showSignupModal, setShowSignupModal] = useState(false);
     const [signupCompleted, setSignupCompleted] = useState(false);
 
+    // Restore scan results after OAuth redirect
+    useEffect(() => {
+        const pending = getPendingScanResults();
+        if (pending && pending.source === config.slug) {
+            setScanResult(pending.result as ScanResult);
+            setSignupCompleted(true);
+        }
+    }, [config.slug]);
 
 
     const handleScan = async () => {
@@ -204,6 +212,7 @@ export default function PlatformCheckerPage({ config }: { config: PlatformConfig
                         setSignupCompleted(true);
                     }}
                     scanContext={config.slug}
+                    pendingScanData={{ source: config.slug, result: scanResult }}
                 />
 
                 {/* Scan Result — only after signup */}

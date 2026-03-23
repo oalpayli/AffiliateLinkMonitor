@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Loader2, CheckCircle2, XCircle, AlertCircle, Zap, Search, Shield, Clock, BarChart3 } from 'lucide-react';
 import { usePostHog } from 'posthog-js/react';
 import UpgradeDialog from '@/components/UpgradeDialog';
-import SignupModal from '@/components/SignupModal';
+import SignupModal, { getPendingScanResults } from '@/components/SignupModal';
 
 interface LinkResult {
     href: string;
@@ -29,7 +29,16 @@ export default function LinkHealthScanner() {
     const [showSignupModal, setShowSignupModal] = useState(false);
     const [signupCompleted, setSignupCompleted] = useState(false);
 
-
+    // Restore scan results after OAuth redirect
+    useEffect(() => {
+        const pending = getPendingScanResults();
+        if (pending && pending.source === 'link-health-scanner') {
+            const data = pending.result as { links: LinkResult[], scannedUrl: string };
+            setLinks(data.links || []);
+            setScannedUrl(data.scannedUrl || '');
+            setSignupCompleted(true);
+        }
+    }, []);
     const handleScan = async () => {
         if (!scanUrl.trim()) return;
 
@@ -176,6 +185,7 @@ export default function LinkHealthScanner() {
                         });
                     }}
                     scanContext="link-health-scanner"
+                    pendingScanData={{ source: 'link-health-scanner', result: { links, scannedUrl } }}
                 />
 
                 {/* Results — only after signup */}
