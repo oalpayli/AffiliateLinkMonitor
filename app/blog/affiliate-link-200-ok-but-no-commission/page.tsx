@@ -5,7 +5,7 @@ import { ArrowRight, ArrowLeft, AlertTriangle, CheckCircle2, Clock } from 'lucid
 const BASE_URL = 'https://www.affiliatelinkmonitoring.com';
 
 export const metadata: Metadata = {
-    title: 'Neden Affiliate Linkiniz 200 OK Döndürüyor Ama Siz Komisyon Kaybediyorsunuz?',
+    title: 'Why Your Affiliate Links Return 200 OK But You\'re Losing Commissions',
     description: 'A "working" affiliate link and an "earning" affiliate link are not the same thing. Here are 4 failure modes standard link checkers completely miss — and how to catch them.',
     keywords: [
         'affiliate link not broken but not earning',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
         canonical: `${BASE_URL}/blog/affiliate-link-200-ok-but-no-commission`,
     },
     openGraph: {
-        title: 'Neden Affiliate Linkiniz 200 OK Döndürüyor Ama Siz Komisyon Kaybediyorsunuz?',
+        title: 'Why Your Affiliate Links Return 200 OK But You\'re Losing Commissions',
         description: 'A "working" affiliate link and an "earning" affiliate link are not the same thing. Here are 4 failure modes standard link checkers completely miss.',
         type: 'article',
         url: `${BASE_URL}/blog/affiliate-link-200-ok-but-no-commission`,
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
-    headline: 'Neden Affiliate Linkiniz 200 OK Döndürüyor Ama Siz Komisyon Kaybediyorsunuz?',
+    headline: 'Why Your Affiliate Links Return 200 OK But You\'re Losing Commissions',
     description: 'A "working" affiliate link and an "earning" affiliate link are not the same thing. Here are 4 failure modes standard link checkers completely miss — and how to catch them.',
     datePublished: '2026-03-30',
     dateModified: '2026-03-30',
@@ -81,7 +81,7 @@ export default function LinkHygienePage() {
                                 <span className="px-2.5 py-0.5 bg-violet-500/10 border border-violet-500/20 text-violet-400 text-xs rounded-full">Link Hygiene</span>
                             </div>
                             <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-6">
-                                Neden Affiliate Linkiniz 200 OK Döndürüyor Ama Siz Komisyon Kaybediyorsunuz?
+                                Why Your Affiliate Links Return 200 OK But You&apos;re Losing Commissions
                             </h1>
                             <p className="text-xl text-slate-400 leading-relaxed">
                                 Your link health checker says everything is fine. Green lights across the board. Every link returns a 200 status code. No errors, no redirects gone wrong, no 404s. But your commissions dropped last month.

@@ -1,5 +1,5 @@
 ---
-title: "Prime Day ve Black Friday Sonrası Affiliate Linkleriniz Neden Sessizce Bozulur"
+title: "Why Your Affiliate Links Break After Prime Day and Black Friday (And How to Fix It)"
 slug: seasonal-affiliate-link-rot-prime-day-black-friday
 publish_date: 2026-03-23
 author: Alex Miller
@@ -16,7 +16,7 @@ internal_links:
   - /blog/how-often-to-check-affiliate-links
 ---
 
-# Prime Day ve Black Friday Sonrası Affiliate Linkleriniz Neden Sessizce Bozulur
+# Why Your Affiliate Links Break After Prime Day and Black Friday (And How to Fix It)
 
 There's a pattern that plays out every year across Amazon affiliate sites.
 

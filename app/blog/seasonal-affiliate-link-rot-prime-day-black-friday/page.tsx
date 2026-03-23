@@ -5,7 +5,7 @@ import { ArrowRight, ArrowLeft, AlertTriangle, CheckCircle2, Clock } from 'lucid
 const BASE_URL = 'https://www.affiliatelinkmonitoring.com';
 
 export const metadata: Metadata = {
-    title: 'Prime Day ve Black Friday Sonrası Affiliate Linkleriniz Neden Sessizce Bozulur',
+    title: 'Why Your Affiliate Links Break After Prime Day and Black Friday (And How to Fix It)',
     description:
         'After every major Amazon sale event, hundreds of affiliate links silently go dead. Here\'s why it happens and how to protect your commissions before and after sale season.',
     keywords: [
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
         canonical: `${BASE_URL}/blog/seasonal-affiliate-link-rot-prime-day-black-friday`,
     },
     openGraph: {
-        title: 'Prime Day ve Black Friday Sonrası Affiliate Linkleriniz Neden Sessizce Bozulur',
+        title: 'Why Your Affiliate Links Break After Prime Day and Black Friday (And How to Fix It)',
         description: 'After every major Amazon sale event, hundreds of affiliate links silently go dead.',
         type: 'article',
         url: `${BASE_URL}/blog/seasonal-affiliate-link-rot-prime-day-black-friday`,
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
-    headline: 'Prime Day ve Black Friday Sonrası Affiliate Linkleriniz Neden Sessizce Bozulur',
+    headline: 'Why Your Affiliate Links Break After Prime Day and Black Friday (And How to Fix It)',
     description: 'After every major Amazon sale event, hundreds of affiliate links silently go dead. Here\'s why it happens and how to protect your commissions before and after sale season.',
     datePublished: '2026-03-23',
     dateModified: '2026-03-23',
@@ -82,7 +82,7 @@ export default function SeasonalLinkRotPage() {
                                 <span className="px-2.5 py-0.5 bg-violet-500/10 border border-violet-500/20 text-violet-400 text-xs rounded-full">Amazon Koruması & Gelir</span>
                             </div>
                             <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-6">
-                                Prime Day ve Black Friday Sonrası Affiliate Linkleriniz Neden Sessizce Bozulur
+                                Why Your Affiliate Links Break After Prime Day and Black Friday (And How to Fix It)
                             </h1>
                             <p className="text-xl text-slate-400 leading-relaxed">
                                 There&apos;s a pattern that plays out every year across Amazon affiliate sites. Bloggers spend weeks preparing sale content, traffic spikes, commissions spike... and then the sale ends.

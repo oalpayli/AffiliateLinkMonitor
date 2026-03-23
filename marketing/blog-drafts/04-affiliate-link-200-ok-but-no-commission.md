@@ -1,5 +1,5 @@
 ---
-title: "Neden Affiliate Linkiniz 200 OK Döndürüyor Ama Siz Komisyon Kaybediyorsunuz?"
+title: "Why Your Affiliate Links Return 200 OK But You're Losing Commissions"
 slug: affiliate-link-200-ok-but-no-commission
 publish_date: 2026-03-30
 author: Alex Miller
@@ -16,7 +16,7 @@ internal_links:
   - /blog/does-cloaking-affiliate-links-affect-seo
 ---
 
-# Neden Affiliate Linkiniz 200 OK Döndürüyor Ama Siz Komisyon Kaybediyorsunuz?
+# Why Your Affiliate Links Return 200 OK But You're Losing Commissions
 
 Your link health checker says everything is fine.
 
