@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Activity, Loader2, CheckCircle2, XCircle, AlertCircle, Zap, Shield, Clock, Mail, Lock } from 'lucide-react';
-import { usePostHog } from 'posthog-js/react';
+import { useSafePostHog } from '@/hooks/useSafePostHog';
 import UpgradeDialog from '@/components/UpgradeDialog';
 
 interface PlatformFAQ {
@@ -38,7 +38,7 @@ interface ScanResult {
 }
 
 export default function PlatformCheckerPage({ config }: { config: PlatformConfig }) {
-    const posthog = usePostHog();
+    const posthog = useSafePostHog();
     const [scanUrl, setScanUrl] = useState('');
     const [isScanning, setIsScanning] = useState(false);
     const [scanResult, setScanResult] = useState<ScanResult | null>(null);

@@ -6,11 +6,11 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
 import { Mail, Lock, Loader2, ArrowLeft, Check, X } from 'lucide-react'
-import { usePostHog } from 'posthog-js/react'
+import { useSafePostHog } from '@/hooks/useSafePostHog'
 import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton'
 
 export default function SignupPage() {
-    const posthog = usePostHog();
+    const posthog = useSafePostHog();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
