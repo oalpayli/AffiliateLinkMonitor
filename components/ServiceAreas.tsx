@@ -46,7 +46,7 @@ export default function ServiceAreas() {
                         <div className="flex items-center gap-4 p-4 bg-violet-500/10 border border-violet-500/20 rounded-xl mb-8">
                             <AlertTriangle className="h-8 w-8 text-yellow-400 flex-shrink-0" />
                             <div>
-                                <h4 className="font-bold text-white">How It Works</h4>
+                                <h3 className="font-bold text-white">How It Works</h3>
                                 <p className="text-sm text-slate-400">We visit your page, find all links, and check each one for errors — just like a real visitor would.</p>
                             </div>
                         </div>

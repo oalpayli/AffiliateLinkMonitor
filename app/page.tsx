@@ -133,7 +133,7 @@ export default function LandingPage() {
 
             {/* Dynamic Background */}
             <div className="fixed inset-0 z-0 pointer-events-none">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-violet-600/20 rounded-[100%] blur-[120px] opacity-50 animate-pulse-slow" />
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-violet-600/20 rounded-[100%] blur-[120px] opacity-50" />
                 <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-indigo-600/10 rounded-full blur-[100px] opacity-30" />
             </div>
 
@@ -153,6 +153,8 @@ export default function LandingPage() {
                                         width="250" 
                                         height="54" 
                                         className="w-[250px] h-[54px]"
+                                        fetchPriority="high"
+                                        decoding="async"
                                     />
                                 </a>
                             </div>
@@ -170,7 +172,7 @@ export default function LandingPage() {
                             <Suspense fallback={
                                 <div className="max-w-2xl mx-auto mb-6">
                                     <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-2 h-[88px] flex items-center justify-center">
-                                        <span className="text-slate-500 text-sm">Loading scanner...</span>
+                                        <span className="text-slate-400 text-sm">Loading scanner...</span>
                                     </div>
                                 </div>
                             }>
@@ -207,7 +209,7 @@ export default function LandingPage() {
                                 </p>
                             </div>
 
-                            <p className="text-sm text-slate-500 mb-8">
+                            <p className="text-sm text-slate-400 mb-8">
                                 No credit card required • 10 monitors free • Setup in 30 seconds
                             </p>
 
