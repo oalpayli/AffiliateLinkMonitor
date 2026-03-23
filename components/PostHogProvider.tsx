@@ -15,6 +15,7 @@ if (typeof window !== 'undefined') {
       persistence: 'sessionStorage', // Cookie-less session tracking
       person_profiles: 'identified_only', // Don't create profiles for anonymous users
       capture_pageview: false, // We track manually to handle SPA transitions correctly
+      disable_session_recording: true, // Prevents loading of 90KB posthog-recorder.js
     });
   }
 }
