@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ArrowRight, Zap, AlertCircle, CheckCircle2, XCircle, Loader2, Lock, Mail } from 'lucide-react';
-import { useSafePostHog } from '@/hooks/useSafePostHog';
+import { usePostHog } from 'posthog-js/react';
 import Link from 'next/link';
 import UpgradeDialog from '@/components/UpgradeDialog';
 
@@ -20,7 +20,7 @@ interface ScanResult {
 }
 
 export default function HomeScanBox() {
-    const posthog = useSafePostHog();
+    const posthog = usePostHog();
     const [scanUrl, setScanUrl] = useState('');
     const [isScanning, setIsScanning] = useState(false);
     const [scanResult, setScanResult] = useState<ScanResult | null>(null);

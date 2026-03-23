@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Loader2, CheckCircle2, XCircle, AlertCircle, Zap, Search, Lock, Shield, Clock, BarChart3 } from 'lucide-react';
-import { useSafePostHog } from '@/hooks/useSafePostHog';
+import { usePostHog } from 'posthog-js/react';
 import UpgradeDialog from '@/components/UpgradeDialog';
 
 interface LinkResult {
@@ -14,7 +14,7 @@ interface LinkResult {
 }
 
 export default function LinkHealthScanner() {
-    const posthog = useSafePostHog();
+    const posthog = usePostHog();
     const [scanUrl, setScanUrl] = useState('');
     const [isScanning, setIsScanning] = useState(false);
     const [links, setLinks] = useState<LinkResult[]>([]);

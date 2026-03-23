@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useSafePostHog } from '@/hooks/useSafePostHog';
+import { usePostHog } from 'posthog-js/react';
 
 interface TrackableLinkProps {
     href: string;
@@ -13,7 +13,7 @@ interface TrackableLinkProps {
 }
 
 export default function TrackableLink({ href, ctaLocation, ctaText, pageName, className, children }: TrackableLinkProps) {
-    const posthog = useSafePostHog();
+    const posthog = usePostHog();
 
     return (
         <Link

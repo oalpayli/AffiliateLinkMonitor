@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, AlertTriangle, ArrowRight, Shield, Zap, Upload, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
-import { useSafePostHog } from '@/hooks/useSafePostHog';
+import { usePostHog } from 'posthog-js/react';
 
 interface UpgradeDialogProps {
     isOpen: boolean;
@@ -26,7 +26,7 @@ export default function UpgradeDialog({
     brokenLinksFound = 0
 }: UpgradeDialogProps) {
     const [mounted, setMounted] = useState(false);
-    const posthog = useSafePostHog();
+    const posthog = usePostHog();
 
     useEffect(() => {
         setMounted(true);
