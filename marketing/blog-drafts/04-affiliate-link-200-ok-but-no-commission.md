@@ -9,7 +9,7 @@ target_keywords:
   - amazon tracking tag invalid
   - why am i not getting commissions amazon affiliate
 word_count_target: 2000
-status: DRAFT
+status: PUBLISHED
 cta_primary: Free plan signup
 internal_links:
   - /blog/amazon-associates-links-stop-working

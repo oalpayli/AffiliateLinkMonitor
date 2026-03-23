@@ -9,6 +9,22 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
     {
+        slug: 'affiliate-link-200-ok-but-no-commission',
+        title: 'Neden Affiliate Linkiniz 200 OK Döndürüyor Ama Siz Komisyon Kaybediyorsunuz?',
+        excerpt: 'Your link health checker says everything is fine. Green lights across the board. Every link returns a 200 status code. But your commissions dropped last month.',
+        date: '2026-03-30',
+        readTime: '9 min read',
+        category: 'Link Hygiene',
+    },
+    {
+        slug: 'seasonal-affiliate-link-rot-prime-day-black-friday',
+        title: 'Prime Day ve Black Friday Sonrası Affiliate Linkleriniz Neden Sessizce Bozulur',
+        excerpt: 'There\'s a pattern that plays out every year across Amazon affiliate sites. Bloggers spend weeks preparing sale content. Traffic spikes. Then the sale ends...',
+        date: '2026-03-23',
+        readTime: '8 min read',
+        category: 'Amazon',
+    },
+    {
         slug: 'amazon-associates-account-suspended-links',
         title: 'Amazon Associates Account Suspended: What Happens to Your Affiliate Links?',
         excerpt: 'Your links still work after suspension — but your tag is dead. Here\'s exactly what happens to your commissions, why Amazon suspends accounts without warning, and how to catch it before weeks of revenue disappear.',

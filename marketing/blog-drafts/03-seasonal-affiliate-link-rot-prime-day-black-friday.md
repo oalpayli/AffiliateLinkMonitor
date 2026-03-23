@@ -9,7 +9,7 @@ target_keywords:
   - affiliate links broken black friday
   - seasonal out of stock amazon affiliate
 word_count_target: 1800
-status: DRAFT
+status: PUBLISHED
 cta_primary: Pro plan - hourly monitoring
 internal_links:
   - /blog/amazon-products-out-of-stock-affiliate-guide
